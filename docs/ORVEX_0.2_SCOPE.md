@@ -26,3 +26,8 @@ Evolucionar el prototipo visual 0.1 aprobado hacia una interfaz de consola más 
 
 ## Criterios de aceptación
 La vista previa debe permitir explorar biblioteca, filtrar, entrar y salir de fichas, cambiar entre perfiles demo y navegar ajustes sin romper las cuatro secciones originales. Probar los filtros y la ocultación infantil en Qt y HTML. Presentar capturas, pruebas y Pull Request antes de solicitar aprobación.
+
+
+## Ampliación aprobada: navegación de consola
+
+Dos secciones principales (Videojuegos/Multimedia), inicio directo en juegos, perfil y ajustes por iconos, recientes/contexto arriba y biblioteca al bajar. Qt y HTML; sin rediseñar logo. Investigación de imágenes reales y fallback autorizado según ARTWORK_PROVIDERS.md. Implementación/validación en CONSOLE_NAVIGATION_0.2.md.

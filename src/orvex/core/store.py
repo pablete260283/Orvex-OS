@@ -28,4 +28,5 @@ class Store:
         self.db.close()
 
 def catalog():
-    return json.loads(Path(__file__).with_name("demo.json").read_text(encoding="utf-8"))
+    from .artwork import resolve_art
+    return [dict(e,catalog_source="demo",installed=False,cover_url=resolve_art(e["art"]),backdrop_url=resolve_art(e["art"],"backdrop")) for e in json.loads(Path(__file__).with_name("demo.json").read_text(encoding="utf-8"))]

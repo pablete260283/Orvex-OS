@@ -1,18 +1,22 @@
 from PySide6.QtCore import QObject, Property, Signal, Slot
 from .store import catalog
+from .progress import DemoProgressProvider, presentation
 from .library import LibraryService, PROFILES
 
 class Bridge(QObject):
     changed = Signal()
+    visualChanged = Signal()
     libraryChanged = Signal()
     pageChanged = Signal()
     detailChanged = Signal()
     indexChanged = Signal()
-    def __init__(self, store):
+    def __init__(self, store, progress_provider=None):
         super().__init__()
         self.store=store
         self.service=LibraryService(store)
-        self._page=0
+        self.progress_provider=progress_provider or DemoProgressProvider()
+        self._focused_id=""
+        self._page=1
         self._profile=store.get("profile","adult")
         if self._profile not in PROFILES:self._profile="adult"
         self._states={}
@@ -42,14 +46,60 @@ class Bridge(QObject):
     @Property("QVariantList", notify=libraryChanged)
     def entries(self):
         if self._page==0:
-            return self.service.query(self._profile)[:4]
+            return self.recentGames
         if self._page==3:return []
         s=self.state()
         return self.service.query(self._profile,"media" if self._page==2 else "game",s["query"],s["category"],s["favorites"])
     @Property(bool, notify=detailChanged)
     def detailOpen(self):return bool(self._detail_id)
     @Property("QVariantMap", notify=detailChanged)
-    def detail(self):return self.service.lookup(self._detail_id,self._profile)
+    def detail(self):return self.decorate(self.service.lookup(self._detail_id,self._profile))
+    def decorate(self, entry):
+        return dict(entry,progress=presentation(self.progress_provider.get(self._profile,entry["id"]))) if entry and entry["kind"]=="game" else entry
+    @Property("QVariantList", notify=libraryChanged)
+    def recentGames(self):
+        games=[self.decorate(e) for e in self.service.query(self._profile,"game")]
+        return sorted([e for e in games if e["progress"].get("last_session")],key=lambda e:e["progress"]["last_session"],reverse=True)[:4]
+    @Property("QVariantList", notify=libraryChanged)
+    def showcase(self):
+        if self._page==2:return self.service.query(self._profile,"media")[:8]
+        return self.recentGames or [self.decorate(e) for e in self.service.query(self._profile,"game")]
+    @Slot(str)
+    def openTitle(self,item_id):
+        if item_id in {e["id"] for e in self.showcase+self.entries}:
+            self._detail_id=item_id;self.detailChanged.emit();self.visualChanged.emit()
+    @Property("QVariantMap", notify=visualChanged)
+    def featured(self):
+        entry=self.service.lookup(self._focused_id,self._profile)
+        allowed_ids={e["id"] for e in self.entries+self.showcase}
+        return self.decorate(entry if entry and entry["id"] in allowed_ids else (self.showcase[0] if self.showcase else {}))
+    @Property(str, notify=visualChanged)
+    def backgroundMode(self):return self.store.get("background_mode","dynamic")
+    @Property(str, notify=visualChanged)
+    def fixedBackground(self):return self.store.get("background_fixed","aurora")
+    @Property("QVariantList", notify=libraryChanged)
+    def backgroundOptions(self):return [dict(id=e["id"],title=e["title"]) for e in self.service.visible(self._profile)]
+    @Property(str, notify=visualChanged)
+    def backgroundArt(self):
+        if self.backgroundMode=="default":return ""
+        if self.backgroundMode=="fixed":return self.service.lookup(self.fixedBackground,self._profile).get("art", "")
+        return (self.detail if self.detailOpen else self.featured).get("art", "")
+    @Property(str, notify=visualChanged)
+    def backgroundUrl(self):
+        from .artwork import resolve_art
+        return resolve_art(self.backgroundArt,"backdrop")
+    @Slot(str)
+    def focusItem(self,item_id):
+        if item_id in {e["id"] for e in self.entries+self.showcase} and item_id!=self._focused_id:
+            self._focused_id=item_id;self.visualChanged.emit()
+    @Slot(str)
+    def setBackgroundMode(self,mode):
+        if mode in ["dynamic","fixed","default"]:
+            self.store.set("background_mode",mode);self.visualChanged.emit()
+    @Slot(str)
+    def setFixedBackground(self,item_id):
+        if self.service.lookup(item_id,self._profile):
+            self.store.set("background_fixed",item_id);self.visualChanged.emit()
     @Property(bool, notify=changed)
     def reducedMotion(self):return self.store.get("reduced_motion",False)
     @Slot()
@@ -58,16 +108,17 @@ class Bridge(QObject):
     @Slot(int)
     def navigate(self,page):
         if page not in range(4):return
+        if page==0:page=1
         self._detail_id="";self._page=page
-        self.pageChanged.emit();self.libraryChanged.emit();self.indexChanged.emit();self.detailChanged.emit()
+        self.pageChanged.emit();self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit();self.detailChanged.emit();self.visualChanged.emit()
     @Slot(str)
     def setProfile(self,profile):
         if profile not in PROFILES or profile==self._profile:return
         self._profile=profile;self._detail_id="";self.store.set("profile",profile)
-        self.libraryChanged.emit();self.indexChanged.emit();self.detailChanged.emit()
+        self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit();self.detailChanged.emit();self.visualChanged.emit()
     def refresh(self):
         self.state()["index"]=min(self.state()["index"],max(0,len(self.entries)-1))
-        self.libraryChanged.emit();self.indexChanged.emit()
+        self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit()
     @Slot(str)
     def setQuery(self,value):
         self.state()["query"]=value;self.state()["index"]=0;self.refresh()
@@ -85,15 +136,15 @@ class Bridge(QObject):
     @Slot(int)
     def selectIndex(self,index):
         if 0<=index<len(self.entries) and index!=self.selectedIndex:
-            self.state()["index"]=index;self.indexChanged.emit()
+            self.state()["index"]=index;self.indexChanged.emit();self.visualChanged.emit()
     @Slot(int)
     def openDetail(self,index):
         if 0<=index<len(self.entries):
-            self.selectIndex(index);self._detail_id=self.entries[index]["id"];self.detailChanged.emit()
+            self.selectIndex(index);self._detail_id=self.entries[index]["id"];self.detailChanged.emit();self.visualChanged.emit()
     @Slot()
     def closeDetail(self):
-        self._detail_id="";self.detailChanged.emit()
+        self._detail_id="";self.detailChanged.emit();self.visualChanged.emit()
     @Slot(str)
     def toggleFavorite(self,item_id):
         if self.service.toggle_favorite(item_id,self._profile):
-            self.refresh();self.detailChanged.emit()
+            self.refresh();self.detailChanged.emit();self.visualChanged.emit()

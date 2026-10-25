@@ -1,4 +1,8 @@
+> Actualización posterior: la navegación de dos secciones y validación vigente se documentan en [CONSOLE_NAVIGATION_0.2.md](CONSOLE_NAVIGATION_0.2.md). El contenido siguiente conserva el registro de la entrega anterior.
+
 # ORVEX OS 0.2 — resultados de pruebas
+
+Actualización posterior para revisión: fondos dinámicos/fijos y seguimiento demostrativo. Ver `VISUAL_PROGRESS_0.2.md` y los resultados `validation/visual-*.txt` (45 comprobaciones aprobadas). El registro inferior conserva la entrega inicial.
 
 Estado: implementación preparada para revisión, sin merge automático. Fecha de entrega: 24 de octubre de 2026 (America/Santiago).
 

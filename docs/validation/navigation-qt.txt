@@ -1,0 +1,35 @@
+test_manifest_assets_and_demo_separation (test_artwork.ArtworkTests.test_manifest_assets_and_demo_separation) ... ok
+test_start_route_showcase_independent_of_search_and_safe_profile (test_artwork.ArtworkTests.test_start_route_showcase_independent_of_search_and_safe_profile) ... ok
+test_unapproved_missing_remote_and_escape_rejected (test_artwork.ArtworkTests.test_unapproved_missing_remote_and_escape_rejected) ... ok
+test_app_name_icon_and_preference_location (test_brand.BrandTests.test_app_name_icon_and_preference_location) ... ok
+test_html_uses_original_svg_and_png (test_brand.BrandTests.test_html_uses_original_svg_and_png) ... ok
+test_svg_resources_are_valid (test_brand.BrandTests.test_svg_resources_are_valid) ... ok
+test_child_filter_every_surface (test_library.LibraryTests.test_child_filter_every_surface) ... ok
+test_detail_return_retains_state (test_library.LibraryTests.test_detail_return_retains_state) ... ok
+test_empty_results_and_filtered_favorite_removal (test_library.LibraryTests.test_empty_results_and_filtered_favorite_removal) ... ok
+test_favorites_profile_isolation (test_library.LibraryTests.test_favorites_profile_isolation) ... ok
+test_media_type_and_synopsis (test_library.LibraryTests.test_media_type_and_synopsis) ... ok
+test_migration_and_restart (test_library.LibraryTests.test_migration_and_restart) ... ok
+test_profile_switch_closes_adult_detail_and_search (test_library.LibraryTests.test_profile_switch_closes_adult_detail_and_search) ... ok
+test_search_and_platform_combined (test_library.LibraryTests.test_search_and_platform_combined) ... ok
+test_unknown_age_fails_closed (test_library.LibraryTests.test_unknown_age_fails_closed) ... ok
+test_demo_catalog (test_store.StoreTests.test_demo_catalog) ... ok
+test_roundtrip_across_restart (test_store.StoreTests.test_roundtrip_across_restart) ... ok
+test_update_and_safe_parameters (test_store.StoreTests.test_update_and_safe_parameters) ... ok
+test_favorite_keeps_selected_card_on_return (test_ui.UiTests.test_favorite_keeps_selected_card_on_return) ... ok
+test_featured_background_updates_on_focus (test_ui.UiTests.test_featured_background_updates_on_focus) ... ok
+test_keyboard_routes_and_back (test_ui.UiTests.test_keyboard_routes_and_back) ... ok
+test_keyboard_search_open_back_and_state (test_ui.UiTests.test_keyboard_search_open_back_and_state) ... ok
+test_mouse_filter_popup_and_empty_favorites (test_ui.UiTests.test_mouse_filter_popup_and_empty_favorites) ... ok
+test_mouse_profile_and_settings (test_ui.UiTests.test_mouse_profile_and_settings) ... ok
+test_mouse_routes_open_favorite_demo_and_back (test_ui.UiTests.test_mouse_routes_open_favorite_demo_and_back) ... ok
+test_render_pages_details_and_child_at_tv_resolutions (test_ui.UiTests.test_render_pages_details_and_child_at_tv_resolutions) ... ok
+test_background_modes_and_persistence (test_visual.VisualTests.test_background_modes_and_persistence) ... ok
+test_child_does_not_inherit_adult_art_or_progress (test_visual.VisualTests.test_child_does_not_inherit_adult_art_or_progress) ... ok
+test_movie_background_and_demo_separation (test_visual.VisualTests.test_movie_background_and_demo_separation) ... ok
+test_recent_games_and_unknown_percentage (test_visual.VisualTests.test_recent_games_and_unknown_percentage) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 6.168s
+
+OK
