@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "orvex-entertainment-os"
 version = "0.2.0"
-description = "ORVEX OS visual preview"
+description = "ORVEX OS console launcher and offline visual preview"
 requires-python = ">=3.11"
 dependencies = ["PySide6==6.8.3"]
 [project.scripts]

@@ -1,14 +1,23 @@
-"""Local preferences only; demo catalog is immutable and never launches content."""
+"""Preferences, personal library and observed sessions; demo fixtures remain immutable."""
 import json
 import sqlite3
 from pathlib import Path
 
 class Store:
     def __init__(self, path):
+        self.path=Path(path) if str(path)!=":memory:" else None
         self.db = sqlite3.connect(path)
         self.db.execute("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)")
         self.db.execute("CREATE TABLE IF NOT EXISTS favorites (profile TEXT NOT NULL, item_id TEXT NOT NULL, PRIMARY KEY(profile,item_id))")
-        self.db.execute("PRAGMA user_version=2")
+        self.db.execute("""CREATE TABLE IF NOT EXISTS real_games (
+            id TEXT PRIMARY KEY,name TEXT NOT NULL,platform TEXT NOT NULL,executable TEXT NOT NULL UNIQUE,
+            trusted_hash TEXT,cover TEXT,backdrop TEXT,created_at TEXT NOT NULL)""")
+        self.db.execute("""CREATE TABLE IF NOT EXISTS play_sessions (
+            id INTEGER PRIMARY KEY,game_id TEXT NOT NULL,started_at TEXT NOT NULL,ended_at TEXT,
+            duration_ms INTEGER NOT NULL DEFAULT 0,status TEXT NOT NULL,exit_code INTEGER)""")
+        # A previous interrupted host session has no trustworthy end time.
+        self.db.execute("UPDATE play_sessions SET status='interrupted' WHERE status='running'")
+        self.db.execute("PRAGMA user_version=3")
         self.db.commit()
     def get(self, key, default=None):
         row = self.db.execute("SELECT value FROM settings WHERE key=?", (key,)).fetchone()
@@ -28,4 +37,5 @@ class Store:
         self.db.close()
 
 def catalog():
-    return json.loads(Path(__file__).with_name("demo.json").read_text(encoding="utf-8"))
+    from .artwork import resolve_art
+    return [dict(e,catalog_source="demo",installed=False,cover_url=resolve_art(e["art"]),backdrop_url=resolve_art(e["art"],"backdrop")) for e in json.loads(Path(__file__).with_name("demo.json").read_text(encoding="utf-8"))]

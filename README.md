@@ -1,42 +1,14 @@
-# ORVEX OS 0.2 · Visual Preview
+# ORVEX OS 0.2 · Consola y biblioteca local
 
-Sistema operativo de entretenimiento basado en Linux, orientado a videojuegos y multimedia. Esta entrega es un launcher y una vista previa interactiva: todavía no es una distribución Linux instalable.
+Launcher de entretenimiento con Qt 6/QML, PySide6 y SQLite. Esta etapa incorpora importación y ejecución de aplicaciones nativas reales; todavía no es una distribución Linux instalable ni garantiza compatibilidad con cualquier juego comercial.
 
-![Biblioteca Qt](preview/v0.2/games.webp)
+![Sesión real controlada en Linux](preview/real-launch/observed.webp)
 
-## Abrir en Windows sin instalar nada
+## Probar el lanzamiento real
 
-1. Descarga `preview/ORVEX-0.2.html` de esta rama (botón Download raw file de GitHub).
-2. Abre el archivo descargado con Edge o Chrome. No requiere servidor, conexión ni Linux.
-3. Usa mouse, Tab, flechas y Enter. Esc cierra el aviso de demostración, vuelve de una ficha o regresa a Inicio. F11 activa pantalla completa.
+**Windows:** descarga el repositorio desde la rama `feature/orvex-real-launch` (Code → Download ZIP), extrae todos los archivos y ejecuta `setup-windows.cmd` una vez con Python 3.11+ de 64 bits instalado. Después abre `run-windows.cmd`. La preparación descarga PySide6 a un entorno aislado; no hay un EXE autónomo empaquetado. Windows está implementado pero pendiente de validación física.
 
-El archivo incluye catálogo, portadas, logotipo, estilos y scripts. No descarga recursos externos. Los favoritos y preferencias de la vista HTML se guardan en el almacenamiento del navegador. Si el navegador bloquea el guardado, se informa en pantalla y la sesión sigue funcionando. La persistencia de archivos `file://` puede depender del navegador, de su política y de conservar la misma ruta del archivo.
-
-La vista 0.1 se conserva en `preview/ORVEX-0.1.html` como referencia histórica.
-
-## Qué funciona
-
-| Función | Qt/QML | HTML autónomo |
-|---|---|---|
-| Inicio, videojuegos, multimedia y configuración | Sí | Sí |
-| Búsqueda por nombre, sin distinguir acentos/mayúsculas | Sí | Sí |
-| Plataforma de juegos / tipo de contenido multimedia | Sí | Sí |
-| Favoritos independientes por perfil | SQLite | Almacenamiento del navegador |
-| Fichas con portada, descripción, edad y disponibilidad | Sí | Sí |
-| Volver conservando búsqueda, filtros y selección | Sí | Sí |
-| Perfiles Adulto / Infantil y recomendaciones filtradas | Sí | Sí |
-| Ajuste de movimiento reducido y perfil persistente | SQLite | Almacenamiento del navegador |
-| Seis categorías de configuración y estados futuros | Sí | Sí |
-
-Catálogo ficticio de ocho títulos: cuatro videojuegos y cuatro contenidos multimedia. El botón **Jugar · DEMO / Ver · DEMO** solo muestra un aviso. No lanza procesos ni reproduce contenido.
-
-Infantil permite exclusivamente clasificación General o 7+; clasificaciones ausentes o inválidas se ocultan. Filtra títulos, portadas, resultados, opciones de filtro y recomendaciones. **Los perfiles son demostrativos, sin PIN ni autenticación: no constituyen un control parental seguro.** El catálogo sigue incluido en el código de la demostración.
-
-## Aplicación Qt en Windows
-
-Requiere Python de 64 bits, versión 3.11 o superior. Ejecuta `setup-windows.cmd` una vez y después `run-windows.cmd`. La instalación descarga PySide6 a un entorno aislado. No existe un EXE empaquetado en esta entrega. No se ha ejecutado en Windows físico.
-
-## Aplicación Qt en Linux
+**Linux:**
 
 ```sh
 python3 -m venv .venv
@@ -44,9 +16,28 @@ python3 -m venv .venv
 PYTHONPATH=src .venv/bin/python -m orvex
 ```
 
-También se puede instalar con `python -m pip install .` y ejecutar `orvex-preview`. Linux requiere las bibliotecas gráficas de Qt apropiadas para su escritorio. Se conserva la ubicación de preferencias de 0.1 y se migra SQLite de manera aditiva a esquema 2.
+1. Videojuegos abre la biblioteca **real**, inicialmente vacía. `+ Importar juego` permite indicar nombre, plataforma y ruta absoluta, o examinar archivos.
+2. Se aceptan ejecutables nativos: `.exe` Windows o ELF Linux con permiso de ejecución. No se admiten scripts, `.bat`, accesos directos, argumentos ni ejecución mediante shell en esta fase. Los juegos de otras plataformas necesitarán adaptadores posteriores.
+3. Guardar registra la referencia en SQLite, **sin ejecutar**. Selecciona el juego y pulsa Continuar jugando o abre su ficha y pulsa Jugar.
+4. El primer lanzamiento muestra nombre y ruta para confirmar. Si cambia el contenido del archivo, se vuelve a pedir confirmación. La validación no certifica que el ejecutable sea seguro; usa únicamente archivos conocidos y confiables.
+5. Al terminar el proceso directo se registran duración, última ejecución y resultado. El tiempo observado no se convierte en porcentaje de campaña. Un launcher que delega en otro proceso puede finalizar antes que el juego.
+6. En la ficha, Asociar carátula/fondo permite elegir PNG/JPG/WebP locales, revisarlos y confirmar antes de aplicar/reemplazar. Se copian a la caché personal, nunca al repositorio.
 
-## Desarrollo y pruebas
+El catálogo demo se consulta mediante `Reales / Ver demo`, completamente separado del inventario instalado. Infantil oculta todos los juegos importados porque aún no tienen edad verificada. Los perfiles siguen siendo demostrativos, sin PIN; no son control parental seguro.
+
+## Vista visual sin instalar
+
+Descarga `preview/ORVEX-0.2.html` (Download raw file) y ábrelo directamente en Edge o Chrome. Incluye recursos, logo, catálogo ficticio y scripts; no requiere servidor, Linux ni red. **El HTML no puede importar ni lanzar juegos locales**. Sus acciones son demostrativas y no deben confundirse con la aplicación Qt.
+
+La cabecera tiene solo Videojuegos/Multimedia, menú de perfil y engranaje. Carrusel contextual arriba, biblioteca con búsqueda/filtros abajo. Mouse, flechas, Tab y Enter; Escape vuelve, F11 cambia pantalla completa. Los adaptadores de mandos físicos siguen pendientes. Fondos con precarga/fundido y movimiento reducido. Las barras solo se muestran si una fuente verifica el porcentaje; no hay tal integración real en esta entrega.
+
+## Persistencia y compatibilidad
+
+SQLite conserva preferencias/favoritos de 0.1/0.2 y añade `real_games` y `play_sessions` mediante migración aditiva a esquema 3. Se conserva la ruta histórica `Entertainment Preview` para no perder datos; el nombre visible sigue siendo ORVEX OS. No se modifican los ejecutables importados. Solo una instancia Qt por usuario. Mientras hay un proceso supervisado, cierra el juego antes de salir de ORVEX. Si el host termina abruptamente, la sesión se marca interrumpida al reiniciar, sin inventar duración.
+
+Multimedia, búsqueda, filtros, favoritos, fichas y ajustes continúan disponibles. No hay streaming, emuladores, ROMs, BIOS, DRM, reproducción multimedia ni proveedores de metadatos conectados. Logo provisional conservado.
+
+## Pruebas y resultados
 
 ```sh
 python scripts/build_web_preview.py
@@ -54,26 +45,13 @@ QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software PYTHONPATH=src .venv/bin/pyt
 node --test tests/test_web_model.cjs
 ```
 
-Pruebas de navegador (dependencia de desarrollo opcional):
+Pruebas de navegador: `npm install`, `npx playwright install chromium`, `node tests/test_web_browser.cjs` (solo desarrollo). El harness también acepta QtWebEngine mediante `ORVEX_WEBENGINE_PYTHON`. Node no es dependencia del producto.
 
-```sh
-npm install
-npx playwright install chromium
-node tests/test_web_browser.cjs
-```
+**61 comprobaciones aprobadas:** 41 Python/Qt, 7 Node y 13 recorridos de navegador. Lanzamiento real de una aplicación C propia, compilada temporalmente en Linux, incluido recorrido por la UI. Capturas Qt/HTML en 1080p/4K y logs en `docs/validation/real-launch-*.txt`. Pendientes Windows nativo, TV/DPI/GPU físicos, juegos comerciales y mandos.
 
-El harness también admite un host local QtWebEngine mediante `ORVEX_WEBENGINE_PYTHON`; ver `docs/ORVEX_0.2_VALIDATION.md`. Ninguna dependencia de Node es necesaria para abrir el HTML o ejecutar la aplicación Qt. El workflow de GitHub se inicia manualmente; no se ejecuta al subir código.
-
-## Estado y límites
-
-Se ejecutaron pruebas automáticas de Python/Qt, del modelo JavaScript y del HTML en Chromium de QtWebEngine bajo Linux. Se generaron capturas 1080p y 4K. Pendientes: Windows/Edge/Chrome y TV físicos, escalado DPI real, GPU y rendimiento en hardware objetivo.
-
-No hay detección de juegos, emuladores, streaming, DRM, Bluetooth, mandos físicos, audio real ni protección parental. La identidad provisional ORVEX OS se conserva sin rediseño.
-
-- [Alcance](docs/ORVEX_0.2_SCOPE.md)
-- [Implementado, demostrativo y pendiente](docs/ORVEX_0.2_STATUS.md)
+- [Entrega, decisiones, validación y límites](docs/REAL_LAUNCH.md)
+- [Prueba guiada Windows/Linux](docs/REAL_LAUNCH_CHECKLIST.md)
 - [Arquitectura](docs/ARCHITECTURE.md)
-- [Pruebas y limitaciones](docs/ORVEX_0.2_VALIDATION.md)
-- [Prueba guiada desde Windows](docs/WINDOWS_PREVIEW_CHECKLIST.md)
+- [Procedencia y proveedores gráficos](docs/ARTWORK_PROVIDERS.md)
 
-Repositorio privado: https://github.com/pablete260283/Orvex-OS . Cambios únicamente en `feature/orvex-0.2`; no fusionar sin aprobación del usuario. Nombre histórico: JARVIS Entertainment OS.
+Rama nueva `feature/orvex-real-launch`; PR independiente basado en `main` aprobado. El PR #3 permanece pendiente; no se fusiona ningún PR sin aprobación. Repositorio privado: https://github.com/pablete260283/Orvex-OS . Nombre histórico: JARVIS Entertainment OS.

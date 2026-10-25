@@ -226,3 +226,7 @@ preview/*-4k.png
 # ORVEX 0.2 development outputs
 node_modules/
 preview/v0.2/*.png
+
+# Runtime captures are regenerated; share selected WebP evidence.
+preview/real-launch/*.png
+preview/real-launch/*.webp.tmp
