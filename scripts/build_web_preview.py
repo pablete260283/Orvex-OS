@@ -12,8 +12,8 @@ catalog=json.loads((ROOT/'src/orvex/core/demo.json').read_text())
 serial=lambda data:json.dumps(data,ensure_ascii=False).replace('<','\\u003c')
 html='''<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORVEX OS 0.2 · Visual Preview</title>'''
 html+=f'<link rel="icon" href="{icon}"><style>'+(ROOT/'web/style.css').read_text()+'</style>'
-html+=f'''<div id="stage"><header><img class="logo" width="610" height="165" src="{logo}" alt="ORVEX OS" onerror="this.onerror=null;this.src='{fallback}'"><nav aria-label="Principal"></nav><button id="profile" data-action="profile" data-focus="profile"></button><span id="storage" role="status"></span></header><main></main><footer>Flechas / Tab Navegar　 Enter Elegir　 Esc Volver　 F11 Pantalla completa<span>0.2 DEMO · Perfiles sin PIN ni protección real</span></footer></div>'''
-html+='<script>const ORVEX_DEMO='+serial(catalog)+';const ORVEX_ART='+serial(art)+';</script>'
+html+=f'''<div id="stage"><div id="backdrop" aria-hidden="true"><div class="bg-base"></div><div class="bg-next"></div></div><header><img class="logo" width="610" height="165" src="{logo}" alt="ORVEX OS" onerror="this.onerror=null;this.src='{fallback}'"><nav aria-label="Principal"></nav><button id="profile" data-action="profile" data-focus="profile"></button><span id="storage" role="status"></span></header><main></main><footer>Flechas / Tab Navegar　 Enter Elegir　 Esc Volver　 F11 Pantalla completa<span>0.2 DEMO · Perfiles sin PIN ni protección real</span></footer></div>'''
+html+='<script>const ORVEX_PROGRESS='+serial(json.loads((ROOT/'src/orvex/core/demo_progress.json').read_text()))+';const ORVEX_DEMO='+serial(catalog)+';const ORVEX_ART='+serial(art)+';</script>'
 for name in ['library.js','app.js']:html+='<script>'+(ROOT/'web'/name).read_text()+'</script>'
 html+='</html>'
 (ROOT/'preview/ORVEX-0.2.html').write_text(html,encoding='utf-8')

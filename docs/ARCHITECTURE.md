@@ -37,3 +37,7 @@ La política de demostración admite únicamente edades enteras 0–7. General s
 ## Paridad y límites
 
 Qt y HTML comparten el catálogo y los gráficos originales, pero utilizan implementaciones de modelo distintas, ambas probadas. No se promete igualdad de píxeles: fuentes y controles nativos pueden diferir. El renderizado 4K valida composición, no rendimiento ni soporte de un televisor particular. Los contratos de hardware siguen sin implementarse.
+
+## Fondos y progreso demostrativo
+
+Ver `VISUAL_PROGRESS_0.2.md`: proveedor de progreso inyectable, fixtures separados, modos persistentes y componente de fondo compartido con precarga/fundido. El porcentaje es opcional y no se infiere desde tiempo o logros.

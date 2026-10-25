@@ -35,7 +35,7 @@ Item {
         currentIndex: library.backend.selectedIndex; keyNavigationEnabled: false; activeFocusOnTab: true
         delegate: MediaCard {
             required property var modelData; required property int index
-            entry: modelData; highlighted: GridView.isCurrentItem && grid.activeFocus
+            entry: modelData; onActiveFocusChanged: if(activeFocus)library.backend.focusItem(modelData.id); onHoveredChanged: if(hovered)library.backend.focusItem(modelData.id); highlighted: GridView.isCurrentItem && grid.activeFocus
             onActivated: library.backend.openDetail(index)
             Keys.onPressed: function(event) {
                 if(event.key===Qt.Key_Right) library.backend.selectIndex(Math.min(grid.count-1,index+1))

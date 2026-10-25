@@ -2,7 +2,9 @@
 
 Sistema operativo de entretenimiento basado en Linux, orientado a videojuegos y multimedia. Esta entrega es un launcher y una vista previa interactiva: todavía no es una distribución Linux instalable.
 
-![Biblioteca Qt](preview/v0.2/games.webp)
+![Continuar jugando](preview/v0.2/home.webp)
+
+**Actualización visual para revisión:** fondos dinámicos, fijos o predeterminados y seguimiento demostrativo de juegos en Inicio/fichas. Configuración → Interfaz permite elegir el fondo. Hay un caso sin porcentaje disponible; no se asume que todas las plataformas lo entreguen. Ver [alcance, arquitectura y pruebas de esta mejora](docs/VISUAL_PROGRESS_0.2.md).
 
 ## Abrir en Windows sin instalar nada
 

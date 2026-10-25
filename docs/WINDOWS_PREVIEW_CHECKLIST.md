@@ -12,3 +12,9 @@
 Registrar navegador/versión, resolución, resultado y captura si algo falla. Mantener la ruta del HTML al probar persistencia. Una política restrictiva de archivos locales o una sesión privada puede impedir el guardado: la vista debe informar y continuar durante la sesión.
 
 Los perfiles son demostrativos, cambiables sin PIN. No usar esta versión como protección parental real.
+
+## Nueva revisión: fondos y progreso
+
+En Inicio, enfoca Aurora, Órbita y Neon Drift: deben cambiar el título destacado y el fondo. Órbita muestra avance sin porcentaje conocido; los tres muestran tiempo, fecha y estado de demostración. Continuar · DEMO abre la ficha. En Videojuegos abre Bosque de luz para ver No iniciado. En Multimedia enfoca títulos para comprobar sus fondos.
+
+En Configuración → Interfaz prueba Dinámico, Fijo (elige un título) y Predeterminado; recarga para comprobar persistencia. Activa movimiento reducido y repite. Un fondo fijo adulto no debe mostrarse en Infantil.

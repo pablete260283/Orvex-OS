@@ -26,6 +26,10 @@ class UiTests(unittest.TestCase):
         self.window.close();shiboken6.delete(self.engine);self.store.close();self.assertEqual(self.errors,[])
     def key(self,key):QTest.keyClick(self.window,key);self.app.processEvents();QTest.qWait(15)
     def click(self,x,y):QTest.mouseClick(self.window,Qt.LeftButton,pos=QPoint(x,y));self.app.processEvents();QTest.qWait(25)
+    def test_featured_background_updates_on_focus(self):
+        self.b.focusItem('orbit');QTest.qWait(40)
+        self.assertEqual(self.window.findChild(QObject,'heroTitle').property('text'),'Órbita')
+        self.assertEqual(self.b.backgroundArt,'orbit')
     def test_keyboard_routes_and_back(self):
         for page in [1,2,3,0]:self.key(Qt.Key_Right);self.assertEqual(self.b.page,page)
         self.key(Qt.Key_Left);self.key(Qt.Key_Escape);self.assertEqual(self.b.page,0)

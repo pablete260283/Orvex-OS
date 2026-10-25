@@ -22,7 +22,8 @@ Window {
             event.accepted=true
         }
         Rectangle { anchors.fill: parent; color: "#0b1320" }
-        Item { id: shell; anchors.fill: parent; enabled: !backend.detailOpen
+        DynamicBackground { anchors.fill: parent; art: backend.backgroundArt; reduced: backend.reducedMotion; profile: backend.profile }
+        Item { id: shell; anchors.fill: parent; enabled: !backend.detailOpen; visible: !backend.detailOpen
             Image { id: brandLogo; objectName: "brandLogo"; x: 92; y: 42; width: 350; height: 350*165/610; source: "assets/brand/svg/orvex-horizontal-dark.svg"; sourceSize: Qt.size(1220,330); fillMode: Image.PreserveAspectFit; onStatusChanged: if(status===Image.Error && source.toString().endsWith(".svg")) source="assets/brand/png/orvex-horizontal-dark-4x.png" }
             Row { x: 560; y: 57; spacing: 12
                 Repeater { id: nav; model: ["Inicio","Videojuegos","Multimedia","Configuración"]
@@ -37,17 +38,18 @@ Window {
             Item { id: home; x: 92; y: 165; width: 1736; height: 860; visible: backend.page===0
                 opacity: visible ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: backend.reducedMotion ? 0 : 120 } }
-                Image { width: 1736; height: 450; source: "assets/aurora.svg"; fillMode: Image.PreserveAspectCrop }
+
                 Rectangle { width: 1736; height: 450; gradient: Gradient { orientation: Gradient.Horizontal; GradientStop {position:0;color:"#ff0c1a26"} GradientStop {position:1;color:"#000c1a26"} } }
-                Text { x: 48; y: 44; text: "TU ESPACIO. TU MOMENTO."; color: "#a8f3de"; font.pixelSize: 17; font.letterSpacing: 3 }
-                Text { x: 44; y: 98; text: "Todo listo para
-tu próxima aventura."; color: "#f1f7f8"; font.pixelSize: 64; font.weight: Font.DemiBold }
-                Text { x: 48; y: 270; text: "Videojuegos y multimedia, en un solo lugar."; color: "#b7c7d3"; font.pixelSize: 24 }
+                Text { x: 48; y: 44; text: "CONTINUAR JUGANDO · DATOS DEMO"; color: "#a8f3de"; font.pixelSize: 17; font.letterSpacing: 3 }
+                Text { objectName: "heroTitle"; x: 44; y: 98; text: backend.featured.title || "Tu próxima aventura"; color: "#f1f7f8"; font.pixelSize: 64; font.weight: Font.DemiBold }
+                Text { x: 48; y: 310; visible: false; text: backend.featured.progress ? backend.featured.progress.statusLabel+" · "+backend.featured.progress.percentLabel : "Explora tu biblioteca"; color: "#b7c7d3"; font.pixelSize: 24 }
                 ActionButton { id: explore; x: 48; y: 340; width: 350; text: "Explorar biblioteca →"; accent: true; onClicked: {window.navigate(1);library.enter()} }
-                Text { y: 493; text: backend.profile==="child" ? "Para descubrir en familia · General y 7+" : "Descubre tu próximo favorito"; color: "#e5edf3"; font.pixelSize: 29; font.weight: Font.DemiBold }
+                ProgressInfo { x: 48; y: 190; width: 1000; visible: !!backend.featured.progress; record: backend.featured.progress || ({}) }
+                ActionButton { x: 430; y: 340; width: 350; text: "Continuar · DEMO"; onClicked: {for(var i=0;i<backend.entries.length;i++)if(backend.entries[i].id===backend.featured.id){backend.openDetail(i);break}} }
+                Text { y: 493; text: "Continuar jugando · Sesiones demostrativas"; color: "#e5edf3"; font.pixelSize: 29; font.weight: Font.DemiBold }
                 Row { y: 550; spacing: 44
                     Repeater { model: backend.page===0 ? backend.entries : []
-                        MediaCard { required property var modelData; required property int index; entry: modelData; onActivated: backend.openDetail(index) }
+                        MediaCard { required property var modelData; required property int index; entry: modelData; onActiveFocusChanged: if(activeFocus)backend.focusItem(modelData.id); onHoveredChanged: if(hovered)backend.focusItem(modelData.id); onActivated: backend.openDetail(index) }
                     }
                 }
             }

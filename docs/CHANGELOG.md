@@ -13,3 +13,7 @@
 ## 0.1 y marca provisional
 
 Se conserva `preview/ORVEX-0.1.html` como referencia del prototipo original y el historial previo en GitHub.
+
+## Actualización visual 0.2 — 25 de octubre de 2026
+
+Fondos por título y modos persistentes, Continuar jugando y datos de progreso demostrativos con porcentaje opcional, barra, tiempo, fecha y estado. Mantiene la identidad provisional y las funciones anteriores.
