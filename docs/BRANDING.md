@@ -1,6 +1,6 @@
 # ORVEX OS — integración del kit de identidad
 
-Estado: implementación propuesta; pendiente de revisión visual del usuario. No es una aprobación de la identidad final ni una versión 0.2.
+Estado: integración provisional aprobada por el usuario y conservada en 0.2. El rediseño definitivo permanece pendiente.
 
 ## Recursos y revisión
 

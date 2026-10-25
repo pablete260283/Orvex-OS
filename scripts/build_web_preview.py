@@ -7,7 +7,7 @@ def uri(path,mime):return 'data:'+mime+';base64,'+base64.b64encode(path.read_byt
 logo=uri(assets/'brand/svg/orvex-horizontal-dark.svg','image/svg+xml')
 fallback=uri(assets/'brand/png/orvex-horizontal-dark-4x.png','image/png')
 icon=uri(assets/'brand/svg/orvex-app-icon-dark.svg','image/svg+xml')
-art={p.stem:uri(p,'image/svg+xml') for p in assets.glob('*.svg')}
+art={p.stem:uri(p,'image/svg+xml') for p in sorted(assets.glob('*.svg'))}
 catalog=json.loads((ROOT/'src/orvex/core/demo.json').read_text())
 serial=lambda data:json.dumps(data,ensure_ascii=False).replace('<','\\u003c')
 html='''<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORVEX OS 0.2 · Visual Preview</title>'''

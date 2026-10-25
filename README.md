@@ -1,25 +1,42 @@
-# ORVEX OS · 0.1 Visual Preview
+# ORVEX OS 0.2 · Visual Preview
 
-Primera entrega visual ejecutable. Aplicación principal: Qt 6/QML + PySide6; preferencias: SQLite. Todos los títulos, plataformas y portadas son ficticios. No se incluyen juegos, BIOS, ROMs ni servicios de streaming.
+Sistema operativo de entretenimiento basado en Linux, orientado a videojuegos y multimedia. Esta entrega es un launcher y una vista previa interactiva: todavía no es una distribución Linux instalable.
 
-![Inicio de ORVEX OS](preview/home.webp)
+![Biblioteca Qt](preview/v0.2/games.webp)
 
-## Revisar sin instalar nada
+## Abrir en Windows sin instalar nada
 
-Abre `preview/ORVEX-0.1.html` con Chrome o Edge. Es una representación HTML autónoma para revisar las cuatro pantallas, no la aplicación Qt ejecutada en el navegador. Funciona sin conexión y no descarga recursos. Las preferencias de esta vista usan almacenamiento del navegador, separado de SQLite. Si está bloqueado, el ajuste solo dura la sesión.
+1. Descarga `preview/ORVEX-0.2.html` de esta rama (botón Download raw file de GitHub).
+2. Abre el archivo descargado con Edge o Chrome. No requiere servidor, conexión ni Linux.
+3. Usa mouse, Tab, flechas y Enter. Esc cierra el aviso de demostración, vuelve de una ficha o regresa a Inicio. F11 activa pantalla completa.
 
-Flechas izquierda/derecha cambian de sección; abajo entra al contenido; arriba vuelve al menú; Enter selecciona; Esc cierra el aviso o vuelve a Inicio. También funciona con mouse y Tab. F11 activa pantalla completa en el navegador.
+El archivo incluye catálogo, portadas, logotipo, estilos y scripts. No descarga recursos externos. Los favoritos y preferencias de la vista HTML se guardan en el almacenamiento del navegador. Si el navegador bloquea el guardado, se informa en pantalla y la sesión sigue funcionando. La persistencia de archivos `file://` puede depender del navegador, de su política y de conservar la misma ruta del archivo.
+
+La vista 0.1 se conserva en `preview/ORVEX-0.1.html` como referencia histórica.
+
+## Qué funciona
+
+| Función | Qt/QML | HTML autónomo |
+|---|---|---|
+| Inicio, videojuegos, multimedia y configuración | Sí | Sí |
+| Búsqueda por nombre, sin distinguir acentos/mayúsculas | Sí | Sí |
+| Plataforma de juegos / tipo de contenido multimedia | Sí | Sí |
+| Favoritos independientes por perfil | SQLite | Almacenamiento del navegador |
+| Fichas con portada, descripción, edad y disponibilidad | Sí | Sí |
+| Volver conservando búsqueda, filtros y selección | Sí | Sí |
+| Perfiles Adulto / Infantil y recomendaciones filtradas | Sí | Sí |
+| Ajuste de movimiento reducido y perfil persistente | SQLite | Almacenamiento del navegador |
+| Seis categorías de configuración y estados futuros | Sí | Sí |
+
+Catálogo ficticio de ocho títulos: cuatro videojuegos y cuatro contenidos multimedia. El botón **Jugar · DEMO / Ver · DEMO** solo muestra un aviso. No lanza procesos ni reproduce contenido.
+
+Infantil permite exclusivamente clasificación General o 7+; clasificaciones ausentes o inválidas se ocultan. Filtra títulos, portadas, resultados, opciones de filtro y recomendaciones. **Los perfiles son demostrativos, sin PIN ni autenticación: no constituyen un control parental seguro.** El catálogo sigue incluido en el código de la demostración.
 
 ## Aplicación Qt en Windows
 
-Requiere Python 3.11 o superior de 64 bits. No requiere Linux ni Qt Creator.
+Requiere Python de 64 bits, versión 3.11 o superior. Ejecuta `setup-windows.cmd` una vez y después `run-windows.cmd`. La instalación descarga PySide6 a un entorno aislado. No existe un EXE empaquetado en esta entrega. No se ha ejecutado en Windows físico.
 
-1. Ejecuta `setup-windows.cmd` para crear un entorno aislado y descargar PySide6. Este paso requiere conexión y ocupa varios cientos de MB.
-2. Ejecuta `run-windows.cmd`.
-
-No hay un EXE empaquetado en esta entrega. No se ha probado en un equipo Windows físico.
-
-## Aplicación Qt en Linux/macOS
+## Aplicación Qt en Linux
 
 ```sh
 python3 -m venv .venv
@@ -27,37 +44,36 @@ python3 -m venv .venv
 PYTHONPATH=src .venv/bin/python -m orvex
 ```
 
-También se puede instalar como paquete con `python -m pip install .` y ejecutar `orvex-preview`. En Linux el escritorio debe tener las bibliotecas gráficas requeridas por Qt. El lanzador no modifica ajustes del sistema. La preferencia SQLite se guarda en la ubicación de datos de usuario que informa Qt.
+También se puede instalar con `python -m pip install .` y ejecutar `orvex-preview`. Linux requiere las bibliotecas gráficas de Qt apropiadas para su escritorio. Se conserva la ubicación de preferencias de 0.1 y se migra SQLite de manera aditiva a esquema 2.
 
-## Pruebas
+## Desarrollo y pruebas
 
 ```sh
+python scripts/build_web_preview.py
 QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+node --test tests/test_web_model.cjs
 ```
 
-Las pruebas generan capturas nativas de todas las pantallas en 1920×1080 y 3840×2160 dentro de `preview/`. En Windows, establece esas variables de entorno antes de ejecutar `python -m unittest discover -s tests -v`.
+Pruebas de navegador (dependencia de desarrollo opcional):
 
-## Estado
+```sh
+npm install
+npx playwright install chromium
+node tests/test_web_browser.cjs
+```
 
-- Implementado: cuatro pantallas navegables, foco visual, teclado/mouse, ventana y pantalla completa, escalado proporcional con márgenes en otras relaciones de aspecto, avisos de demostración y persistencia SQLite del ajuste reducir movimiento.
-- Demostrativo: catálogo JSON de seis títulos, carátulas SVG originales, perfil y las categorías de plataforma. No representan instalaciones, disponibilidad ni compatibilidad reales.
-- Pendiente: emulación, reproducción, mandos reales, Bluetooth, DRM, perfiles y control parental, importación de bibliotecas, métricas de rendimiento y distribución Linux.
-- La preferencia reducir movimiento persiste; esta versión no utiliza animaciones, por lo que no cambia la apariencia actual.
-- GitHub: https://github.com/pablete260283/Orvex-OS (privado). Se conserva el historial inicial del repositorio. El workflow queda preparado; consulta GitHub Actions para su estado.
+El harness también admite un host local QtWebEngine mediante `ORVEX_WEBENGINE_PYTHON`; ver `docs/ORVEX_0.2_VALIDATION.md`. Ninguna dependencia de Node es necesaria para abrir el HTML o ejecutar la aplicación Qt. El workflow de GitHub se inicia manualmente; no se ejecuta al subir código.
 
-Consulta `docs/ARCHITECTURE.md`, `docs/VALIDATION.md` y `docs/ROADMAP.md`.
+## Estado y límites
 
-## Nombre del proyecto
+Se ejecutaron pruebas automáticas de Python/Qt, del modelo JavaScript y del HTML en Chromium de QtWebEngine bajo Linux. Se generaron capturas 1080p y 4K. Pendientes: Windows/Edge/Chrome y TV físicos, escalado DPI real, GPU y rendimiento en hardware objetivo.
 
-ORVEX OS es la marca oficial del proyecto antes denominado JARVIS Entertainment OS. Se mantienen sus objetivos y requisitos. Open-source gaming and entertainment operating system based on Linux.
+No hay detección de juegos, emuladores, streaming, DRM, Bluetooth, mandos físicos, audio real ni protección parental. La identidad provisional ORVEX OS se conserva sin rediseño.
 
-## Identidad visual — propuesta integrada para revisión
+- [Alcance](docs/ORVEX_0.2_SCOPE.md)
+- [Implementado, demostrativo y pendiente](docs/ORVEX_0.2_STATUS.md)
+- [Arquitectura](docs/ARCHITECTURE.md)
+- [Pruebas y limitaciones](docs/ORVEX_0.2_VALIDATION.md)
+- [Prueba guiada desde Windows](docs/WINDOWS_PREVIEW_CHECKLIST.md)
 
-Marca oficial: **ORVEX OS**. Descripción: sistema operativo de entretenimiento basado en Linux, orientado a videojuegos y multimedia. El logotipo horizontal y el icono proceden del kit proporcionado, sin redibujarlos. La integración sigue pendiente de aprobación visual del usuario.
-
-Abre `preview/ORVEX-0.1.html` descargado de esta rama en Edge/Chrome desde Windows. Es autónomo, incluye SVG y PNG de respaldo y no requiere Linux ni instalación. Se verificó su sintaxis y la correspondencia de recursos con Qt; queda pendiente ejecutarlo en un navegador Windows real.
-
-- [Decisiones y límites de identidad](docs/BRANDING.md)
-- [Resultados de esta actualización](docs/BRAND_VALIDATION.md)
-- [Captura nativa en 4K](preview/home-4k.webp)
-- Recursos reutilizables: `src/orvex/ui/assets/brand/`
+Repositorio privado: https://github.com/pablete260283/Orvex-OS . Cambios únicamente en `feature/orvex-0.2`; no fusionar sin aprobación del usuario. Nombre histórico: JARVIS Entertainment OS.

@@ -36,6 +36,7 @@ class UiTests(unittest.TestCase):
         self.assertEqual([e['id'] for e in self.b.entries],['aurora'])
         self.key(Qt.Key_Down);self.key(Qt.Key_Return);self.assertTrue(self.b.detailOpen)
         self.key(Qt.Key_Escape);self.assertFalse(self.b.detailOpen);self.assertEqual(self.b.query,'Aurora')
+        self.assertEqual(self.window.activeFocusItem().property('entry').toVariant()['id'],'aurora')
     def test_mouse_routes_open_favorite_demo_and_back(self):
         self.click(760,65);self.assertEqual(self.b.page,2)
         self.click(150,400);self.assertTrue(self.b.detailOpen);self.assertEqual(self.b.detail['id'],'ocean')
@@ -43,6 +44,18 @@ class UiTests(unittest.TestCase):
         self.click(750,550);self.assertIn('Demostración',self.window.findChild(QObject,'detailPage').property('notice'))
         self.key(Qt.Key_Escape);self.assertTrue(self.b.detailOpen)
         self.click(140,70);self.assertFalse(self.b.detailOpen)
+    def test_favorite_keeps_selected_card_on_return(self):
+        self.b.navigate(1);self.b.selectIndex(1);self.b.openDetail(1);QTest.qWait(30)
+        self.b.toggleFavorite('orbit');QTest.qWait(30)
+        self.b.closeDetail();QTest.qWait(30)
+        self.assertEqual(self.b.selectedIndex,1)
+        self.assertEqual(self.window.activeFocusItem().property('entry').toVariant()['id'],'orbit')
+    def test_mouse_filter_popup_and_empty_favorites(self):
+        self.b.navigate(1);self.app.processEvents();QTest.qWait(30)
+        self.click(700,250);self.key(Qt.Key_End);self.key(Qt.Key_Return)
+        self.assertEqual(self.b.category,'PC');self.assertEqual(len(self.b.entries),2)
+        self.click(990,250);self.assertTrue(self.b.favoritesOnly);self.assertEqual(self.b.entries,[])
+        self.click(1200,250);self.assertFalse(self.b.favoritesOnly);self.assertEqual(self.b.category,'Todas')
     def test_mouse_profile_and_settings(self):
         self.b.navigate(2);self.click(1260,65);self.assertEqual(self.b.profile,'child');self.assertTrue(all(e['age']<=7 for e in self.b.entries))
         self.click(920,65);self.assertEqual(self.b.page,3)

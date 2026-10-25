@@ -1,7 +1,7 @@
 # Continuidad del proyecto
 
 Nombre actual: ORVEX OS (antes JARVIS Entertainment OS).
-Entrega: 0.1 Visual Preview.
+Entrega: 0.2 Visual Preview en feature/orvex-0.2; 0.1 se conserva como base histórica.
 Prioridad: revisar visualmente el diseño sin instalar Linux. Qt/QML es la interfaz principal; la vista HTML es secundaria.
 
 ## Requisitos que se mantienen
@@ -16,6 +16,6 @@ Prioridad: revisar visualmente el diseño sin instalar Linux. Qt/QML es la inter
 
 ## Estado verificable
 
-Implementado: cuatro pantallas, teclado/mouse, catálogo ficticio, avisos de demo y una preferencia SQLite. Ocho pruebas locales aprobadas y capturas nativas 1080p/4K.
+Implementado: bibliotecas buscables/filtrables, favoritos por perfil, fichas, perfiles demo, seis categorías de ajustes y vista HTML autónoma. Ver ORVEX_0.2_STATUS.md y ORVEX_0.2_VALIDATION.md para el estado verificado.
 No implementado: distribución Linux, lanzamiento de juegos, reproducción, controles físicos, Bluetooth, perfiles y almacenamiento de medios.
-Próximo paso: revisión visual, pantallas de detalle y estados vacíos; validar Windows/TV físicos.
+Próximo paso: revisar 0.2 y validar Windows/TV físicos. No fusionar el PR sin aprobación.

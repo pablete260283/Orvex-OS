@@ -32,22 +32,30 @@ Item {
     GridView {
         id: grid; objectName: "libraryGrid"; x: 0; y: 270; width: parent.width; height: parent.height-270
         cellWidth: 434; cellHeight: 325; clip: true; model: library.backend.entries
-        currentIndex: library.backend.selectedIndex; keyNavigationEnabled: true; activeFocusOnTab: true
-        onCurrentIndexChanged: if(currentIndex>=0) library.backend.selectIndex(currentIndex)
+        currentIndex: library.backend.selectedIndex; keyNavigationEnabled: false; activeFocusOnTab: true
         delegate: MediaCard {
             required property var modelData; required property int index
             entry: modelData; highlighted: GridView.isCurrentItem && grid.activeFocus
-            onActivated: { grid.currentIndex=index; library.backend.openDetail(index) }
+            onActivated: library.backend.openDetail(index)
             Keys.onPressed: function(event) {
-                if(event.key===Qt.Key_Right) grid.currentIndex=Math.min(grid.count-1,index+1)
-                else if(event.key===Qt.Key_Left) grid.currentIndex=Math.max(0,index-1)
-                else if(event.key===Qt.Key_Down) grid.currentIndex=Math.min(grid.count-1,index+4)
-                else if(event.key===Qt.Key_Up) { if(index<4) { search.forceActiveFocus(); return } else grid.currentIndex=index-4 }
+                if(event.key===Qt.Key_Right) library.backend.selectIndex(Math.min(grid.count-1,index+1))
+                else if(event.key===Qt.Key_Left) library.backend.selectIndex(Math.max(0,index-1))
+                else if(event.key===Qt.Key_Down) library.backend.selectIndex(Math.min(grid.count-1,index+4))
+                else if(event.key===Qt.Key_Up) { if(index<4) { search.forceActiveFocus(); return } else library.backend.selectIndex(index-4) }
                 else {event.accepted=false;return}
                 event.accepted=true; if(grid.currentItem)grid.currentItem.forceActiveFocus()
             }
         }
         Keys.onReturnPressed: if(grid.count>0) library.backend.openDetail(currentIndex)
+        Keys.onPressed: function(event) {
+            var index=library.backend.selectedIndex
+            if(event.key===Qt.Key_Right) library.backend.selectIndex(Math.min(grid.count-1,index+1))
+            else if(event.key===Qt.Key_Left) library.backend.selectIndex(Math.max(0,index-1))
+            else if(event.key===Qt.Key_Down) library.backend.selectIndex(Math.min(grid.count-1,index+4))
+            else if(event.key===Qt.Key_Up) { if(index<4) search.forceActiveFocus(); else library.backend.selectIndex(index-4) }
+            else {event.accepted=false;return}
+            event.accepted=true
+        }
         Text { visible: grid.count===0; anchors.centerIn: parent; text: "No hay títulos con estos filtros.
 Prueba otra búsqueda o limpia los filtros."; horizontalAlignment: Text.AlignHCenter; color: "#a5bac9"; font.pixelSize: 28 }
         ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }

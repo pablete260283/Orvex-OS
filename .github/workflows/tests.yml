@@ -16,8 +16,15 @@ jobs:
           python-version: '3.11'
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libopengl0 libxkbcommon0 fonts-dejavu-core
       - run: pip install -r requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python scripts/build_web_preview.py
       - run: python -m unittest discover -s tests -v
+      - run: node --test tests/test_web_model.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: qt-preview-captures
-          path: preview/*.png
+          path: |
+            preview/*.png
+            preview/v0.2/*.png

@@ -1,6 +1,6 @@
 # ORVEX OS 0.2 — Alcance de desarrollo
 
-Estado: planificación de implementación; no se afirma que las funciones estén construidas.
+Estado: implementación 0.2 preparada para revisión. Consultar ORVEX_0.2_STATUS.md y ORVEX_0.2_VALIDATION.md para funciones reales y límites.
 
 ## Objetivo
 Evolucionar el prototipo visual 0.1 aprobado hacia una interfaz de consola más completa, sin simular capacidades reales como si estuvieran implementadas.
