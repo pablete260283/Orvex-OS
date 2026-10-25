@@ -1,3 +1,18 @@
+# Recorrido vigente · nueva navegación
+
+1. Abrir preview/ORVEX-0.2.html: debe arrancar en Videojuegos y mostrar solo dos pestañas.
+2. Recorrer recientes; comprobar fondo, título, estadísticas y porcentaje desconocido en Órbita.
+3. Continuar jugando · DEMO abre ficha; volver conserva selección.
+4. Biblioteca completa desplaza a búsqueda/filtros; abrir y volver conserva contexto.
+5. Multimedia muestra selección y biblioteca equivalente, sin progreso ficticio de reproducción.
+6. Icono de persona abre menú: elegir Infantil oculta títulos adultos en todas las superficies.
+7. Engranaje abre configuración: probar fondos y movimiento reducido, recargar para persistencia.
+
+Pendiente de ejecución en Windows físico por el usuario. Los recorridos Linux automatizados están en CONSOLE_NAVIGATION_0.2.md.
+
+---
+Registro de recorridos anteriores (pueden mencionar Inicio):
+
 # Revisión guiada de ORVEX 0.2 desde Windows
 
 1. En la rama `feature/orvex-0.2`, descarga `preview/ORVEX-0.2.html` usando Download raw file, o descarga el ZIP de esa rama y extrae el HTML.

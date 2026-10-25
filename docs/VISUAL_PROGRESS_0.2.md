@@ -1,3 +1,5 @@
+> Actualización posterior: la navegación de dos secciones y validación vigente se documentan en [CONSOLE_NAVIGATION_0.2.md](CONSOLE_NAVIGATION_0.2.md). El contenido siguiente conserva el registro de la entrega anterior.
+
 # ORVEX 0.2 — Fondos y seguimiento demostrativo
 
 Implementación para revisión; no fusionar sin aprobación. Mantiene las bibliotecas, perfiles, favoritos y ajustes de la entrega aprobada.

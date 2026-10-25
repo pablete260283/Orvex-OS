@@ -10,7 +10,7 @@ Item {
         // Finish an interrupted blend before preparing the next local image.
         if(incoming.opacity>0.5) base.source=incoming.source
         incoming.opacity=0
-        incoming.source=art ? "../assets/"+art+".svg" : ""
+        incoming.source=art
         if(!art)base.source=""
         else if(incoming.status===Image.Ready)fade.restart()
     }

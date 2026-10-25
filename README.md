@@ -2,15 +2,15 @@
 
 Sistema operativo de entretenimiento basado en Linux, orientado a videojuegos y multimedia. Esta entrega es un launcher y una vista previa interactiva: todavía no es una distribución Linux instalable.
 
-![Continuar jugando](preview/v0.2/home.webp)
+![Videojuegos · nueva navegación](preview/v0.2/games.webp)
 
-**Actualización visual para revisión:** fondos dinámicos, fijos o predeterminados y seguimiento demostrativo de juegos en Inicio/fichas. Configuración → Interfaz permite elegir el fondo. Hay un caso sin porcentaje disponible; no se asume que todas las plataformas lo entreguen. Ver [alcance, arquitectura y pruebas de esta mejora](docs/VISUAL_PROGRESS_0.2.md).
+**Rediseño para revisión:** arranque directo en Videojuegos, dos secciones principales, perfil y engranaje en la esquina superior derecha. Recientes, fondo y estadísticas contextuales arriba; biblioteca con búsqueda/filtros al bajar. Multimedia comparte estructura. [Decisiones, funciones y validación](docs/CONSOLE_NAVIGATION_0.2.md). [Imágenes y proveedores investigados](docs/ARTWORK_PROVIDERS.md).
 
 ## Abrir en Windows sin instalar nada
 
 1. Descarga `preview/ORVEX-0.2.html` de esta rama (botón Download raw file de GitHub).
 2. Abre el archivo descargado con Edge o Chrome. No requiere servidor, conexión ni Linux.
-3. Usa mouse, Tab, flechas y Enter. Esc cierra el aviso de demostración, vuelve de una ficha o regresa a Inicio. F11 activa pantalla completa.
+3. Usa mouse, Tab, flechas y Enter. Esc cierra el aviso de demostración, vuelve de una ficha o regresa a Videojuegos. F11 activa pantalla completa.
 
 El archivo incluye catálogo, portadas, logotipo, estilos y scripts. No descarga recursos externos. Los favoritos y preferencias de la vista HTML se guardan en el almacenamiento del navegador. Si el navegador bloquea el guardado, se informa en pantalla y la sesión sigue funcionando. La persistencia de archivos `file://` puede depender del navegador, de su política y de conservar la misma ruta del archivo.
 
@@ -20,7 +20,7 @@ La vista 0.1 se conserva en `preview/ORVEX-0.1.html` como referencia histórica.
 
 | Función | Qt/QML | HTML autónomo |
 |---|---|---|
-| Inicio, videojuegos, multimedia y configuración | Sí | Sí |
+| Videojuegos y multimedia; configuración desde engranaje | Sí | Sí |
 | Búsqueda por nombre, sin distinguir acentos/mayúsculas | Sí | Sí |
 | Plataforma de juegos / tipo de contenido multimedia | Sí | Sí |
 | Favoritos independientes por perfil | SQLite | Almacenamiento del navegador |

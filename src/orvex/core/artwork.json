@@ -1,0 +1,50 @@
+{
+  "orbit": {
+    "cover": "orbit.svg",
+    "backdrop": "orbit.svg",
+    "provider": "orvex-original",
+    "source": "ORVEX repository original demo artwork",
+    "rights": "project-original",
+    "redistribution": true
+  },
+  "aurora": {
+    "cover": "aurora.svg",
+    "backdrop": "aurora.svg",
+    "provider": "orvex-original",
+    "source": "ORVEX repository original demo artwork",
+    "rights": "project-original",
+    "redistribution": true
+  },
+  "forest": {
+    "cover": "forest.svg",
+    "backdrop": "forest.svg",
+    "provider": "orvex-original",
+    "source": "ORVEX repository original demo artwork",
+    "rights": "project-original",
+    "redistribution": true
+  },
+  "ocean": {
+    "cover": "ocean.svg",
+    "backdrop": "ocean.svg",
+    "provider": "orvex-original",
+    "source": "ORVEX repository original demo artwork",
+    "rights": "project-original",
+    "redistribution": true
+  },
+  "moon": {
+    "cover": "moon.svg",
+    "backdrop": "moon.svg",
+    "provider": "orvex-original",
+    "source": "ORVEX repository original demo artwork",
+    "rights": "project-original",
+    "redistribution": true
+  },
+  "drift": {
+    "cover": "drift.svg",
+    "backdrop": "drift.svg",
+    "provider": "orvex-original",
+    "source": "ORVEX repository original demo artwork",
+    "rights": "project-original",
+    "redistribution": true
+  }
+}

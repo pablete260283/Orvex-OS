@@ -16,7 +16,7 @@ class Bridge(QObject):
         self.service=LibraryService(store)
         self.progress_provider=progress_provider or DemoProgressProvider()
         self._focused_id=""
-        self._page=0
+        self._page=1
         self._profile=store.get("profile","adult")
         if self._profile not in PROFILES:self._profile="adult"
         self._states={}
@@ -60,11 +60,19 @@ class Bridge(QObject):
     def recentGames(self):
         games=[self.decorate(e) for e in self.service.query(self._profile,"game")]
         return sorted([e for e in games if e["progress"].get("last_session")],key=lambda e:e["progress"]["last_session"],reverse=True)[:4]
+    @Property("QVariantList", notify=libraryChanged)
+    def showcase(self):
+        if self._page==2:return self.service.query(self._profile,"media")[:8]
+        return self.recentGames or [self.decorate(e) for e in self.service.query(self._profile,"game")]
+    @Slot(str)
+    def openTitle(self,item_id):
+        if item_id in {e["id"] for e in self.showcase+self.entries}:
+            self._detail_id=item_id;self.detailChanged.emit();self.visualChanged.emit()
     @Property("QVariantMap", notify=visualChanged)
     def featured(self):
         entry=self.service.lookup(self._focused_id,self._profile)
-        allowed_ids={e["id"] for e in self.entries}
-        return self.decorate(entry if entry and entry["id"] in allowed_ids else (self.entries[0] if self.entries else {}))
+        allowed_ids={e["id"] for e in self.entries+self.showcase}
+        return self.decorate(entry if entry and entry["id"] in allowed_ids else (self.showcase[0] if self.showcase else {}))
     @Property(str, notify=visualChanged)
     def backgroundMode(self):return self.store.get("background_mode","dynamic")
     @Property(str, notify=visualChanged)
@@ -76,9 +84,13 @@ class Bridge(QObject):
         if self.backgroundMode=="default":return ""
         if self.backgroundMode=="fixed":return self.service.lookup(self.fixedBackground,self._profile).get("art", "")
         return (self.detail if self.detailOpen else self.featured).get("art", "")
+    @Property(str, notify=visualChanged)
+    def backgroundUrl(self):
+        from .artwork import resolve_art
+        return resolve_art(self.backgroundArt,"backdrop")
     @Slot(str)
     def focusItem(self,item_id):
-        if item_id in {e["id"] for e in self.entries} and item_id!=self._focused_id:
+        if item_id in {e["id"] for e in self.entries+self.showcase} and item_id!=self._focused_id:
             self._focused_id=item_id;self.visualChanged.emit()
     @Slot(str)
     def setBackgroundMode(self,mode):
@@ -96,6 +108,7 @@ class Bridge(QObject):
     @Slot(int)
     def navigate(self,page):
         if page not in range(4):return
+        if page==0:page=1
         self._detail_id="";self._page=page
         self.pageChanged.emit();self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit();self.detailChanged.emit();self.visualChanged.emit()
     @Slot(str)

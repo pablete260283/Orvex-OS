@@ -14,7 +14,7 @@ FocusScope {
     Rectangle { anchors.fill: parent; color: "#d90b1320" }
     ActionButton { id: back; objectName: "detailBack"; x: 92; y: 65; text: "← Volver"; onClicked: detailPage.backend.closeDetail(); KeyNavigation.tab: favorite; KeyNavigation.right: favorite; KeyNavigation.backtab: play }
     Text { x: 390; y: 82; text: "FICHA / CONTENIDO DE DEMOSTRACIÓN"; color: "#a8f3de"; font.pixelSize: 20; font.letterSpacing: 2 }
-    Image { x: 92; y: 210; width: 700; height: 550; source: entry.art ? "../assets/"+entry.art+".svg" : ""; fillMode: Image.PreserveAspectCrop }
+    Image { x: 92; y: 210; width: 700; height: 550; source: entry.cover_url || ""; fillMode: Image.PreserveAspectCrop }
     Text { x: 850; y: 215; width: 970; text: entry.title || ""; color: "#f0f5f9"; font.pixelSize: 64; font.weight: Font.DemiBold; wrapMode: Text.WordWrap }
     Text { x: 855; y: 330; width: 965; text: (entry.platform || "")+"  ·  "+(entry.age===0 ? "General" : (entry.age || "")+"+"); color: "#a8f3de"; font.pixelSize: 27 }
     Text { x: 855; y: 400; width: 920; text: entry.description || ""; wrapMode: Text.WordWrap; color: "#bbcdd9"; font.pixelSize: 28; lineHeight: 1.4 }
