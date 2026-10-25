@@ -49,4 +49,15 @@ Consulta `docs/ARCHITECTURE.md`, `docs/VALIDATION.md` y `docs/ROADMAP.md`.
 
 ## Nombre del proyecto
 
-ORVEX OS es el nombre de trabajo actual del proyecto antes denominado JARVIS Entertainment OS. Se mantienen sus objetivos y requisitos. Open-source gaming and entertainment operating system based on Linux.
+ORVEX OS es la marca oficial del proyecto antes denominado JARVIS Entertainment OS. Se mantienen sus objetivos y requisitos. Open-source gaming and entertainment operating system based on Linux.
+
+## Identidad visual — propuesta integrada para revisión
+
+Marca oficial: **ORVEX OS**. Descripción: sistema operativo de entretenimiento basado en Linux, orientado a videojuegos y multimedia. El logotipo horizontal y el icono proceden del kit proporcionado, sin redibujarlos. La integración sigue pendiente de aprobación visual del usuario.
+
+Abre `preview/ORVEX-0.1.html` descargado de esta rama en Edge/Chrome desde Windows. Es autónomo, incluye SVG y PNG de respaldo y no requiere Linux ni instalación. Se verificó su sintaxis y la correspondencia de recursos con Qt; queda pendiente ejecutarlo en un navegador Windows real.
+
+- [Decisiones y límites de identidad](docs/BRANDING.md)
+- [Resultados de esta actualización](docs/BRAND_VALIDATION.md)
+- [Captura nativa en 4K](preview/home-4k.webp)
+- Recursos reutilizables: `src/orvex/ui/assets/brand/`
