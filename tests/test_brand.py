@@ -1,4 +1,6 @@
 import base64
+import json
+import hashlib
 import unittest
 from html.parser import HTMLParser
 from pathlib import Path
@@ -21,17 +23,20 @@ class BrandTests(unittest.TestCase):
     def test_svg_resources_are_valid(self):
         for p in (BRAND/"svg").glob("*.svg"):
             self.assertTrue(QSvgRenderer(str(p)).isValid(),p.name)
+        for name,digest in json.loads((BRAND/"SHA256.json").read_text()).items():
+            self.assertEqual(hashlib.sha256((BRAND/name).read_bytes()).hexdigest(),digest,name)
     def test_html_uses_original_svg_and_png(self):
-        text=(ROOT/"preview/ORVEX-0.1.html").read_text()
-        tags=Tags(text).tags
-        logo=next(a for tag,a in tags if tag=="img" and a.get("class")=="logo")
-        self.assertEqual(logo["alt"],"ORVEX OS")
-        self.assertEqual(base64.b64decode(logo["src"].split(",")[1]),(BRAND/"svg/orvex-horizontal-dark.svg").read_bytes())
-        fallback=logo["onerror"].split("data:image/png;base64,")[1].split("'")[0]
-        self.assertEqual(base64.b64decode(fallback),(BRAND/"png/orvex-horizontal-dark-4x.png").read_bytes())
-        favicon=next(a for tag,a in tags if tag=="link" and a.get("rel")=="icon")
-        self.assertEqual(base64.b64decode(favicon["href"].split(",")[1]),(BRAND/"svg/orvex-app-icon-dark.svg").read_bytes())
-        self.assertIn("<title>ORVEX OS 0.1",text)
+        for version in ["0.1","0.2"]:
+            text=(ROOT/("preview/ORVEX-"+version+".html")).read_text()
+            tags=Tags(text).tags
+            logo=next(a for tag,a in tags if tag=="img" and a.get("class")=="logo")
+            self.assertEqual(logo["alt"],"ORVEX OS")
+            self.assertEqual(base64.b64decode(logo["src"].split(",")[1]),(BRAND/"svg/orvex-horizontal-dark.svg").read_bytes())
+            fallback=logo["onerror"].split("data:image/png;base64,")[1].split("'")[0]
+            self.assertEqual(base64.b64decode(fallback),(BRAND/"png/orvex-horizontal-dark-4x.png").read_bytes())
+            favicon=next(a for tag,a in tags if tag=="link" and a.get("rel")=="icon")
+            self.assertEqual(base64.b64decode(favicon["href"].split(",")[1]),(BRAND/"svg/orvex-app-icon-dark.svg").read_bytes())
+            self.assertIn("<title>ORVEX OS "+version,text)
     def test_app_name_icon_and_preference_location(self):
         path=configure_application(self.app)
         self.assertEqual(self.app.applicationName(),"ORVEX OS")

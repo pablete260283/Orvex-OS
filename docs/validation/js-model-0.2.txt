@@ -1,0 +1,14 @@
+✔ search accent/case, platform/type and empty results (8.061605ms)
+✔ favorites persist, toggle and remain isolated per profile (0.378429ms)
+✔ detail back preserves library state (0.333512ms)
+✔ child closes adult detail; hides searches, filters and recommendations (0.31847ms)
+✔ old motion preference and profile survive reload (0.190622ms)
+✔ blocked storage keeps session operational; corrupt input is rejected (0.266554ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.640933

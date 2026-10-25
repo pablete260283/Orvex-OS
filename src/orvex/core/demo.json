@@ -3,33 +3,53 @@
     "id": "aurora",
     "title": "Aurora",
     "subtitle": "Una aventura más allá del horizonte",
-    "platform": "PC · Aventura",
+    "platform": "PC",
     "kind": "game",
-    "color": "#79e0d0"
+    "color": "#79e0d0",
+    "age": 7,
+    "description": "Explora valles suspendidos y descubre el origen de una antigua señal. Una aventura ficticia para revisar la experiencia ORVEX.",
+    "art": "aurora",
+    "availability": "Solo demostración · no hay contenido instalado",
+    "media_type": ""
   },
   {
     "id": "orbit",
     "title": "Órbita",
     "subtitle": "Explora lo desconocido",
-    "platform": "PC · Exploración",
+    "platform": "PC",
     "kind": "game",
-    "color": "#acafff"
+    "color": "#acafff",
+    "age": 12,
+    "description": "Traza una ruta entre estaciones abandonadas y mundos lejanos. Catálogo ficticio; no hay un juego instalado.",
+    "art": "orbit",
+    "availability": "Solo demostración · no hay contenido instalado",
+    "media_type": ""
   },
   {
     "id": "drift",
     "title": "Neon Drift",
     "subtitle": "La ciudad es tu circuito",
-    "platform": "Arcade · Carreras",
+    "platform": "Arcade",
     "kind": "game",
-    "color": "#fd9b91"
+    "color": "#fd9b91",
+    "age": 16,
+    "description": "Recorre una ciudad de neón en carreras nocturnas. Entrada ficticia con clasificación de demostración 16+.",
+    "art": "drift",
+    "availability": "Solo demostración · no hay contenido instalado",
+    "media_type": ""
   },
   {
     "id": "forest",
     "title": "Bosque de luz",
     "subtitle": "Un pequeño gran viaje",
-    "platform": "Consola · Plataformas",
+    "platform": "Consola",
     "kind": "game",
-    "color": "#c5dea0"
+    "color": "#c5dea0",
+    "age": 0,
+    "description": "Acompaña a una pequeña exploradora por senderos luminosos. Una aventura familiar ficticia.",
+    "art": "forest",
+    "availability": "Solo demostración · no hay contenido instalado",
+    "media_type": ""
   },
   {
     "id": "ocean",
@@ -37,7 +57,12 @@
     "subtitle": "Historias bajo la superficie",
     "platform": "Documental · 52 min",
     "kind": "media",
-    "color": "#73c6e5"
+    "color": "#73c6e5",
+    "age": 0,
+    "description": "Descubre arrecifes y criaturas marinas en este documental ficticio para toda la familia.",
+    "art": "ocean",
+    "availability": "Solo demostración · no hay contenido instalado",
+    "media_type": "Documental"
   },
   {
     "id": "moon",
@@ -45,6 +70,37 @@
     "subtitle": "Un viaje hacia las estrellas",
     "platform": "Película · 1 h 42 min",
     "kind": "media",
-    "color": "#b5a4e0"
+    "color": "#b5a4e0",
+    "age": 16,
+    "description": "Una tripulación recibe un mensaje imposible desde la Luna. Película ficticia de ciencia ficción para mayores de 16 años.",
+    "art": "moon",
+    "availability": "Solo demostración · no hay contenido instalado",
+    "media_type": "Película"
+  },
+  {
+    "id": "signal",
+    "title": "La señal",
+    "subtitle": "Nadie debía escucharla",
+    "platform": "Serie · Suspenso",
+    "kind": "media",
+    "color": "#fd9b91",
+    "age": 18,
+    "description": "Una estación aislada capta una transmisión que cambia a sus habitantes. Serie ficticia de suspenso para adultos.",
+    "art": "drift",
+    "media_type": "Serie",
+    "availability": "Solo demostración · reproducción no integrada"
+  },
+  {
+    "id": "cosmos",
+    "title": "Pequeño cosmos",
+    "subtitle": "Cada planeta es una aventura",
+    "platform": "Serie · Animación",
+    "kind": "media",
+    "color": "#c5dea0",
+    "age": 7,
+    "description": "Una pandilla de exploradores aprende a cuidar los mundos que visita. Serie familiar ficticia.",
+    "art": "forest",
+    "media_type": "Serie",
+    "availability": "Solo demostración · reproducción no integrada"
   }
 ]

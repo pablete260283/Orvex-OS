@@ -1,31 +1,39 @@
-# Arquitectura y validación técnica
+# Arquitectura ORVEX OS 0.2
 
-## Decisión
+Se mantiene Qt 6/QML, PySide6 6.8.3 y SQLite. No se añaden dependencias de producción. El kit ORVEX provisional permanece intacto.
 
-Qt Quick/QML se mantiene como interfaz principal, con PySide6 6.8.3 fijado como versión reproducible probada. No se afirma que sea la última versión. Qt for Python ofrece oficialmente carga de QML y exposición de datos desde Python: https://doc.qt.io/qtforpython-6/tutorials/qmlapp/qmlapplication.html
-
-SQLite es una biblioteca transaccional integrada, sin servidor: https://www.sqlite.org/about.html . Es suficiente para preferencias locales en esta fase. Se comprobó escritura, actualización y lectura después de cerrar/reabrir la base.
-
-Se validó la ejecución real de Qt/QML en Linux sin pantalla, con backend software y capturas; queda pendiente validar aceleración gráfica, tiempos de cuadro, DPI real y ejecución en Windows/TV físicos. El escalado 4K conserva coordenadas lógicas y arte vectorial. Una captura 4K valida composición y renderizado, no rendimiento de un equipo objetivo.
-
-PySide6/Qt tienen términos LGPL/GPL/comerciales según módulo y distribución. Antes de empaquetar binarios se revisarán obligaciones y avisos: https://doc.qt.io/qtforpython-6/licenses.html . No se incorporan componentes experimentales ni servicios de IA al producto.
-
-## Límites de módulos
-
-| Ruta | Responsabilidad |
+| Módulo | Responsabilidad |
 |---|---|
-| `ui/Main.qml` | Composición, rutas y acciones lógicas de navegación |
-| `ui/components/` | Elementos de menú y tarjetas reutilizables |
-| `ui/assets/` | Ilustraciones vectoriales originales de demostración |
-| `core/store.py` | Preferencias SQLite y lectura del catálogo demo |
-| `core/bridge.py` | Contrato QObject de datos/ajustes para QML |
-| `adapters/emulators.py` | Contrato futuro de lanzamiento; sin implementación |
-| `adapters/controls.py` | Contrato futuro de entrada; sin detección ni pareo |
-| `adapters/multimedia.py` | Contrato futuro de reproducción; sin implementación |
-| `preview/ORVEX-0.1.html` | Vista secundaria autónoma para revisión del diseño |
+| `core/demo.json` | Único catálogo ficticio para Qt y generación HTML; datos separados de servicios |
+| `core/library.py` | Filtrado de perfil, normalización, búsqueda, opciones y favoritos; sin Qt ni dispositivos |
+| `core/store.py` | Preferencias existentes y favoritos SQLite por perfil |
+| `core/bridge.py` | Adaptador QObject: rutas, contexto por biblioteca/perfil, detalle y señales |
+| `ui/Main.qml` | Cabecera, Inicio, navegación y escalado 1920×1080 lógico |
+| `ui/pages/LibraryPage.qml` | Búsqueda, filtros, estado vacío y cuadrícula reutilizada en ambas bibliotecas |
+| `ui/pages/DetailPage.qml` | Ficha reutilizada, favoritos y acciones de demostración |
+| `ui/pages/SettingsPage.qml` | Seis categorías, preferencias reales y marcadores futuros |
+| `ui/components/` | Botones, menú y carátulas compartidas |
+| `adapters/` | Contratos futuros: controles, emuladores y multimedia; no se instancian |
+| `web/library.js` | Modelo de sesión equivalente para el HTML, con almacenamiento adaptable |
+| `web/app.js`, `web/style.css` | Vista y navegación de la demostración web |
+| `scripts/build_web_preview.py` | Incrusta datos, arte, logo, scripts y CSS en un HTML offline |
 
-No hay llamadas del QML a procesos, dispositivos ni redes. La vista HTML no será el núcleo del sistema Linux: duplica la presentación de esta entrega y debe verificarse cuando cambie el diseño. Las portadas son originales y no prueban emuladores ni streaming.
+## Datos y migración
 
-## Datos
+Se conserva `settings(key PRIMARY KEY, value JSON)` y la ruta Qt de datos de usuario de 0.1, cuyo componente histórico es `Entertainment Preview`. La aplicación expone ORVEX OS como nombre visible. Se añade `favorites(profile, item_id, PRIMARY KEY(profile,item_id))` y se marca `user_version=2`. No se borran preferencias ni se sobreescriben metadatos de medios.
 
-`settings(key PRIMARY KEY, value JSON)`; esquema SQLite versión 1. No se escribe dentro del árbol de instalación. No hay importación ni inferencia de metadatos. El futuro catálogo y las correcciones de usuario deben mantenerse separados del demo. Los contratos de integración no se instancian en 0.1.
+Se guardan perfil activo, movimiento reducido y favoritos. Los filtros y la posición de navegación se mantienen durante la sesión, por biblioteca y perfil; no se promete persistencia de esos filtros entre reinicios. El HTML usa claves separadas `orvex-v2-profile` y `orvex-v2-favorites`; conserva `orvex-preview-motion` de la vista anterior.
+
+## Navegación
+
+El bridge expone acciones lógicas: navegar, seleccionar índice, abrir/cerrar ficha, cambiar perfil y modificar filtros/favoritos. La vista Qt resuelve foco, flechas y Tab; un futuro adaptador de mandos podrá invocar estas acciones sin añadir lógica de catálogo. La selección reside en el bridge y no se actualiza a partir de los reinicios automáticos del modelo GridView, para mantenerla al cambiar favoritos.
+
+Las fichas no reconstruyen el contexto de la biblioteca. Al cerrar se recupera la carátula seleccionada. Cambiar perfil cierra cualquier ficha anterior y activa el contexto de ese perfil, sin arrastrar consultas adultas al infantil.
+
+## Perfil infantil
+
+La política de demostración admite únicamente edades enteras 0–7. General se representa con 0. La comprobación se aplica antes de construir resultados, recomendaciones, opciones de filtro y fichas. Edades ausentes, negativas, textuales o booleanas se ocultan. Favoritos independientes por perfil. No hay PIN ni autenticación: no es una frontera de seguridad. El catálogo original es inspeccionable en el código/HTML.
+
+## Paridad y límites
+
+Qt y HTML comparten el catálogo y los gráficos originales, pero utilizan implementaciones de modelo distintas, ambas probadas. No se promete igualdad de píxeles: fuentes y controles nativos pueden diferir. El renderizado 4K valida composición, no rendimiento ni soporte de un televisor particular. Los contratos de hardware siguen sin implementarse.

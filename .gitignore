@@ -222,3 +222,7 @@ __marimo__/
 # ORVEX preview
 *.sqlite3
 preview/*-4k.png
+
+# ORVEX 0.2 development outputs
+node_modules/
+preview/v0.2/*.png
