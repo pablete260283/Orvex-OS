@@ -1,0 +1,50 @@
+[
+  {
+    "id": "aurora",
+    "title": "Aurora",
+    "subtitle": "Una aventura más allá del horizonte",
+    "platform": "PC · Aventura",
+    "kind": "game",
+    "color": "#79e0d0"
+  },
+  {
+    "id": "orbit",
+    "title": "Órbita",
+    "subtitle": "Explora lo desconocido",
+    "platform": "PC · Exploración",
+    "kind": "game",
+    "color": "#acafff"
+  },
+  {
+    "id": "drift",
+    "title": "Neon Drift",
+    "subtitle": "La ciudad es tu circuito",
+    "platform": "Arcade · Carreras",
+    "kind": "game",
+    "color": "#fd9b91"
+  },
+  {
+    "id": "forest",
+    "title": "Bosque de luz",
+    "subtitle": "Un pequeño gran viaje",
+    "platform": "Consola · Plataformas",
+    "kind": "game",
+    "color": "#c5dea0"
+  },
+  {
+    "id": "ocean",
+    "title": "Planeta azul",
+    "subtitle": "Historias bajo la superficie",
+    "platform": "Documental · 52 min",
+    "kind": "media",
+    "color": "#73c6e5"
+  },
+  {
+    "id": "moon",
+    "title": "La última luna",
+    "subtitle": "Un viaje hacia las estrellas",
+    "platform": "Película · 1 h 42 min",
+    "kind": "media",
+    "color": "#b5a4e0"
+  }
+]

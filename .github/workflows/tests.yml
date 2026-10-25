@@ -1,0 +1,23 @@
+name: Preview checks
+on: [workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  qt-preview:
+    runs-on: ubuntu-24.04
+    env:
+      QT_QPA_PLATFORM: offscreen
+      QT_QUICK_BACKEND: software
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: sudo apt-get update && sudo apt-get install -y libegl1 libopengl0 libxkbcommon0 fonts-dejavu-core
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qt-preview-captures
+          path: preview/*.png

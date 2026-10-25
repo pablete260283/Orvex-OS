@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ORVEX preview
+*.sqlite3
+preview/*-4k.png
