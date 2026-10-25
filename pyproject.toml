@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "orvex-entertainment-os"
-version = "0.1.0"
+version = "0.2.0"
 description = "ORVEX OS visual preview"
 requires-python = ">=3.11"
 dependencies = ["PySide6==6.8.3"]
@@ -12,4 +12,4 @@ orvex-preview = "orvex.__main__:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 [tool.setuptools.package-data]
-orvex = ["ui/*.qml", "ui/components/*.qml", "ui/assets/*.svg", "core/*.json", "ui/assets/brand/svg/*.svg", "ui/assets/brand/png/*.png", "ui/assets/brand/*.md", "ui/assets/brand/*.json"]
+orvex = ["ui/*.qml", "ui/components/*.qml", "ui/pages/*.qml", "ui/assets/*.svg", "core/*.json", "ui/assets/brand/svg/*.svg", "ui/assets/brand/png/*.png", "ui/assets/brand/*.md", "ui/assets/brand/*.json"]

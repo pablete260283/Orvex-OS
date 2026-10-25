@@ -1,43 +1,20 @@
+"""Build the standalone preview with embedded source data, brand assets, JS and CSS."""
 from pathlib import Path
-import json,base64
-r=Path(__file__).resolve().parents[1]
-data=json.loads((r/'src/orvex/core/demo.json').read_text())
-for e in data:e['art']='data:image/svg+xml;base64,'+base64.b64encode((r/('src/orvex/ui/assets/'+e['id']+'.svg')).read_bytes()).decode()
-brand=r/'src/orvex/ui/assets/brand'
-def uri(path,mime):
-    return 'data:'+mime+';base64,'+base64.b64encode(path.read_bytes()).decode()
-logo=uri(brand/'svg/orvex-horizontal-dark.svg','image/svg+xml')
-logo_png=uri(brand/'png/orvex-horizontal-dark-4x.png','image/png')
-icon=uri(brand/'svg/orvex-app-icon-dark.svg','image/svg+xml')
-html='''<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORVEX OS 0.1 · Visual Preview</title>
-<link rel="icon" type="image/svg+xml" href="BRAND_ICON">
-<style>
-*{box-sizing:border-box}html,body{margin:0;background:#070e18;color:#eff5f9;font-family:Arial,sans-serif;width:100%;height:100%;overflow:hidden}button{font:inherit;cursor:pointer;border:0;color:inherit}button:focus-visible{outline:3px solid #a8f3de;outline-offset:4px}#stage{width:1920px;height:1080px;position:absolute;left:50%;top:50%;transform-origin:center;background:#0b1320;padding:55px 92px}.top{height:110px;display:flex;align-items:flex-start;justify-content:space-between}.logo{width:350px;height:94.672px;object-fit:contain;position:absolute;left:92px;top:42px}.top nav{position:absolute;left:560px;top:57px}.profile{position:absolute;right:102px;top:61px}nav{display:flex;gap:12px}nav button{height:58px;min-width:170px;border-radius:30px;background:transparent;color:#a9b6c5;font-size:22px;font-weight:600;padding:0 20px}nav button[aria-current=page]{background:#233b43;color:#b5f4e0}.profile{border-radius:30px;background:#192632;padding:17px 27px;color:#c5d4df;font-size:18px}.hero{height:505px;position:relative;overflow:hidden;border-radius:24px;background-size:cover;background-position:center}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0c1a26 0%,#0c1a26c0 55%,transparent)}.hero>*{position:relative}.eyebrow{color:#a8f3de;letter-spacing:3px;font-size:16px;margin:44px 48px 0}h1{font-size:64px;line-height:1.08;margin:36px 48px 22px;font-weight:600}.sub{margin:0 48px;font-size:24px;color:#b7c7d3}.primary{margin:36px 48px 0;background:#a8f3de;color:#10262b;font-size:21px;font-weight:600;padding:20px 32px;border-radius:34px}.demoline{font-size:13px;letter-spacing:1.8px;color:#91a9b5;margin:35px 48px 0}.herotitle{position:absolute;right:60px;bottom:48px;font-size:26px;letter-spacing:5px;color:#e0f7ef}.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:30px 2px 27px}h2{margin:0;font-size:29px;font-weight:600}.count{font-size:18px;color:#8399ab}.cards{display:flex;gap:44px}.card{width:400px;height:258px;padding:7px 7px 0;border:1px solid #263445;border-radius:19px;background:#14202e;text-align:left;position:relative}.card img{width:100%;height:168px;object-fit:cover}.demo{position:absolute;top:20px;left:20px;font-size:12px;letter-spacing:1.5px;background:#0b1621bd;padding:5px 9px;border-radius:6px}.card strong{display:block;font-size:23px;margin:14px 13px 8px}.card small{font-size:17px;color:#91a3b4;margin:0 13px}.bottom{position:absolute;bottom:20px;left:94px;right:94px;display:flex;justify-content:space-between;color:#7891a5;font-size:17px}.bottom span{color:#a8f3de;letter-spacing:2px;font-size:15px}.settings h1{margin:45px 0 30px;font-size:58px}.settings .desc{font-size:24px;color:#8ea5b8}.toggle{margin-top:65px;width:100%;height:150px;background:#162331;border-radius:22px;display:flex;align-items:center;justify-content:space-between;padding:32px 35px;text-align:left}.toggle strong{font-size:28px;display:block;font-weight:normal}.toggle small{display:block;margin-top:26px;font-size:21px;color:#92a9bb}.switch{width:135px;height:60px;border-radius:30px;background:#324351;color:#0b1721;display:grid;place-items:center;font-size:23px}.switch.on{background:#a8f3de}.settings h2{margin:90px 0 40px;font-weight:normal}.pending{display:flex;gap:30px}.pending article{width:555px;height:170px;border-radius:22px;background:#121f2e;padding:35px 30px;font-size:24px;color:#c9d9e5}.pending small{display:block;font-size:15px;letter-spacing:1.5px;color:#7c94a8;margin-top:42px}dialog{width:1000px;background:#1b2c3c;color:#eff5f9;border:1px solid #9ce7d4;border-radius:28px;padding:40px;font-size:25px}dialog::backdrop{background:#08101cd9}dialog h2{color:#a8f3de;font-size:30px}dialog button{background:#a8f3de;color:#10262b;padding:14px 28px;border-radius:24px;font-size:20px}dialog p{line-height:1.5}.webnote{color:#8ea5b8;font-size:17px}
-</style><div id="stage"><header class="top"><img class="logo" width="610" height="165" src="BRAND_LOGO" alt="ORVEX OS" onerror="this.onerror=null;this.src='BRAND_PNG'"><nav aria-label="Principal"></nav><div class="profile">P / Perfil demo</div></header><main></main><footer class="bottom">← → Navegar　 ↓ Explorar　 Enter Seleccionar　 Esc Volver　 F11 Pantalla completa<span>0.1 / VISUAL PREVIEW</span></footer><dialog><h2>Contenido de demostración</h2><p></p><button>Cerrar</button></dialog></div>
-<script>
-const catalog=DATA;
-let page=0,selected=0,zone=0,motion=false;
-const names=['Inicio','Videojuegos','Multimedia','Configuración'];
-try{motion=localStorage.getItem('orvex-preview-motion')==='true'}catch{}
-const stage=document.querySelector('#stage'),main=document.querySelector('main'),nav=document.querySelector('nav'),dialog=document.querySelector('dialog');
-function resize(){stage.style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/1920,innerHeight/1080)})`}addEventListener('resize',resize);resize();
-function entries(){return catalog.filter(e=>e.kind===(page===2?'media':'game'))}
-function show(i){selected=i;zone=1;dialog.querySelector('p').textContent=entries()[i].title+' · Demostración visual. La reproducción y el lanzamiento estarán disponibles en una próxima fase.';dialog.showModal();dialog.querySelector('button').focus()}
-function toggle(){motion=!motion;let saved=true;try{localStorage.setItem('orvex-preview-motion',motion)}catch{saved=false}render();document.querySelector('.toggle').focus();if(!saved)document.querySelector('.webnote').textContent='El navegador bloqueó el guardado: esta preferencia se conservará solo durante la sesión.'}
-function go(p){page=p;zone=0;selected=0;render();nav.children[page].focus()}
-function render(){nav.innerHTML=names.map((n,i)=>`<button ${i===page?'aria-current="page"':''} data-page="${i}">${n}</button>`).join('');nav.querySelectorAll('button').forEach((b,i)=>b.onclick=()=>go(i));
-if(page===3){main.innerHTML=`<section class="settings"><h1>Hecho para tu forma de jugar.</h1><div class="desc">Configuración de la vista previa</div><button class="toggle" aria-pressed="${motion}"><div><strong>Reducir movimiento</strong><small>Preferencia de la vista web. La interfaz 0.1 no incluye animaciones.</small></div><span class="switch ${motion?'on':''}">${motion?'Sí':'No'}</span></button><h2>En las próximas fases</h2><div class="pending">${['Mandos y Bluetooth','Audio y salidas múltiples','Bibliotecas y almacenamiento'].map(x=>`<article>${x}<small>PENDIENTE DE INTEGRACIÓN</small></article>`).join('')}</div><p class="webnote">Vista web de revisión · La aplicación principal utiliza Qt/QML y SQLite.</p></section>`;document.querySelector('.toggle').onclick=toggle;return}
-const es=entries(),hero=catalog.find(e=>e.id===(page===2?'ocean':'aurora'));
-main.innerHTML=`<section class="hero" style="background-image:url('${hero.art}')"><div class="eyebrow">${['TU ESPACIO. TU MOMENTO.','BIBLIOTECA / VIDEOJUEGOS','BIBLIOTECA / MULTIMEDIA'][page]}</div><h1>${['Todo listo para<br>tu próxima aventura.','Grandes mundos.<br>Un solo lugar.','Historias que<br>te llevan más lejos.'][page]}</h1><p class="sub">${page===2?'Películas, series y momentos para compartir.':'Tus juegos y entretenimiento, a tu manera.'}</p><button class="primary">${page===0?'Explorar biblioteca →':'Explorar títulos ↓'}</button><div class="demoline">VISTA PREVIA 0.1 / TODO EL CONTENIDO ES FICTICIO</div><div class="herotitle">${page===2?'PLANETA AZUL':'A U R O R A'}</div></section><div class="sectionhead"><h2>${['Descubre tu próximo favorito','Todos tus videojuegos','Tu colección multimedia'][page]}</h2><span class="count">${es.length} títulos de muestra</span></div><section class="cards" aria-label="Títulos de demostración">${es.map(e=>`<button class="card"><img src="${e.art}" alt=""><span class="demo">DEMO</span><strong>${e.title}</strong><small>${e.platform}</small></button>`).join('')}</section>`;
-main.querySelector('.primary').onclick=()=>{if(page===0)go(1);zone=1;main.querySelector('.card').focus()};main.querySelectorAll('.card').forEach((b,i)=>b.onclick=()=>show(i));}
-dialog.querySelector('button').onclick=()=>dialog.close();
-dialog.addEventListener('close',()=>{main.querySelectorAll('.card')[selected]?.focus()});
-addEventListener('keydown',e=>{if(dialog.open)return;
-if(['ArrowRight','ArrowLeft'].includes(e.key)){e.preventDefault();let d=e.key==='ArrowRight'?1:-1;if(zone===0)go((page+d+4)%4);else if(page!==3){selected=(selected+d+entries().length)%entries().length;main.querySelectorAll('.card')[selected].focus()}}
-else if(e.key==='ArrowDown'){e.preventDefault();zone=1;(page===3?main.querySelector('.toggle'):main.querySelectorAll('.card')[selected]).focus()}
-else if(e.key==='ArrowUp'){e.preventDefault();zone=0;nav.children[page].focus()}
-else if(e.key==='Escape'){e.preventDefault();go(0)}});
-addEventListener('focusin',e=>{if(nav.contains(e.target))zone=0;else if(main.contains(e.target)){zone=1;let i=[...main.querySelectorAll('.card')].indexOf(e.target);if(i>=0)selected=i}});
-render();nav.children[0].focus();
-</script></html>'''.replace('DATA',json.dumps(data,ensure_ascii=False)).replace('BRAND_LOGO',logo).replace('BRAND_PNG',logo_png).replace('BRAND_ICON',icon)
-(r/'preview/ORVEX-0.1.html').write_text(html,encoding='utf-8')
+import base64,json
+ROOT=Path(__file__).resolve().parents[1]
+assets=ROOT/'src/orvex/ui/assets'
+def uri(path,mime):return 'data:'+mime+';base64,'+base64.b64encode(path.read_bytes()).decode()
+logo=uri(assets/'brand/svg/orvex-horizontal-dark.svg','image/svg+xml')
+fallback=uri(assets/'brand/png/orvex-horizontal-dark-4x.png','image/png')
+icon=uri(assets/'brand/svg/orvex-app-icon-dark.svg','image/svg+xml')
+art={p.stem:uri(p,'image/svg+xml') for p in assets.glob('*.svg')}
+catalog=json.loads((ROOT/'src/orvex/core/demo.json').read_text())
+serial=lambda data:json.dumps(data,ensure_ascii=False).replace('<','\\u003c')
+html='''<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORVEX OS 0.2 · Visual Preview</title>'''
+html+=f'<link rel="icon" href="{icon}"><style>'+(ROOT/'web/style.css').read_text()+'</style>'
+html+=f'''<div id="stage"><header><img class="logo" width="610" height="165" src="{logo}" alt="ORVEX OS" onerror="this.onerror=null;this.src='{fallback}'"><nav aria-label="Principal"></nav><button id="profile" data-action="profile" data-focus="profile"></button><span id="storage" role="status"></span></header><main></main><footer>Flechas / Tab Navegar　 Enter Elegir　 Esc Volver　 F11 Pantalla completa<span>0.2 DEMO · Perfiles sin PIN ni protección real</span></footer></div>'''
+html+='<script>const ORVEX_DEMO='+serial(catalog)+';const ORVEX_ART='+serial(art)+';</script>'
+for name in ['library.js','app.js']:html+='<script>'+(ROOT/'web'/name).read_text()+'</script>'
+html+='</html>'
+(ROOT/'preview/ORVEX-0.2.html').write_text(html,encoding='utf-8')
+print('Built preview/ORVEX-0.2.html')

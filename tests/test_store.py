@@ -15,6 +15,6 @@ class StoreTests(unittest.TestCase):
         self.assertTrue(s.get("x'; DROP TABLE settings; --")); self.assertEqual(s.get("missing",7),7); s.close()
     def test_demo_catalog(self):
         entries=catalog()
-        self.assertEqual(len({e["id"] for e in entries}),6)
+        self.assertTrue({"aurora","orbit","drift","forest","ocean","moon"} <= {e["id"] for e in entries})
         self.assertEqual({e["kind"] for e in entries},{"game","media"})
-        self.assertTrue(all((Path(__file__).parents[1]/"src/orvex/ui/assets"/(e["id"]+".svg")).exists() for e in entries))
+        self.assertTrue(all((Path(__file__).parents[1]/"src/orvex/ui/assets"/(e["art"]+".svg")).exists() for e in entries))
