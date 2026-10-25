@@ -1,0 +1,16 @@
+test_app_name_icon_and_preference_location (test_brand.BrandTests.test_app_name_icon_and_preference_location) ... ok
+test_html_uses_original_svg_and_png (test_brand.BrandTests.test_html_uses_original_svg_and_png) ... ok
+test_svg_resources_are_valid (test_brand.BrandTests.test_svg_resources_are_valid) ... ok
+test_demo_catalog (test_store.StoreTests.test_demo_catalog) ... ok
+test_roundtrip_across_restart (test_store.StoreTests.test_roundtrip_across_restart) ... ok
+test_update_and_safe_parameters (test_store.StoreTests.test_update_and_safe_parameters) ... ok
+test_content_activation_and_modal_close (test_ui.UiTests.test_content_activation_and_modal_close) ... ok
+test_keyboard_routes_and_back (test_ui.UiTests.test_keyboard_routes_and_back) ... ok
+test_mouse_routes_and_cards (test_ui.UiTests.test_mouse_routes_and_cards) ... ok
+test_render_all_pages_at_tv_resolutions (test_ui.UiTests.test_render_all_pages_at_tv_resolutions) ... ok
+test_settings_persist_through_bridge (test_ui.UiTests.test_settings_persist_through_bridge) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 3.925s
+
+OK

@@ -5,8 +5,9 @@ Window {
     id: window
     width: 1440; height: 810; visible: true
     minimumWidth: 960; minimumHeight: 540
-    title: "ORVEX 0.1 · Visual Preview"
+    title: "ORVEX OS 0.1 · Visual Preview"
     color: "#0b1320"
+    readonly property bool brandReady: brandLogo.status === Image.Ready
     property int page: 0
     property int zone: 0
     property int selected: 0
@@ -42,8 +43,15 @@ Window {
             event.accepted=true
         }
         Rectangle { anchors.fill: parent; color: "#0b1320" }
-        Text { x: 92; y: 55; text: "O R V E X"; color: "#eff9f6"; font.pixelSize: 31; font.weight: Font.Bold }
-        Text { x: 94; y: 99; text: "ENTERTAINMENT OS"; color: "#7a939e"; font.pixelSize: 12; font.letterSpacing: 3 }
+        Image {
+            id: brandLogo
+            objectName: "brandLogo"
+            x: 92; y: 42; width: 350; height: 350*165/610
+            source: "assets/brand/svg/orvex-horizontal-dark.svg"
+            sourceSize: Qt.size(1220,330)
+            fillMode: Image.PreserveAspectFit
+            onStatusChanged: if (status === Image.Error && source.toString().endsWith(".svg")) source="assets/brand/png/orvex-horizontal-dark-4x.png"
+        }
         Row { x: 560; y: 57; spacing: 12
             Repeater { model: ["Inicio", "Videojuegos", "Multimedia", "Configuración"]
                 NavItem { required property int index; required property string modelData; width: index===3 ? 210 : 170; label: modelData; selected: window.page===index; highlighted: window.zone===0 && selected; onActivated: window.navigate(index) }

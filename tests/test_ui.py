@@ -3,7 +3,7 @@ os.environ.setdefault("QT_QPA_PLATFORM","offscreen")
 os.environ.setdefault("QT_QUICK_BACKEND","software")
 import unittest
 from pathlib import Path
-from PySide6.QtCore import QUrl, Qt, QPoint
+from PySide6.QtCore import QUrl, Qt, QPoint, QObject
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQuick import QQuickWindow
 from PySide6.QtQml import QQmlApplicationEngine
@@ -23,6 +23,7 @@ class UiTests(unittest.TestCase):
         self.engine.load(QUrl.fromLocalFile(str(Path(__file__).parents[1]/"src/orvex/ui/Main.qml")))
         self.assertTrue(self.engine.rootObjects(),"QML failed to load")
         self.window=self.engine.rootObjects()[0]; QTest.qWait(60)
+        self.assertEqual(self.window.title(), "ORVEX OS 0.1 · Visual Preview")
     def tearDown(self):
         self.window.close(); del self.window; del self.engine
         self.store.close(); self.assertEqual(self.errors,[])
@@ -54,6 +55,11 @@ class UiTests(unittest.TestCase):
             self.window.resize(width,height)
             for page,name in enumerate(["home","games","media","settings"]):
                 self.window.setProperty("page",page); QTest.qWait(40)
+                logo=self.window.findChild(QObject,"brandLogo")
+                self.assertIsNotNone(logo)
+                self.assertTrue(self.window.property("brandReady"))
+                self.assertTrue(logo.property("source").toString().endswith("orvex-horizontal-dark.svg"))
+                self.assertAlmostEqual(logo.property("paintedWidth")/logo.property("paintedHeight"),610/165,places=4)
                 img=self.window.grabWindow()
                 self.assertFalse(img.isNull()); self.assertEqual((img.width(),img.height()),(width,height))
                 self.assertTrue(img.save(str(out/(name+("-4k" if width==3840 else "")+".png"))))
