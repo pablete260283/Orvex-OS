@@ -8,7 +8,7 @@ from orvex.core.library import LibraryService
 from orvex.core.bridge import Bridge
 
 class LibraryTests(unittest.TestCase):
-    def setUp(self):self.store=Store(':memory:');self.service=LibraryService(self.store);self.b=Bridge(self.store)
+    def setUp(self):self.store=Store(':memory:');self.service=LibraryService(self.store);self.store.set("library_source","demo");self.b=Bridge(self.store)
     def tearDown(self):self.store.close()
     def test_search_and_platform_combined(self):
         self.assertEqual([e['id'] for e in self.service.query('adult','game',' ORBITA ','PC')],['orbit'])
@@ -56,4 +56,4 @@ class LibraryTests(unittest.TestCase):
             path=Path(folder)/'prefs.sqlite3';db=sqlite3.connect(path)
             db.execute('CREATE TABLE settings (key TEXT PRIMARY KEY,value TEXT NOT NULL)');db.execute('INSERT INTO settings VALUES (?,?)',('reduced_motion','true'));db.execute('PRAGMA user_version=1');db.commit();db.close()
             s=Store(path);b=Bridge(s);self.assertTrue(b.reducedMotion);b.setProfile('child');b.toggleFavorite('aurora');s.close()
-            s=Store(path);b=Bridge(s);self.assertEqual(b.profile,'child');self.assertTrue(b.reducedMotion);self.assertEqual(s.favorites('child'),['aurora']);self.assertEqual(s.db.execute('PRAGMA user_version').fetchone()[0],2);s.close()
+            s=Store(path);b=Bridge(s);self.assertEqual(b.profile,'child');self.assertTrue(b.reducedMotion);self.assertEqual(s.favorites('child'),['aurora']);self.assertEqual(s.db.execute('PRAGMA user_version').fetchone()[0],4);s.close()

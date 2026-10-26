@@ -4,6 +4,8 @@ Button {
     id: control
     property bool accent: false
     property bool selected: false
+    Keys.onReturnPressed: if(enabled)control.clicked()
+    Keys.onEnterPressed: if(enabled)control.clicked()
     focusPolicy: Qt.StrongFocus
     implicitWidth: 250; implicitHeight: 60
     background: Rectangle { radius: 16; color: control.accent ? "#a8f3de" : control.selected ? "#29424a" : "#1a2a39"; border.color: control.activeFocus ? "#e1fff7" : "#314957"; border.width: control.activeFocus ? 3 : 1 }

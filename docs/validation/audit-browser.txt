@@ -1,0 +1,14 @@
+PASS two primary routes, direct game startup and utility settings
+PASS dynamic focus, demo progress, unknown percent and background preferences
+PASS live search, platform filters, empty state and clear
+PASS detail keyboard open, demo, favorite and stateful return
+PASS favorites and motion persist through file reload
+PASS media series filter and synopsis/rating
+PASS child hides adult search, covers, filters and recommendations
+PASS profile switch immediately clears an adult detail
+PASS six settings categories distinguish functional and future
+PASS 1080p and 4K render all routes, details and child library
+PASS carousel detail return, library scroll and profile menu keyboard
+PASS HTML is visual only with no local launcher and no unverified progress bar
+PASS no JavaScript exceptions or external HTTP requests
+Browser checks: 13 passed. Engine: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/6.8.3 Chrome/122.0.0.0 Safari/537.36. Host: QtWebEngine / Linux.

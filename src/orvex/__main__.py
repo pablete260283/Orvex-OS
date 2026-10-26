@@ -1,10 +1,11 @@
 import sys
 from pathlib import Path
-from PySide6.QtCore import QStandardPaths, QUrl
+from PySide6.QtCore import QStandardPaths, QUrl, QLockFile
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtQml import QQmlApplicationEngine
-from .core.store import Store
+from .core.store import Store, StoreOpenError
 from .core.bridge import Bridge
+
 
 def configure_application(app):
     app.setOrganizationName("ORVEX")
@@ -19,11 +20,33 @@ def configure_application(app):
     app.setWindowIcon(icon)
     return path
 
+
 def main():
     app = QGuiApplication(sys.argv)
     path = configure_application(app)
-    path.mkdir(parents=True, exist_ok=True)
-    store = Store(path / "preferences.sqlite3")
+
+    def storage_failure(error):
+        engine = QQmlApplicationEngine()
+        engine.rootContext().setContextProperty("storageError", str(error))
+        engine.rootContext().setContextProperty("storagePath", str(path / "preferences.sqlite3"))
+        engine.load(QUrl.fromLocalFile(str(Path(__file__).parent / "ui/StorageError.qml")))
+        if engine.rootObjects():
+            app.exec()
+        return 1
+
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+    except OSError as error:
+        return storage_failure(error)
+    lock = QLockFile(str(path / "orvex.lock"))
+    if not lock.tryLock(0):
+        print("ORVEX ya está ejecutándose para este usuario.")
+        return 1
+    try:
+        store = Store(path / "preferences.sqlite3")
+        store.recover_sessions()
+    except (StoreOpenError, OSError) as error:
+        return storage_failure(error)
     bridge = Bridge(store)
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("backend", bridge)
@@ -35,6 +58,7 @@ def main():
     del engine
     store.close()
     return result
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -1,0 +1,338 @@
+[
+  {
+    "name": "zero_adult",
+    "entry": {
+      "age": 0
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "zero_child",
+    "entry": {
+      "age": 0
+    },
+    "profile": "child",
+    "allowed": true
+  },
+  {
+    "name": "zero_unknown",
+    "entry": {
+      "age": 0
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "seven_adult",
+    "entry": {
+      "age": 7
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "seven_child",
+    "entry": {
+      "age": 7
+    },
+    "profile": "child",
+    "allowed": true
+  },
+  {
+    "name": "seven_unknown",
+    "entry": {
+      "age": 7
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "integral_float_adult",
+    "entry": {
+      "age": 7.0
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "integral_float_child",
+    "entry": {
+      "age": 7.0
+    },
+    "profile": "child",
+    "allowed": true
+  },
+  {
+    "name": "integral_float_unknown",
+    "entry": {
+      "age": 7.0
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "fraction_adult",
+    "entry": {
+      "age": 6.5
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "fraction_child",
+    "entry": {
+      "age": 6.5
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "fraction_unknown",
+    "entry": {
+      "age": 6.5
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "adult_rating_adult",
+    "entry": {
+      "age": 18
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "adult_rating_child",
+    "entry": {
+      "age": 18
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "adult_rating_unknown",
+    "entry": {
+      "age": 18
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "negative_adult",
+    "entry": {
+      "age": -1
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "negative_child",
+    "entry": {
+      "age": -1
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "negative_unknown",
+    "entry": {
+      "age": -1
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "string_adult",
+    "entry": {
+      "age": "7"
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "string_child",
+    "entry": {
+      "age": "7"
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "string_unknown",
+    "entry": {
+      "age": "7"
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "bool_true_adult",
+    "entry": {
+      "age": true
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "bool_true_child",
+    "entry": {
+      "age": true
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "bool_true_unknown",
+    "entry": {
+      "age": true
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "bool_false_adult",
+    "entry": {
+      "age": false
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "bool_false_child",
+    "entry": {
+      "age": false
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "bool_false_unknown",
+    "entry": {
+      "age": false
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "null_adult",
+    "entry": {
+      "age": null
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "null_child",
+    "entry": {
+      "age": null
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "null_unknown",
+    "entry": {
+      "age": null
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "missing_adult",
+    "entry": {},
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "missing_child",
+    "entry": {},
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "missing_unknown",
+    "entry": {},
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "huge_adult",
+    "entry": {
+      "age": 1e+100
+    },
+    "profile": "adult",
+    "allowed": true
+  },
+  {
+    "name": "huge_child",
+    "entry": {
+      "age": 1e+100
+    },
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "huge_unknown",
+    "entry": {
+      "age": 1e+100
+    },
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "array_adult",
+    "entry": [],
+    "profile": "adult",
+    "allowed": false
+  },
+  {
+    "name": "array_child",
+    "entry": [],
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "array_unknown",
+    "entry": [],
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "null_record_adult",
+    "entry": null,
+    "profile": "adult",
+    "allowed": false
+  },
+  {
+    "name": "null_record_child",
+    "entry": null,
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "null_record_unknown",
+    "entry": null,
+    "profile": "unknown",
+    "allowed": false
+  },
+  {
+    "name": "scalar_adult",
+    "entry": "7",
+    "profile": "adult",
+    "allowed": false
+  },
+  {
+    "name": "scalar_child",
+    "entry": "7",
+    "profile": "child",
+    "allowed": false
+  },
+  {
+    "name": "scalar_unknown",
+    "entry": "7",
+    "profile": "unknown",
+    "allowed": false
+  }
+]
