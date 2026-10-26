@@ -43,6 +43,7 @@ La integración se desarrollará en una próxima fase."; color: settings.categor
             ActionButton { width: 350; text: "Infantil · demo"; selected: settings.backend.profile==="child"; onClicked: settings.backend.setProfile("child") }
         }
         Column { x: 40; y: 110; spacing: 14; visible: settings.category===3; width: 1220
+            ActionButton { text: "Dolphin / carpetas…"; onClicked: dolphinSetup.open() }
             ActionButton { text: "Importar juego"; onClicked: settings.importRequested() }
             ComboBox { id: games; width: 1100; model: settings.backend.managedGames; textRole: "title"; onActivated: {var e=model[currentIndex];settings.selectedGame=e.id;editName.text=e.name;editPlatform.text=e.platform;editPath.text=e.executable;editArgs.text=e.arguments} }
             Row { spacing: 15
@@ -63,6 +64,17 @@ La integración se desarrollará en una próxima fase."; color: settings.categor
             }
         }
         ActionButton { x: 900; y: 580; visible: settings.category===3; text: "Quitar de biblioteca…"; onClicked: removal.open() }
+        Popup { id: dolphinSetup; x: 50; y: 20; width: 1150; height: 540; modal: true
+            Column { spacing: 20; width: parent.width
+                Label { text: "Dolphin Wii / GameCube · Configuración excepcional" }
+                TextField { id: dolphinPath; width: 1050; placeholderText: "Ruta de Dolphin.exe" }
+                TextField { id: romRoot; width: 1050; placeholderText: "Carpeta principal de ROMs (contiene Wii y GameCube)" }
+                ActionButton { text: "Guardar configuración"; onClicked: settings.backend.configureDolphin(dolphinPath.text,romRoot.text) }
+                ActionButton { text: "Escanear ahora"; onClicked: settings.backend.scanDolphin() }
+                Text { width: 1050; wrapMode: Text.Wrap; text: settings.backend.operationMessage; color: "white" }
+                ActionButton { text: "Cerrar"; onClicked: dolphinSetup.close() }
+            }
+        }
         Popup { id: metadataEditor; x: 100; y: 20; width: 1100; height: 600; modal: true
             Column { spacing: 20; width: parent.width
                 Label { text: "Propuesta local JSON. No es una búsqueda en Internet." }
@@ -81,7 +93,7 @@ La integración se desarrollará en una próxima fase."; color: settings.categor
             }
         }
         ScrollView { x: 40; y: 220; width: 1200; height: 380; visible: settings.category===5
-            TextArea { text: settings.backend.diagnosticReport; readOnly: true; selectByMouse: true; wrapMode: TextEdit.Wrap; font.pixelSize: 18 }
+            TextArea { text: settings.backend.operationMessage+"\n\n"+settings.backend.diagnosticReport; readOnly: true; selectByMouse: true; wrapMode: TextEdit.Wrap; font.pixelSize: 18 }
         }
         Text { x: 45; y: 500; width: 1200; text: settings.message; color: "#a8f3de"; font.pixelSize: 24; wrapMode: Text.WordWrap }
     }

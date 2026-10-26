@@ -26,6 +26,8 @@ class Bridge(QObject):
         if self._profile not in PROFILES:self._profile="adult"
         self._states={}
         self._detail_id=""
+        from ..adapters.dolphin import DolphinAdapter
+        self.dolphin=DolphinAdapter(store)
         self.installed=InstalledLibrary(store)
         self.launcher=GameLauncher(self.installed,self)
         self._temp_assets=tempfile.TemporaryDirectory(prefix="orvex-assets-") if store.path is None else None
@@ -36,6 +38,11 @@ class Bridge(QObject):
         self.metadata=LocalMetadata(self.installed)
         self._message=""
         self.launcher.changed.connect(self._launch_updated)
+        from PySide6.QtCore import QTimer
+        self.romTimer=QTimer(self);self.romTimer.setInterval(10000)
+        self.romTimer.timeout.connect(self._poll_roms);self.romTimer.start()
+    def _poll_roms(self):
+        if self.store.get("rom_root","") and self._profile=="adult" and not self.launchBusy:self.scanDolphin()
     def _launch_updated(self):
         self._message=self.launcher.message;self.operationChanged.emit();self.refresh();self.detailChanged.emit()
     @Property(str,notify=libraryChanged)
@@ -93,6 +100,17 @@ class Bridge(QObject):
         self.operationChanged.emit();self.refresh();self.detailChanged.emit()
     @Slot()
     def cancelArtwork(self):self.artwork.discard();self.operationChanged.emit()
+    @Slot(str,str,result=bool)
+    def configureDolphin(self,executable,root):
+        if self._profile!="adult":return False
+        try:self.dolphin.configure(executable,root);self._message="Dolphin configurado. No se ha iniciado ningún juego.";self.operationChanged.emit();return True
+        except (OSError,ValueError) as e:self._message=str(e);self.operationChanged.emit();return False
+    @Slot()
+    def scanDolphin(self):
+        if self._profile!="adult" or self.launchBusy:return
+        try:self._message=str(self.dolphin.scan())+" juegos nuevos detectados.";self.setLibrarySource("real");self.refresh()
+        except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e)
+        self.operationChanged.emit()
     @Slot(str,str,result=str)
     def proposeMetadata(self,item_id,value):
         if self._profile!="adult":return "Perfil no autorizado"
