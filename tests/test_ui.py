@@ -23,7 +23,7 @@ class UiTests(unittest.TestCase):
         self.engine.rootContext().setContextProperty('backend',self.b)
         self.engine.load(QUrl.fromLocalFile(str(Path(__file__).parents[1]/'src/orvex/ui/Main.qml')))
         self.assertTrue(self.engine.rootObjects());self.window=self.engine.rootObjects()[0];self.window.requestActivate();QTest.qWait(80)
-        self.assertEqual(self.window.title(),'ORVEX OS 0.3.2 · Biblioteca local')
+        self.assertEqual(self.window.title(),'ORVEX OS 0.3.3 · Biblioteca local')
     def tearDown(self):
         self.window.close();shiboken6.delete(self.engine);self.store.close();self.assertEqual(self.errors,[])
     def key(self,key):QTest.keyClick(self.window,key);self.app.processEvents();QTest.qWait(15)
@@ -35,21 +35,18 @@ class UiTests(unittest.TestCase):
     def itemclick(self,name):
         item=find_item(self.window,name);pt=item.mapToScene(item.boundingRect().center());self.click(round(pt.x()),round(pt.y()))
     def showlibrary(self):
-        self.window.findChild(QObject,'consolePage').setProperty('fromLibrary',True)
-        self.window.findChild(QObject,'consolePage').metaObject()
         from PySide6.QtCore import QMetaObject
         QMetaObject.invokeMethod(self.window.findChild(QObject,'consolePage'),'restore');QTest.qWait(30)
     def test_keyboard_routes_and_back(self):
         self.assertEqual(self.b.page,1)
-        self.key(Qt.Key_Right);self.assertEqual(self.b.page,2)
+        find_item(self.window,"nav1").forceActiveFocus();self.key(Qt.Key_Right);self.assertEqual(self.b.page,2)
         self.key(Qt.Key_Left);self.assertEqual(self.b.page,1)
         self.itemclick('settingsButton');self.assertEqual(self.b.page,3)
         self.key(Qt.Key_Escape);self.assertEqual(self.b.page,1)
     def test_keyboard_search_open_back_and_state(self):
-        self.showlibrary();search=self.window.findChild(QObject,'librarySearch');search.forceActiveFocus()
-        for char in 'Aurora':QTest.keyClick(self.window,ord(char),Qt.NoModifier)
-        self.app.processEvents();self.assertEqual([e['id'] for e in self.b.entries],['aurora'])
-        self.key(Qt.Key_Down);self.key(Qt.Key_Return);self.assertTrue(self.b.detailOpen)
+        self.b.setQuery('Aurora');self.showlibrary()
+        self.assertEqual([e['id'] for e in self.b.showcase],['aurora'])
+        self.key(Qt.Key_Return);self.assertTrue(self.b.detailOpen)
         self.key(Qt.Key_Escape);self.assertFalse(self.b.detailOpen);self.assertEqual(self.b.query,'Aurora')
         self.assertEqual(self.window.activeFocusItem().property('entry').toVariant()['id'],'aurora')
     def test_mouse_routes_open_favorite_demo_and_back(self):
@@ -60,14 +57,13 @@ class UiTests(unittest.TestCase):
         self.key(Qt.Key_Escape);self.assertTrue(self.b.detailOpen)
         self.itemclick('detailBack');self.assertFalse(self.b.detailOpen)
     def test_favorite_keeps_selected_card_on_return(self):
-        self.showlibrary();self.b.selectIndex(1);self.b.openDetail(1);QTest.qWait(30)
+        self.showlibrary();self.b.selectIndex(1);self.b.focusItem('orbit');self.b.openDetail(1);QTest.qWait(30)
         self.b.toggleFavorite('orbit');QTest.qWait(30);self.b.closeDetail();QTest.qWait(30)
         self.assertEqual(self.b.selectedIndex,1)
         self.assertEqual(self.window.activeFocusItem().property('entry').toVariant()['id'],'orbit')
-    def test_mouse_filter_popup_and_empty_favorites(self):
-        self.showlibrary();self.itemclick('libraryFilter');self.key(Qt.Key_End);self.key(Qt.Key_Return)
-        self.assertEqual(self.b.category,'PC');self.assertEqual(len(self.b.entries),2)
-        self.itemclick('favoritesFilter');self.assertTrue(self.b.favoritesOnly);self.assertEqual(self.b.entries,[])
+    def test_filters_still_supported_without_secondary_screen(self):
+        self.b.setCategory('PC');self.assertEqual(len(self.b.entries),2)
+        self.b.toggleFavorites();self.assertEqual(self.b.entries,[])
         self.b.clearFilters();self.assertFalse(self.b.favoritesOnly);self.assertEqual(self.b.category,'Todas')
     def test_mouse_profile_and_settings(self):
         self.b.navigate(2);self.itemclick('profileButton');QTest.qWait(100);self.itemclick('childProfileChoice')

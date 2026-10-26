@@ -5,39 +5,52 @@ Item {
     id: consolePage
     property var backend
     signal importRequested()
+    signal headerRequested()
     property bool fromLibrary: false
     property int recentIndex: 0
-    readonly property bool realMode: backend.page===1 && backend.librarySource==="real"
-    function enter() { viewport.contentY=0; if(recent.itemAt(0)) recent.itemAt(0).forceActiveFocus() }
-    function restore() { if(fromLibrary) { viewport.contentY=900; library.restore() } else if(recent.itemAt(recentIndex)) recent.itemAt(recentIndex).forceActiveFocus() }
-    Flickable {
-        id: viewport; anchors.fill: parent; contentWidth: width; contentHeight: 1790; clip: true; boundsBehavior: Flickable.StopAtBounds
-        ScrollBar.vertical: ScrollBar { policy: ScrollBar.AlwaysOff }
-        Text { text: consolePage.backend.page===2?"PARA VER · CATÁLOGO DEMO":(consolePage.backend.librarySource==="real"?"TU BIBLIOTECA LOCAL":"CATÁLOGO DEMO · SESIONES FICTICIAS"); color: "#a8f3de"; font.pixelSize: 18; font.letterSpacing: 3 }
-        ActionButton { visible: false; x: 1030; y: 0; width: 330; text: consolePage.backend.librarySource==="real"?"Reales  /  Ver demo":"Demo  /  Ver reales"; onClicked: consolePage.backend.setLibrarySource(consolePage.backend.librarySource==="real"?"demo":"real") }
-        ActionButton { objectName: "importButton"; visible: false; x: 1390; y: 0; width: 330; text: "+ Importar juego"; enabled: consolePage.backend.profile==="adult"; onClicked: consolePage.importRequested() }
-        Flickable { id: strip; objectName: "posterCarousel"; y: 465; width: parent.width; height: 325; contentWidth: carousel.width+32; clip: true; flickableDirection: Flickable.HorizontalFlick
-            Row { id: carousel; x: 16; y: 24; spacing: 32
-                Repeater { id: recent; model: consolePage.backend.showcase
-                    PosterCard { required property var modelData; required property int index; objectName: "recent-"+modelData.id; width: 174; reduced: consolePage.backend.reducedMotion; entry: modelData; highlighted: consolePage.backend.featured.id===modelData.id || activeFocus || hovered
-                        onActiveFocusChanged: if(activeFocus) { consolePage.recentIndex=index;consolePage.backend.focusItem(modelData.id); strip.contentX=Math.max(0,Math.min(x,carousel.width-consolePage.width));viewport.contentY=0 }
-                        onHoveredChanged: if(hovered) { consolePage.recentIndex=index; consolePage.backend.focusItem(modelData.id) }
-                        onActivated: {consolePage.recentIndex=index;consolePage.fromLibrary=false;consolePage.backend.openTitle(modelData.id)}
-                        Keys.onDownPressed: {viewport.contentY=900;consolePage.fromLibrary=true;library.enter()}
-                        Keys.onRightPressed: if(recent.itemAt(index+1))recent.itemAt(index+1).forceActiveFocus()
-                        Keys.onLeftPressed: if(recent.itemAt(index-1))recent.itemAt(index-1).forceActiveFocus()
-                    }
-                }
+    function enter() { restore() }
+    function restore() {
+        var items=backend.showcase
+        var index=0
+        for(var n=0;n<items.length;n++)if(items[n].id===backend.featured.id){index=n;break}
+        recent.currentIndex=items.length?index:-1
+        recent.positionViewAtIndex(index,ListView.Contain)
+        if(recent.currentItem)recent.currentItem.forceActiveFocus()
+        else headerRequested()
+    }
+    Text { objectName: "heroTitle"; y: 175; width: 1100; text: consolePage.backend.featured.title || (consolePage.backend.query?"Sin coincidencias":"Tu próxima partida empieza aquí"); color: "#f1f7f8"; font.pixelSize: 60; font.weight: Font.DemiBold; elide: Text.ElideRight }
+    Text { y: 260; width: 850; maximumLineCount: 2; elide: Text.ElideRight; text: consolePage.backend.featured.description || (consolePage.backend.query?"Prueba otra búsqueda desde la lupa.":"Añade juegos desde Configuración → Biblioteca."); color: "#bdcdd8"; font.pixelSize: 22; wrapMode: Text.WordWrap }
+    Text { y: 340; width: 1100; text: consolePage.backend.featured.platform || ""; color: "#c9d6dc"; font.pixelSize: 20 }
+    Text { y: 400; visible: !!consolePage.backend.query; text: "Búsqueda: "+consolePage.backend.query+" · "+consolePage.backend.showcase.length+" resultados"; color: "#a8f3de"; font.pixelSize: 20; width: 1100; elide: Text.ElideRight }
+    ListView {
+        id: recent; objectName: "posterCarousel"; x: -16; y: 465; width: parent.width+32; height: 340
+        orientation: ListView.Horizontal; spacing: 32; clip: true
+        leftMargin: 32; rightMargin: 32; topMargin: 24
+        model: consolePage.backend.showcase
+        boundsBehavior: Flickable.StopAtBounds
+        cacheBuffer: 520; reuseItems: true
+        ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
+        delegate: FocusScope {
+            required property var modelData
+            required property int index
+            width: 174; height: 320
+            PosterCard {
+            focus: true
+            objectName: "recent-"+modelData.id
+            y: 24; entry: modelData; reduced: consolePage.backend.reducedMotion
+            highlighted: activeFocus
+            onActiveFocusChanged: if(activeFocus){consolePage.recentIndex=index;recent.currentIndex=index;consolePage.backend.focusItem(modelData.id)}
+            onHoveredChanged: if(hovered)forceActiveFocus()
+            onActivated: {consolePage.recentIndex=index;consolePage.backend.openTitle(modelData.id)}
+            Keys.onRightPressed: {recent.incrementCurrentIndex();recent.positionViewAtIndex(recent.currentIndex,ListView.Contain);if(recent.currentItem)recent.currentItem.forceActiveFocus()}
+            Keys.onLeftPressed: {recent.decrementCurrentIndex();recent.positionViewAtIndex(recent.currentIndex,ListView.Contain);if(recent.currentItem)recent.currentItem.forceActiveFocus()}
+            Keys.onUpPressed: consolePage.headerRequested()
+            Keys.onDownPressed: consolePage.headerRequested()
             }
         }
-        Text { objectName: "heroTitle"; y: 175; width: 1100; text: consolePage.backend.featured.title || (consolePage.realMode?"Tu próxima partida empieza aquí":"Explora tu colección"); color: "#f1f7f8"; font.pixelSize: 60; font.weight: Font.DemiBold; elide: Text.ElideRight }
-        Text { y: 260; width: 850; maximumLineCount: 2; elide: Text.ElideRight; text: consolePage.backend.featured.description || (consolePage.realMode?"Añade juegos desde Configuración → Biblioteca. No se ejecutará hasta que lo elijas y confirmes. Los títulos sin edad verificada se ocultan en Infantil.":""); color: "#bdcdd8"; font.pixelSize: 22; wrapMode: Text.WordWrap }
-        Text { y: 340; visible: consolePage.backend.page===1; width: 1100; text: (consolePage.backend.featured.platform || "") + (consolePage.backend.featured.progress && consolePage.backend.featured.progress.source==="observed" ? "  ·  " + consolePage.backend.featured.progress.timeLabel + " jugados  ·  " + consolePage.backend.featured.progress.lastLabel : ""); color: "#c9d6dc"; font.pixelSize: 20; elide: Text.ElideRight }
-        Text { y: 340; visible: consolePage.backend.page===2; text: (consolePage.backend.featured.platform || "")+" · "+(consolePage.backend.featured.age || 0)+"+ · Disponibilidad demostrativa"; color: "#a8f3de"; font.pixelSize: 22 }
-        ActionButton { y: 390; width: 330; text: consolePage.backend.page===2?"Ver ficha · DEMO":consolePage.realMode?(consolePage.backend.launchBusy?"Juego en ejecución":"Jugar / Continuar"):"Continuar jugando · DEMO"; accent: true; enabled: !!consolePage.backend.featured.id && !consolePage.backend.launchBusy; onClicked: {consolePage.fromLibrary=false;if(consolePage.realMode)consolePage.backend.requestLaunch(consolePage.backend.featured.id);else consolePage.backend.openTitle(consolePage.backend.featured.id)} }
-        ActionButton { x: 360; y: 390; width: 330; text: "Biblioteca completa ↓"; onClicked: {viewport.contentY=900;consolePage.fromLibrary=true;library.enter()} }
-        Text { y: 835; width: 1600; text: consolePage.backend.launchState==="Error"?"No se pudo abrir el juego. Consulta Configuración → Sistema.":""; wrapMode: Text.WordWrap; color: "#a8f3de"; font.pixelSize: 20 }
-        LibraryPage { id: library; y: 920; width: consolePage.width; height: 825; backend: consolePage.backend; onRequestReveal: {viewport.contentY=900;consolePage.fromLibrary=true} heading: consolePage.backend.page===2?"Biblioteca multimedia":"Biblioteca de videojuegos"; onActiveFocusChanged: if(activeFocus)consolePage.fromLibrary=true }
     }
-    Connections { target: consolePage.backend; function onPageChanged(){viewport.contentY=0;consolePage.fromLibrary=false;consolePage.recentIndex=0} function onDetailChanged(){if(consolePage.backend.detailOpen && viewport.contentY>850)consolePage.fromLibrary=true} }
+    Connections {
+        target: consolePage.backend
+        function onLibraryChanged(){if(consolePage.visible && consolePage.enabled && !consolePage.backend.detailOpen && (recent.activeFocus || (recent.currentItem && recent.currentItem.activeFocus)))Qt.callLater(consolePage.restore)}
+    }
 }

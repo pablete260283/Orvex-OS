@@ -22,10 +22,11 @@ Item {
     Rectangle { x: 410; y: 110; width: 1320; height: 660; radius: 26; color: "#132332"
         Text { x: 45; y: 38; text: settings.categories[settings.category]; color: "#edf5f8"; font.pixelSize: 38 }
         Text { visible: settings.category!==3; x: 45; y: 115; width: 1220; text: settings.category===0 ? "FUNCIONAL · Preferencias guardadas en SQLite" : settings.category===3 ? "FUNCIONAL · Filtros y favoritos por perfil" : settings.category===4 ? "DEMO · Filtro infantil hasta 7+. Sin autenticación ni PIN.
-El cambio de perfil es libre: no es un control parental seguro." : settings.category===5 ? "FUNCIONAL · ORVEX OS 0.2 Visual Preview
+El cambio de perfil es libre: no es un control parental seguro." : settings.category===1 ? "Navegación: cruceta o joystick · Confirmar · Volver.\nWindows: XInput y alternativa WinMM. Linux: joydev.\nCompatibilidad física pendiente; no configura Bluetooth ni emuladores." : settings.category===5 ? "FUNCIONAL · ORVEX OS 0.3.3
 Qt 6 / QML · PySide6 · SQLite
 Biblioteca local y catálogo demo separados. Sin servicios externos." : "FUTURO · Esta categoría no controla dispositivos.
 La integración se desarrollará en una próxima fase."; color: settings.category===1 || settings.category===2 ? "#bdac8c" : "#9cb5c7"; font.pixelSize: 26; wrapMode: Text.WordWrap; lineHeight: 1.5 }
+        ActionButton { x: 45; y: 360; width: 1000; visible: settings.category===1; text: "Botones WinMM: "+(settings.backend.controllerLayout==="sony"?"Sony (Cross / Circle)":"Estándar (1 / 2)"); onClicked: settings.backend.toggleControllerLayout() }
         Row { x: 45; y: 395; spacing: 18; visible: settings.category===0
             Repeater { model: ["dynamic","fixed","default"]
                 ActionButton { required property string modelData; width: 360; text: modelData==="dynamic" ? "Fondo dinámico" : modelData==="fixed" ? "Fondo fijo" : "Predeterminado"; selected: settings.backend.backgroundMode===modelData; onClicked: settings.backend.setBackgroundMode(modelData) }

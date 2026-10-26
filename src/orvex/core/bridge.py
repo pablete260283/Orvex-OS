@@ -44,9 +44,16 @@ class Bridge(QObject):
         self.romTimer=QTimer(self);self.romTimer.setInterval(10000)
         self.romTimer.timeout.connect(self._poll_roms);self.romTimer.start()
     def _poll_roms(self):
+        if getattr(self.store,"closed",False):self.romTimer.stop();return
         if self.store.get("rom_root","") and self._profile=="adult" and not self.launchBusy:self.scanDolphin()
     def _launch_updated(self):
         self._message=self.launcher.message;self.operationChanged.emit();self.refresh();self.detailChanged.emit()
+    @Property(str,notify=operationChanged)
+    def controllerLayout(self):return self.store.get("controller_layout","sony")
+    @Slot()
+    def toggleControllerLayout(self):
+        self.store.set("controller_layout","standard" if self.controllerLayout=="sony" else "sony")
+        self.operationChanged.emit()
     @Property(str,notify=libraryChanged)
     def librarySource(self):return self.store.get("library_source","real")
     @Property(str,notify=operationChanged)
@@ -169,7 +176,7 @@ class Bridge(QObject):
     def diagnosticReport(self):
         import json
         rows=self.store.db.execute("SELECT started_at,ended_at,duration_ms,status,exit_code FROM play_sessions ORDER BY id DESC LIMIT 100").fetchall()
-        return json.dumps(dict(version="0.3",sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
+        return json.dumps(dict(version="0.3.3",sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
     def real_games(self):return self.installed.games(self._profile)
     def lookup(self,item_id):
         if item_id.startswith("local-"):return next((e for e in self.real_games() if e["id"]==item_id),{})
@@ -215,9 +222,12 @@ class Bridge(QObject):
         return sorted([e for e in games if e["progress"].get("last_session")],key=lambda e:e["progress"]["last_session"],reverse=True)[:4]
     @Property("QVariantList", notify=libraryChanged)
     def showcase(self):
-        if self._page==2:return self.service.query(self._profile,"media")[:8]
-        if self.librarySource=="real":return sorted(self.real_games(),key=lambda e:e["progress"]["last_session"] or "",reverse=True)[:8]
-        return self.recentGames or [self.decorate(e) for e in self.service.query(self._profile,"game")]
+        items=[self.decorate(e) for e in self.entries]
+        if self._page==1 and self.librarySource=="real":
+            # Stable secondary ordering for never-played titles and equal timestamps.
+            items.sort(key=lambda e:(normalized(e["title"]),e["id"]))
+            items.sort(key=lambda e:e["progress"]["last_session"] or "",reverse=True)
+        return items
     @Slot(str)
     def openTitle(self,item_id):
         if item_id in {e["id"] for e in self.showcase+self.entries}:
@@ -225,7 +235,7 @@ class Bridge(QObject):
     @Property("QVariantMap", notify=visualChanged)
     def featured(self):
         entry=self.lookup(self._focused_id)
-        allowed_ids={e["id"] for e in self.entries+self.showcase}
+        allowed_ids={e["id"] for e in self.showcase}
         return self.decorate(entry if entry and entry["id"] in allowed_ids else (self.showcase[0] if self.showcase else {}))
     @Property(str, notify=visualChanged)
     def backgroundMode(self):return self.store.get("background_mode","dynamic")
@@ -273,6 +283,7 @@ class Bridge(QObject):
         self.launcher.cancel();self.artwork.discard()
         self._profile=profile;self._detail_id="";self.store.set("profile",profile)
         self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit();self.detailChanged.emit();self.visualChanged.emit()
+    @Slot()
     def refresh(self):
         self.state()["index"]=min(self.state()["index"],max(0,len(self.entries)-1))
         self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit()

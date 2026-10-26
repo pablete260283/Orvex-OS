@@ -54,7 +54,11 @@ def main():
     if not engine.rootObjects():
         store.close()
         return 1
+    from .controls.gamepad import create_navigation
+
+    navigation = create_navigation(bridge, app)
     result = app.exec()
+    navigation.timer.stop()
     del engine
     store.close()
     return result

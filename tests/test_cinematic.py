@@ -15,7 +15,7 @@ class CinematicTests(RealUiTests):
   for index in range(6):
    target=self.root/('controlled-'+str(index));shutil.copy2(self.exe,target)
    self.b.importGame('Aplicación controlada '+str(index+1),'PC Linux',str(target))
-  ids=[e['id'] for e in self.b.entries]
+  ids=[e['id'] for e in self.b.showcase]
   image=QImage(1200,1800,QImage.Format_RGB32)
   for index,key in enumerate(ids):
    image.fill(QColor(['#174653','#583c52','#254839'][index%3]))
