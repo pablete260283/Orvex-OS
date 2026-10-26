@@ -1,3 +1,5 @@
+> Actualización nativa 0.3.2: biblioteca cinematográfica sobre juegos reales. [Cambios y validación Windows](docs/ORVEX_0.3.2.md). Pendiente aprobación visual; no fusionada.
+
 > Etapa vigente 0.3: [estado real, pruebas manuales y pendientes](docs/ORVEX_0.3.md). Los detalles de entregas anteriores debajo son históricos.
 
 > Estado vigente: [auditoría y continuidad](docs/CONTINUITY.md). Esquema SQLite 4, argumentos JSON confirmados y GameLauncher con estados. Resultados anteriores debajo son históricos.

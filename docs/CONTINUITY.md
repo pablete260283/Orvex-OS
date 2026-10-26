@@ -13,3 +13,7 @@ Implementación del adaptador, índice por ROM, carpeta configurable, escaneo ma
 ## 0.3.1 PCSX2
 
 Rama feature/orvex-0.3.1; detalle vigente PCSx2: docs/PCSX2.md. Adaptador/indexador/registro común y comandos PCSX2 preparados; 58 tests Python/Qt. Próxima acción: probar PCSX2 Qt y regresión Dolphin en Windows. No afirmar PCSX2 funcionando hasta ejecución real. Completar escaneo asíncrono y aplicación segura de perfil por juego; la asociación actual solo guarda referencia sin tocar perfiles.
+
+## 0.3.2 — Issue #8
+
+Rama feature/orvex-0.3.2 basada en e138f8414be2d887f516d25828d02c2303e6c836 (PR #7). Rediseño nativo con fondo visible, degradados, carátulas 2:3 sin recorte, selección ampliada, versión corregida y lanzamiento real conservado. Ver docs/ORVEX_0.3.2.md y validation/0.3.2 para pruebas/capturas. La identidad final requiere revisión del usuario. Próxima acción: validación Windows con biblioteca del usuario y sus fondos; luego proveedor remoto autorizado y navegación física con mando. No fusionar automáticamente. El commit de este checkpoint se identifica por `feat: cinematic native library for ORVEX 0.3.2` en GitHub.
