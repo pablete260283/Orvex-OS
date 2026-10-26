@@ -17,3 +17,7 @@ Rama feature/orvex-0.3.1; detalle vigente PCSx2: docs/PCSX2.md. Adaptador/indexa
 ## 0.3.2 — Issue #8
 
 Rama feature/orvex-0.3.2 basada en e138f8414be2d887f516d25828d02c2303e6c836 (PR #7). Rediseño nativo con fondo visible, degradados, carátulas 2:3 sin recorte, selección ampliada, versión corregida y lanzamiento real conservado. Ver docs/ORVEX_0.3.2.md y validation/0.3.2 para pruebas/capturas. La identidad final requiere revisión del usuario. Próxima acción: validación Windows con biblioteca del usuario y sus fondos; luego proveedor remoto autorizado y navegación física con mando. No fusionar automáticamente. El commit de este checkpoint se identifica por `feat: cinematic native library for ORVEX 0.3.2` en GitHub.
+
+## 0.3.3 — Issue #10
+
+Base GitHub aad301462374ebb72188ae7150d6948ff4afa5af (feature/orvex-0.3.2 / PR #9). Rama feature/orvex-0.3.3. Carrusel único completo, reciente real descendente, hero sin botones redundantes/sesiones/rótulo, iconos sin marcos con foco, búsqueda contextual modal con teclado virtual. Entrada separada en orvex.controls: XInput/WinMM Windows, joydev Linux, Select/Back remoto. No se toca contenido ni esquema; sesiones y diagnóstico conservados. Ver docs/ORVEX_0.3.3.md y validation/0.3.3. Identificar el commit por `feat: minimal console navigation and controller search for ORVEX 0.3.3`. Siguiente acción: validar sin teclado/ratón en Windows con DualSense y biblioteca del usuario, registrar capturas/resultados y resolver mapas de hardware si es necesario. No fusionar ni declarar aceptación física automáticamente.

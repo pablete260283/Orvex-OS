@@ -43,9 +43,11 @@ class GameLauncher(QObject):
             if not game:
                 raise ValueError("Juego no encontrado.")
             from ..adapters.registry import resolve
-            resolved=resolve(self.store,game_id)
+
+            resolved = resolve(self.store, game_id)
             if resolved:
-                game['executable']=resolved[0];game['arguments']=json.dumps(resolved[1])
+                game["executable"] = resolved[0]
+                game["arguments"] = json.dumps(resolved[1])
             path, digest = validate_executable(game["executable"])
             arguments = validate_arguments(game["arguments"])
             if game["trusted_hash"] != digest or game["trusted_arguments"] != arguments:
@@ -78,8 +80,11 @@ class GameLauncher(QObject):
         try:
             game = self.library.raw(pending["id"])
             from ..adapters.registry import resolve
-            resolved=resolve(self.store,pending['id'])
-            if resolved:game['executable']=resolved[0];game['arguments']=json.dumps(resolved[1])
+
+            resolved = resolve(self.store, pending["id"])
+            if resolved:
+                game["executable"] = resolved[0]
+                game["arguments"] = json.dumps(resolved[1])
             path, digest = validate_executable(game["executable"])
             arguments = validate_arguments(game["arguments"])
             if (

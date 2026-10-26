@@ -1,3 +1,5 @@
+> ORVEX 0.3.3: carrusel único, búsqueda con teclado virtual y adaptadores de mando. [Cambios, pruebas y validación Windows pendiente](docs/ORVEX_0.3.3.md). No fusionada.
+
 > Actualización nativa 0.3.2: biblioteca cinematográfica sobre juegos reales. [Cambios y validación Windows](docs/ORVEX_0.3.2.md). Pendiente aprobación visual; no fusionada.
 
 > Etapa vigente 0.3: [estado real, pruebas manuales y pendientes](docs/ORVEX_0.3.md). Los detalles de entregas anteriores debajo son históricos.

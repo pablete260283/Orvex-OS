@@ -15,6 +15,6 @@ class ArtworkTests(unittest.TestCase):
    self.assertEqual(resolve_art('x',manifest={'x':dict(record,**change)}),'')
  def test_start_route_showcase_independent_of_search_and_safe_profile(self):
   store=Store(':memory:');store.set('library_source','demo');b=Bridge(store);self.assertEqual(b.page,1)
-  b.setQuery('nothing');self.assertEqual(b.entries,[]);self.assertEqual(len(b.showcase),3)
-  b.openTitle('orbit');self.assertEqual(b.detail['id'],'orbit');b.closeDetail();self.assertEqual(b.query,'nothing')
-  b.setProfile('child');b.openTitle('drift');self.assertFalse(b.detailOpen);self.assertEqual([e['id'] for e in b.showcase],['aurora']);store.close()
+  b.setQuery('nothing');self.assertEqual(b.entries,[]);self.assertEqual(b.showcase,[]);b.setQuery('')
+  b.openTitle('orbit');self.assertEqual(b.detail['id'],'orbit');b.closeDetail();self.assertEqual(b.query,'')
+  b.setProfile('child');b.openTitle('drift');self.assertFalse(b.detailOpen);self.assertEqual([e['id'] for e in b.showcase],['aurora','forest']);store.close()

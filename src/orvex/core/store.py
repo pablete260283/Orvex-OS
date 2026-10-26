@@ -148,6 +148,7 @@ class Store:
                 )
 
     def close(self):
+        self.closed = True
         self.db.close()
 
 
