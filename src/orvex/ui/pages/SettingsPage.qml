@@ -32,7 +32,7 @@ La integración se desarrollará en una próxima fase."; color: settings.categor
                 ActionButton { required property var modelData; width: 135; text: modelData.title; selected: settings.backend.fixedBackground===modelData.id; onClicked: settings.backend.setFixedBackground(modelData.id) }
             }
         }
-        ActionButton { x: 45; y: 300; width: 650; visible: settings.category===0; text: "Reducir movimiento: "+(settings.backend.reducedMotion ? "Sí" : "No"); onClicked: settings.backend.toggleMotion() }
+        ActionButton { objectName: "reducedMotion"; x: 45; y: 300; width: 650; visible: settings.category===0; text: "Reducir movimiento: "+(settings.backend.reducedMotion ? "Sí" : "No"); onClicked: settings.backend.toggleMotion() }
         ActionButton { x: 45; y: 300; width: 650; visible: settings.category===3; text: "Limpiar filtros de las bibliotecas"; onClicked: {settings.backend.clearFilters();settings.message="Filtros restablecidos. Tus favoritos se conservan."} }
         Row { x: 45; y: 330; spacing: 30; visible: settings.category===4
             ActionButton { width: 350; text: "Adulto · demo"; selected: settings.backend.profile==="adult"; onClicked: settings.backend.setProfile("adult") }

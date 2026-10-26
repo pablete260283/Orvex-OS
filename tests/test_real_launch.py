@@ -72,5 +72,29 @@ class RealLaunchTests(unittest.TestCase):
  def test_interrupted_session_recovery_does_not_invent_duration(self):
   game_id=self.imported()
   with self.store.db:self.store.db.execute("INSERT INTO play_sessions(game_id,started_at,status) VALUES(?,'2026-01-01','running')",(game_id,))
-  self.store.close();self.store=Store(self.root/'prefs.sqlite3');self.b=Bridge(self.store)
+  self.store.close();self.store=Store(self.root/'prefs.sqlite3');self.store.recover_sessions();self.b=Bridge(self.store)
   self.assertEqual(self.store.db.execute('SELECT status,duration_ms,ended_at FROM play_sessions').fetchone(),('interrupted',0,None))
+
+ def test_arguments_are_literal_persisted_confirmed_and_states_observable(self):
+  import json
+  args=['--fullscreen','two words','$(touch MUST_NOT_EXIST)','a&b']
+  self.assertTrue(self.b.importGame('Arguments','Linux',str(self.exe),json.dumps(args)))
+  game_id=self.b.entries[0]['id'];states=[]
+  self.b.launcher.changed.connect(lambda:states.append(self.b.launchState))
+  self.assertEqual(self.b.launchState,'Disponible');self.b.requestLaunch(game_id)
+  self.assertEqual(self.b.launchState,'Preparando');self.assertEqual(json.loads(self.b.pendingLaunch['arguments']),args)
+  self.b.confirmLaunch();self.wait_finished()
+  self.assertIn('Ejecutando',states);self.assertEqual(self.b.launchState,'Finalizado')
+  self.assertEqual((self.exe.parent/'orvex-test-args.txt').read_text().splitlines(),args)
+  self.assertFalse((self.exe.parent/'MUST_NOT_EXIST').exists())
+  with self.store.db:self.store.db.execute("UPDATE real_games SET arguments=? WHERE id=?",('["changed"]',game_id))
+  self.b.requestLaunch(game_id);self.assertTrue(self.b.pendingLaunch)
+  with self.store.db:self.store.db.execute("UPDATE real_games SET arguments=? WHERE id=?",('["changed again"]',game_id))
+  self.b.confirmLaunch();self.assertEqual(self.b.launchState,'Error');self.assertFalse(self.b.launchBusy)
+  self.b.requestLaunch(game_id);self.b.cancelLaunch();self.assertEqual(self.b.launchState,'Disponible')
+  self.store.close();self.store=Store(self.root/'prefs.sqlite3');self.b=Bridge(self.store)
+  self.assertEqual(self.b.installed.raw(game_id)['arguments'],'["changed again"]')
+ def test_invalid_arguments_rejected_without_import(self):
+  for value in ['--not-json','{}','[1]','[null]','["\\u0000"]']:
+   self.assertFalse(self.b.importGame('Invalid','PC',str(self.exe),value))
+  self.assertEqual(self.b.entries,[])

@@ -10,6 +10,18 @@ Item {
     Behavior on opacity { NumberAnimation { duration: library.backend.reducedMotion ? 0 : 120 } }
     function enter() { search.forceActiveFocus() }
     function restore() { grid.forceActiveFocus(); if(grid.currentItem) grid.currentItem.forceActiveFocus() }
+    function moveSelection(event,index) {
+        if(event.key===Qt.Key_Right) library.backend.selectIndex(Math.min(grid.count-1,index+1))
+        else if(event.key===Qt.Key_Left) library.backend.selectIndex(Math.max(0,index-1))
+        else if(event.key===Qt.Key_Down) library.backend.selectIndex(Math.min(grid.count-1,index+4))
+        else if(event.key===Qt.Key_Up) {
+            if(index<4){search.forceActiveFocus();event.accepted=true;return}
+            library.backend.selectIndex(index-4)
+        } else {event.accepted=false;return}
+        event.accepted=true
+        grid.positionViewAtIndex(library.backend.selectedIndex,GridView.Contain)
+        if(grid.currentItem)grid.currentItem.forceActiveFocus()
+    }
     Text { text: heading; color: "#edf5f8"; font.pixelSize: 46; font.weight: Font.DemiBold }
     Text { y: 65; text: library.backend.page===1 && library.backend.librarySource==="real"?"Ejecutables importados · Biblioteca personal en SQLite":"Catálogo ficticio · Explora, guarda y descubre"; color: "#8fa7b9"; font.pixelSize: 23 }
     TextField {
@@ -38,25 +50,11 @@ Item {
             required property var modelData; required property int index
             entry: modelData; onActiveFocusChanged: if(activeFocus) {library.requestReveal();library.backend.focusItem(modelData.id)} onHoveredChanged: if(hovered)library.backend.focusItem(modelData.id); highlighted: GridView.isCurrentItem && grid.activeFocus
             onActivated: library.backend.openDetail(index)
-            Keys.onPressed: function(event) {
-                if(event.key===Qt.Key_Right) library.backend.selectIndex(Math.min(grid.count-1,index+1))
-                else if(event.key===Qt.Key_Left) library.backend.selectIndex(Math.max(0,index-1))
-                else if(event.key===Qt.Key_Down) library.backend.selectIndex(Math.min(grid.count-1,index+4))
-                else if(event.key===Qt.Key_Up) { if(index<4) { search.forceActiveFocus(); return } else library.backend.selectIndex(index-4) }
-                else {event.accepted=false;return}
-                event.accepted=true; if(grid.currentItem)grid.currentItem.forceActiveFocus()
-            }
+            Keys.onPressed: function(event){library.moveSelection(event,index)}
         }
         Keys.onReturnPressed: if(grid.count>0) library.backend.openDetail(currentIndex)
-        Keys.onPressed: function(event) {
-            var index=library.backend.selectedIndex
-            if(event.key===Qt.Key_Right) library.backend.selectIndex(Math.min(grid.count-1,index+1))
-            else if(event.key===Qt.Key_Left) library.backend.selectIndex(Math.max(0,index-1))
-            else if(event.key===Qt.Key_Down) library.backend.selectIndex(Math.min(grid.count-1,index+4))
-            else if(event.key===Qt.Key_Up) { if(index<4) search.forceActiveFocus(); else library.backend.selectIndex(index-4) }
-            else {event.accepted=false;return}
-            event.accepted=true
-        }
+        Keys.onPressed: function(event){library.moveSelection(event,library.backend.selectedIndex)}
+
         Text { visible: grid.count===0; anchors.centerIn: parent; text: "No hay títulos con estos filtros.
 Prueba otra búsqueda o limpia los filtros."; horizontalAlignment: Text.AlignHCenter; color: "#a5bac9"; font.pixelSize: 28 }
         ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }

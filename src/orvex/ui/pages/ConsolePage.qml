@@ -19,7 +19,7 @@ Item {
         Flickable { id: strip; y: 75; width: parent.width; height: 300; contentWidth: carousel.width; clip: true; flickableDirection: Flickable.HorizontalFlick
             Row { id: carousel; spacing: 24
                 Repeater { id: recent; model: consolePage.backend.showcase
-                    MediaCard { required property var modelData; required property int index; width: 260; entry: modelData; highlighted: consolePage.backend.featured.id===modelData.id || activeFocus || hovered
+                    MediaCard { required property var modelData; required property int index; objectName: "recent-"+modelData.id; width: 260; entry: modelData; highlighted: consolePage.backend.featured.id===modelData.id || activeFocus || hovered
                         onActiveFocusChanged: if(activeFocus) { consolePage.recentIndex=index;consolePage.backend.focusItem(modelData.id); strip.contentX=Math.max(0,Math.min(x,carousel.width-consolePage.width));viewport.contentY=0 }
                         onHoveredChanged: if(hovered)consolePage.backend.focusItem(modelData.id)
                         onActivated: {consolePage.recentIndex=index;consolePage.fromLibrary=false;consolePage.backend.openTitle(modelData.id)}
@@ -36,7 +36,7 @@ Item {
         Text { y: 595; visible: consolePage.backend.page===2; text: (consolePage.backend.featured.platform || "")+" · "+(consolePage.backend.featured.age || 0)+"+ · Disponibilidad demostrativa"; color: "#a8f3de"; font.pixelSize: 25 }
         ActionButton { y: 745; width: 400; text: consolePage.backend.page===2?"Ver ficha · DEMO":consolePage.realMode?(consolePage.backend.launchBusy?"Juego en ejecución":"Continuar jugando"):"Continuar jugando · DEMO"; accent: true; enabled: !!consolePage.backend.featured.id && !consolePage.backend.launchBusy; onClicked: {consolePage.fromLibrary=false;if(consolePage.realMode)consolePage.backend.requestLaunch(consolePage.backend.featured.id);else consolePage.backend.openTitle(consolePage.backend.featured.id)} }
         ActionButton { x: 435; y: 745; width: 400; text: "Biblioteca completa ↓"; onClicked: {viewport.contentY=900;consolePage.fromLibrary=true;library.enter()} }
-        Text { y: 835; width: 1600; text: consolePage.backend.operationMessage; wrapMode: Text.WordWrap; color: "#a8f3de"; font.pixelSize: 20 }
+        Text { y: 835; width: 1600; text: consolePage.backend.launchState+" · "+consolePage.backend.operationMessage; wrapMode: Text.WordWrap; color: "#a8f3de"; font.pixelSize: 20 }
         LibraryPage { id: library; y: 920; width: consolePage.width; height: 825; backend: consolePage.backend; onRequestReveal: {viewport.contentY=900;consolePage.fromLibrary=true} heading: consolePage.backend.page===2?"Biblioteca multimedia":"Biblioteca de videojuegos"; onActiveFocusChanged: if(activeFocus)consolePage.fromLibrary=true }
     }
     Connections { target: consolePage.backend; function onPageChanged(){viewport.contentY=0;consolePage.fromLibrary=false;consolePage.recentIndex=0} function onDetailChanged(){if(consolePage.backend.detailOpen && viewport.contentY>850)consolePage.fromLibrary=true} }

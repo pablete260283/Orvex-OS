@@ -1,0 +1,17 @@
+✔ search accent/case, platform/type and empty results (8.395138ms)
+✔ favorites persist, toggle and remain isolated per profile (0.468539ms)
+✔ detail back preserves library state (0.215365ms)
+✔ child closes adult detail; hides searches, filters and recommendations (0.375928ms)
+✔ old motion preference and profile survive reload (0.196427ms)
+✔ blocked storage keeps session operational; corrupt input is rejected (0.437281ms)
+✔ recent progress, unknown percent and fixed background persistence (0.68129ms)
+✔ shared age policy cases match Python including integral JSON floats (0.479355ms)
+✔ invalid ages never reach child artwork, filters, detail or recommendations (0.357701ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 95.229124

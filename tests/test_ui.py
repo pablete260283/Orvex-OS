@@ -8,6 +8,8 @@ from PySide6.QtQuick import QQuickWindow
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtTest import QTest
 import shiboken6
+from artifacts import capture_dir
+from ui_selectors import find_item
 from orvex.core.store import Store
 from orvex.core.bridge import Bridge
 
@@ -31,7 +33,7 @@ class UiTests(unittest.TestCase):
         self.assertEqual(self.window.findChild(QObject,'heroTitle').property('text'),'Órbita')
         self.assertEqual(self.b.backgroundArt,'orbit')
     def itemclick(self,name):
-        item=self.window.findChild(QObject,name);pt=item.mapToScene(item.boundingRect().center());self.click(round(pt.x()),round(pt.y()))
+        item=find_item(self.window,name);pt=item.mapToScene(item.boundingRect().center());self.click(round(pt.x()),round(pt.y()))
     def showlibrary(self):
         self.window.findChild(QObject,'consolePage').setProperty('fromLibrary',True)
         self.window.findChild(QObject,'consolePage').metaObject()
@@ -51,12 +53,12 @@ class UiTests(unittest.TestCase):
         self.key(Qt.Key_Escape);self.assertFalse(self.b.detailOpen);self.assertEqual(self.b.query,'Aurora')
         self.assertEqual(self.window.activeFocusItem().property('entry').toVariant()['id'],'aurora')
     def test_mouse_routes_open_favorite_demo_and_back(self):
-        self.click(700,65);self.assertEqual(self.b.page,2)
-        self.click(150,250);self.assertTrue(self.b.detailOpen);self.assertEqual(self.b.detail['id'],'ocean')
-        self.click(1100,550);self.assertTrue(self.b.detail['favorite'])
-        self.click(750,550);self.assertIn('Demostración',self.window.findChild(QObject,'detailPage').property('notice'))
+        self.itemclick('nav2');self.assertEqual(self.b.page,2)
+        self.itemclick('recent-ocean');self.assertTrue(self.b.detailOpen);self.assertEqual(self.b.detail['id'],'ocean')
+        self.itemclick('detailFavorite');self.assertTrue(self.b.detail['favorite'])
+        self.itemclick('demoPlay');self.assertIn('Demostración',self.window.findChild(QObject,'detailPage').property('notice'))
         self.key(Qt.Key_Escape);self.assertTrue(self.b.detailOpen)
-        self.click(140,70);self.assertFalse(self.b.detailOpen)
+        self.itemclick('detailBack');self.assertFalse(self.b.detailOpen)
     def test_favorite_keeps_selected_card_on_return(self):
         self.showlibrary();self.b.selectIndex(1);self.b.openDetail(1);QTest.qWait(30)
         self.b.toggleFavorite('orbit');QTest.qWait(30);self.b.closeDetail();QTest.qWait(30)
@@ -72,9 +74,9 @@ class UiTests(unittest.TestCase):
         # Explicit popup choice is exercised by click, not an automatic profile toggle.
         self.assertEqual(self.b.profile,'child');self.assertTrue(all(e['age']<=7 for e in self.b.showcase))
         self.key(Qt.Key_Escape);self.itemclick('settingsButton');self.assertEqual(self.b.page,3)
-        self.click(600,450);self.assertFalse(self.b.reducedMotion)
+        self.itemclick('reducedMotion');self.assertFalse(self.b.reducedMotion)
     def test_render_pages_details_and_child_at_tv_resolutions(self):
-        out=Path(__file__).parents[1]/'preview/v0.2';out.mkdir(exist_ok=True)
+        out=capture_dir('qt-demo');out.mkdir(exist_ok=True)
         for width,height in [(1920,1080),(3840,2160)]:
             self.window.resize(width,height)
             states=[('home',0,'adult',False),('games',1,'adult',False),('media',2,'adult',False),('settings',3,'adult',False),('game-detail',1,'adult',True),('media-detail',2,'adult',True),('child-media',2,'child',False)]

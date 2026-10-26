@@ -5,6 +5,8 @@ AbstractButton {
     required property var entry
     property bool highlighted: activeFocus || hovered
     signal activated()
+    Accessible.name: entry.title || "Juego"
+    Accessible.description: entry.installed ? "Juego local. Abrir ficha." : "Contenido demostrativo. Abrir ficha."
     hoverEnabled: true
     width: 400; height: 284; focusPolicy: Qt.StrongFocus
     background: Rectangle { radius: 19; color: "#14202e"; border.color: card.highlighted ? "#a8f3de" : "#263445"; border.width: card.highlighted ? 3 : 1 }

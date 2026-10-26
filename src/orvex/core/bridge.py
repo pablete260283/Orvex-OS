@@ -1,12 +1,11 @@
 from PySide6.QtCore import QObject, Property, Signal, Slot
-from .store import catalog
 from .progress import DemoProgressProvider, presentation
 from .library import LibraryService, PROFILES, normalized
 from .installed import InstalledLibrary
-from .launcher import Launcher
+from .launcher import GameLauncher
 from .local_artwork import LocalArtwork
 from pathlib import Path
-import tempfile,weakref
+import tempfile,weakref,sqlite3
 
 class Bridge(QObject):
     operationChanged = Signal()
@@ -28,7 +27,7 @@ class Bridge(QObject):
         self._states={}
         self._detail_id=""
         self.installed=InstalledLibrary(store)
-        self.launcher=Launcher(self.installed,self)
+        self.launcher=GameLauncher(self.installed,self)
         self._temp_assets=tempfile.TemporaryDirectory(prefix="orvex-assets-") if store.path is None else None
         if self._temp_assets:weakref.finalize(self,self._temp_assets.cleanup)
         root=Path(self._temp_assets.name) if self._temp_assets else store.path.parent/"artwork"
@@ -41,6 +40,8 @@ class Bridge(QObject):
     def librarySource(self):return self.store.get("library_source","real")
     @Property(str,notify=operationChanged)
     def operationMessage(self):return self._message
+    @Property(str,notify=operationChanged)
+    def launchState(self):return self.launcher.state
     @Property(bool,notify=operationChanged)
     def launchBusy(self):return self.launcher.busy
     @Property("QVariantMap",notify=operationChanged)
@@ -54,12 +55,13 @@ class Bridge(QObject):
         self._detail_id="";self._focused_id="";self.store.set("library_source",source)
         self.libraryChanged.emit();self.indexChanged.emit();self.detailChanged.emit();self.visualChanged.emit()
     @Slot(str,str,str,result=bool)
-    def importGame(self,name,platform,path):
+    @Slot(str,str,str,str,result=bool)
+    def importGame(self,name,platform,path,arguments="[]"):
         try:
             if self._profile!="adult":raise ValueError("Importación disponible en el perfil Adulto. Los títulos sin edad verificada no se muestran en Infantil.")
-            game_id=self.installed.import_game(name,platform,path);self.setLibrarySource("real");self.clearFilters();self.focusItem(game_id)
+            game_id=self.installed.import_game(name,platform,path,arguments);self.setLibrarySource("real");self.clearFilters();self.focusItem(game_id)
             self._message="Juego importado. No se ejecutó ningún archivo.";self.operationChanged.emit();return True
-        except (OSError,ValueError) as e:
+        except (OSError,ValueError,sqlite3.Error) as e:
             self._message=str(e);self.operationChanged.emit();return False
     @Slot()
     def explainClose(self):
@@ -79,13 +81,13 @@ class Bridge(QObject):
         try:
             if self._profile!="adult":raise ValueError("Edición disponible en perfil Adulto.")
             self.artwork.prepare(item_id,role,path);self._message="Revisa la imagen antes de aplicarla. Usa solo recursos que tengas derecho a utilizar.";self.operationChanged.emit();return True
-        except (OSError,ValueError) as e:self._message=str(e);self.operationChanged.emit();return False
+        except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e);self.operationChanged.emit();return False
     @Slot()
     def confirmArtwork(self):
         try:
             if self._profile!="adult":self.artwork.discard();return
             self.artwork.confirm();self._message="Imagen aplicada en la biblioteca personal."
-        except (OSError,ValueError) as e:self._message=str(e)
+        except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e)
         self.operationChanged.emit();self.refresh();self.detailChanged.emit()
     @Slot()
     def cancelArtwork(self):self.artwork.discard();self.operationChanged.emit()
@@ -95,10 +97,6 @@ class Bridge(QObject):
         return self.service.lookup(item_id,self._profile)
     def state(self):
         return self._states.setdefault((self._profile,self._page,self.librarySource),dict(query="",category="Todas",favorites=False,index=0))
-    @Property("QVariantList", constant=True)
-    def catalog(self):
-        # Historical demo-data contract; views use the profile-filtered entries API.
-        return catalog()
     @Property(int, notify=pageChanged)
     def page(self):return self._page
     @Property(str, notify=libraryChanged)

@@ -8,6 +8,8 @@ from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtQuick import QQuickItem,QQuickWindow
 from PySide6.QtTest import QTest
 import shiboken6
+from artifacts import capture_dir
+from ui_selectors import find_item
 from orvex.core.store import Store
 from orvex.core.bridge import Bridge
 from real_fixture import build_fixture
@@ -25,7 +27,7 @@ class RealUiTests(unittest.TestCase):
   while self.b.launchBusy and time.monotonic()<deadline:QTest.qWait(20)
   self.assertFalse(self.b.launchBusy);self.b.cancelLaunch();self.b.cancelArtwork();self.window.close();shiboken6.delete(self.engine);self.store.close();self.temp.cleanup();self.assertEqual(self.errors,[])
  def click(self,name):
-  item=self.window.findChild(QObject,name);self.assertIsNotNone(item);p=item.mapToScene(item.boundingRect().center());QTest.mouseClick(self.window,Qt.LeftButton,pos=QPoint(round(p.x()),round(p.y())));QTest.qWait(40)
+  item=find_item(self.window,name);p=item.mapToScene(item.boundingRect().center());QTest.mouseClick(self.window,Qt.LeftButton,pos=QPoint(round(p.x()),round(p.y())));QTest.qWait(40)
  def import_form(self):
   self.click('importButton');QTest.qWait(100)
   for name,text in [('importName','ORVEX · Aplicación controlada'),('importPlatform','PC Linux'),('importExecutable',str(self.exe))]:self.window.findChild(QObject,name).setProperty('text',text)
@@ -37,7 +39,7 @@ class RealUiTests(unittest.TestCase):
   while self.b.launchBusy and time.monotonic()<deadline:QTest.qWait(20)
   self.assertFalse(self.b.launchBusy);self.assertTrue((self.exe.parent/'orvex-test-ran.txt').exists());self.assertIsNotNone(self.b.detail['progress']['last_session']);self.assertIsNone(self.b.detail['progress']['percent'])
  def test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions(self):
-  out=Path(__file__).parents[1]/'preview/real-launch';out.mkdir(exist_ok=True)
+  out=capture_dir('qt-real');out.mkdir(exist_ok=True)
   def snap(name):QTest.qWait(50);self.assertTrue(self.window.grabWindow().save(str(out/(name+'.png'))))
   snap('empty');self.click('importButton');QTest.qWait(100);snap('import')
   for name,text in [('importName','ORVEX · Aplicación controlada'),('importPlatform','PC Linux'),('importExecutable',str(self.exe))]:self.window.findChild(QObject,name).setProperty('text',text)

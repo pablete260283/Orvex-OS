@@ -30,7 +30,7 @@ Window {
             Image { id: brandLogo; objectName: "brandLogo"; x: 92; y: 42; width: 350; height: 350*165/610; source: "assets/brand/svg/orvex-horizontal-dark.svg"; sourceSize: Qt.size(1220,330); fillMode: Image.PreserveAspectFit; onStatusChanged: if(status===Image.Error && source.toString().endsWith(".svg")) source="assets/brand/png/orvex-horizontal-dark-4x.png" }
             Row { x: 600; y: 57; spacing: 24
                 Repeater { id: nav; model: ["Videojuegos","Multimedia"]
-                    NavItem { required property int index; required property string modelData; width: 220; label: modelData; selected: backend.page===index+1; onActivated: window.navigate(index+1)
+                    NavItem { required property int index; required property string modelData; objectName: "nav"+(index+1); width: 220; label: modelData; selected: backend.page===index+1; onActivated: window.navigate(index+1)
                         Keys.onRightPressed: window.navigate(index===0?2:1)
                         Keys.onLeftPressed: window.navigate(index===0?2:1)
                         Keys.onDownPressed: library.enter()

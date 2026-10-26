@@ -1,3 +1,5 @@
+> Estado vigente: [auditoría y continuidad](docs/CONTINUITY.md). Esquema SQLite 4, argumentos JSON confirmados y GameLauncher con estados. Resultados anteriores debajo son históricos.
+
 # ORVEX OS 0.2 · Consola y biblioteca local
 
 Launcher de entretenimiento con Qt 6/QML, PySide6 y SQLite. Esta etapa incorpora importación y ejecución de aplicaciones nativas reales; todavía no es una distribución Linux instalable ni garantiza compatibilidad con cualquier juego comercial.
@@ -17,7 +19,7 @@ PYTHONPATH=src .venv/bin/python -m orvex
 ```
 
 1. Videojuegos abre la biblioteca **real**, inicialmente vacía. `+ Importar juego` permite indicar nombre, plataforma y ruta absoluta, o examinar archivos.
-2. Se aceptan ejecutables nativos: `.exe` Windows o ELF Linux con permiso de ejecución. No se admiten scripts, `.bat`, accesos directos, argumentos ni ejecución mediante shell en esta fase. Los juegos de otras plataformas necesitarán adaptadores posteriores.
+2. Se aceptan ejecutables nativos: `.exe` Windows o ELF Linux con permiso de ejecución. Se admiten parámetros como array JSON, confirmado al lanzar. No se admiten scripts, `.bat`, accesos directos ni ejecución mediante shell en esta fase. Los juegos de otras plataformas necesitarán adaptadores posteriores.
 3. Guardar registra la referencia en SQLite, **sin ejecutar**. Selecciona el juego y pulsa Continuar jugando o abre su ficha y pulsa Jugar.
 4. El primer lanzamiento muestra nombre y ruta para confirmar. Si cambia el contenido del archivo, se vuelve a pedir confirmación. La validación no certifica que el ejecutable sea seguro; usa únicamente archivos conocidos y confiables.
 5. Al terminar el proceso directo se registran duración, última ejecución y resultado. El tiempo observado no se convierte en porcentaje de campaña. Un launcher que delega en otro proceso puede finalizar antes que el juego.
@@ -33,7 +35,7 @@ La cabecera tiene solo Videojuegos/Multimedia, menú de perfil y engranaje. Carr
 
 ## Persistencia y compatibilidad
 
-SQLite conserva preferencias/favoritos de 0.1/0.2 y añade `real_games` y `play_sessions` mediante migración aditiva a esquema 3. Se conserva la ruta histórica `Entertainment Preview` para no perder datos; el nombre visible sigue siendo ORVEX OS. No se modifican los ejecutables importados. Solo una instancia Qt por usuario. Mientras hay un proceso supervisado, cierra el juego antes de salir de ORVEX. Si el host termina abruptamente, la sesión se marca interrumpida al reiniciar, sin inventar duración.
+SQLite conserva preferencias/favoritos de 0.1/0.2 y añade `real_games` y `play_sessions` mediante migración aditiva a esquema 4. Se conserva la ruta histórica `Entertainment Preview` para no perder datos; el nombre visible sigue siendo ORVEX OS. No se modifican los ejecutables importados. Solo una instancia Qt por usuario. Mientras hay un proceso supervisado, cierra el juego antes de salir de ORVEX. Si el host termina abruptamente, la sesión se marca interrumpida al reiniciar, sin inventar duración.
 
 Multimedia, búsqueda, filtros, favoritos, fichas y ajustes continúan disponibles. No hay streaming, emuladores, ROMs, BIOS, DRM, reproducción multimedia ni proveedores de metadatos conectados. Logo provisional conservado.
 

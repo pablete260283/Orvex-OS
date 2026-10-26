@@ -23,7 +23,7 @@ main.console{top:180px;height:825px;overflow-y:auto;overflow-x:hidden;scrollbar-
 (function(root){
 'use strict';
 const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
-const allowed=(e,p)=>p==='adult'||p==='child'&&Number.isInteger(e.age)&&e.age>=0&&e.age<=7;
+const allowed=(e,p)=>e!==null&&typeof e==='object'&&!Array.isArray(e)&&(p==='adult'||p==='child'&&Number.isInteger(e.age)&&e.age>=0&&e.age<=7);
 function createSession(catalog,storage,progress={}){
  let available=true,cache={};
  const get=(k,d)=>{try{const v=storage.getItem(k);return v===null?d:JSON.parse(v)}catch{return d}};
