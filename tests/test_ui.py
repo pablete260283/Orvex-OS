@@ -23,7 +23,7 @@ class UiTests(unittest.TestCase):
         self.engine.rootContext().setContextProperty('backend',self.b)
         self.engine.load(QUrl.fromLocalFile(str(Path(__file__).parents[1]/'src/orvex/ui/Main.qml')))
         self.assertTrue(self.engine.rootObjects());self.window=self.engine.rootObjects()[0];self.window.requestActivate();QTest.qWait(80)
-        self.assertEqual(self.window.title(),'ORVEX OS 0.2 · Biblioteca local')
+        self.assertEqual(self.window.title(),'ORVEX OS 0.3.2 · Biblioteca local')
     def tearDown(self):
         self.window.close();shiboken6.delete(self.engine);self.store.close();self.assertEqual(self.errors,[])
     def key(self,key):QTest.keyClick(self.window,key);self.app.processEvents();QTest.qWait(15)

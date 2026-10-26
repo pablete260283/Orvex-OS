@@ -6,7 +6,7 @@ import "pages"
 Window {
     id: window
     width: 1440; height: 810; minimumWidth: 960; minimumHeight: 540; visible: true
-    title: "ORVEX OS 0.2 · Biblioteca local"; color: "#0b1320"
+    title: "ORVEX OS 0.3.2 · Biblioteca local"; color: "#0b1320"
     onClosing: function(close) { if(backend.launchBusy){close.accepted=false;backend.explainClose()} }
     readonly property int page: backend.page
     readonly property bool brandReady: brandLogo.status===Image.Ready
@@ -51,7 +51,7 @@ Window {
             Text { x: 92; y: 145; width: 1736; text: backend.launchState==="Error"?"No se pudo completar la operación. Consulta Configuración → Sistema.":""; color: "#a8f3de"; font.pixelSize: 18; elide: Text.ElideRight }
             SettingsPage { onImportRequested: localDialogs.openImport(); onArtworkRequested: function(gameId,role){localDialogs.selectArtwork(gameId,role)} id: settings; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===3; backend: shellBackend }
             Text { x: 94; y: 1042; text: "Flechas / Tab Navegar    Enter Elegir    Esc Volver    F11 Pantalla completa"; color: "#7891a5"; font.pixelSize: 17 }
-            Text { x: 1120; y: 1042; text: "0.2 · Biblioteca local + catálogo demo · Perfiles sin PIN"; color: "#a8f3de"; font.pixelSize: 17 }
+            Text { x: 1120; y: 1042; text: "0.3.2 · Biblioteca local · Perfiles sin PIN"; color: "#a8f3de"; font.pixelSize: 17 }
         }
         LocalLibraryDialogs { id: localDialogs; anchors.fill: parent; backend: shellBackend }
         DetailPage { onArtworkRequested: function(gameId,role){localDialogs.selectArtwork(gameId,role)} id: detail; objectName: "detailPage"; anchors.fill: parent; backend: shellBackend; onDismissed: {if(backend.page===1 || backend.page===2)library.restore();else if(nav.itemAt(backend.page-1)) nav.itemAt(backend.page-1).forceActiveFocus()} }
