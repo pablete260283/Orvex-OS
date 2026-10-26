@@ -28,6 +28,8 @@ class Bridge(QObject):
         self._detail_id=""
         from ..adapters.dolphin import DolphinAdapter
         self.dolphin=DolphinAdapter(store)
+        from ..adapters.pcsx2 import PCSX2Adapter
+        self.pcsx2=PCSX2Adapter(store)
         self.installed=InstalledLibrary(store)
         self.launcher=GameLauncher(self.installed,self)
         self._temp_assets=tempfile.TemporaryDirectory(prefix="orvex-assets-") if store.path is None else None
@@ -101,6 +103,33 @@ class Bridge(QObject):
     @Slot()
     def cancelArtwork(self):self.artwork.discard();self.operationChanged.emit()
     @Slot(str,str,result=bool)
+    def associateControlProfile(self,item_id,path):
+        if self._profile!="adult" or not self.installed.raw(item_id):return False
+        profile=Path(path).expanduser()
+        if not profile.is_absolute() or not profile.is_file() or profile.suffix.lower()!='.ini':
+            self._message="Selecciona un perfil INI existente con ruta absoluta.";self.operationChanged.emit();return False
+        self.store.set('control_profile:'+item_id,str(profile.resolve()))
+        self._message="Asociación conservada. Activa ese perfil dentro del emulador; ORVEX no sobrescribe perfiles. Aplicación automática pendiente.";self.operationChanged.emit();return True
+    @Slot(str,str,str,result=bool)
+    def configureEmulator(self,key,path,root):
+        if self._profile!="adult" or key not in ['dolphin','pcsx2']:return False
+        try:
+            getattr(self,key).configure(path,root);self._message="Configuración guardada. Verifica BIOS y mandos dentro del emulador antes de jugar.";self.operationChanged.emit();return True
+        except (OSError,ValueError) as e:self._message=str(e);self.operationChanged.emit();return False
+    @Slot(str)
+    def scanEmulator(self,key):
+        if self._profile!="adult" or self.launchBusy or key not in ['dolphin','pcsx2']:return
+        self._message="Escaneando…";self.operationChanged.emit()
+        try:
+            adapter=getattr(self,key);adapter.scan();r=adapter.result
+            self._message=f"Encontrados: {r['found']} · Nuevos: {r['new']} · Existentes: {r['existing']} · Errores: {r['errors']}"
+            self.refresh()
+        except (OSError,ValueError,sqlite3.Error) as e:self._message="No se pudo escanear: "+str(e)
+        self.operationChanged.emit()
+    @Property("QVariantList",notify=operationChanged)
+    def emulatorStatus(self):
+        return [dict(name=key,configured=bool(self.store.get(key+'_executable',''))) for key in ['dolphin','pcsx2']]
+    @Slot(str,str,result=bool)
     def configureDolphin(self,executable,root):
         if self._profile!="adult":return False
         try:self.dolphin.configure(executable,root);self._message="Dolphin configurado. No se ha iniciado ningún juego.";self.operationChanged.emit();return True
@@ -108,7 +137,7 @@ class Bridge(QObject):
     @Slot()
     def scanDolphin(self):
         if self._profile!="adult" or self.launchBusy:return
-        try:self._message=str(self.dolphin.scan())+" juegos nuevos detectados.";self.setLibrarySource("real");self.refresh()
+        try:self.scanEmulator("dolphin");self.scanEmulator("pcsx2");self.setLibrarySource("real");self.refresh()
         except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e)
         self.operationChanged.emit()
     @Slot(str,str,result=str)

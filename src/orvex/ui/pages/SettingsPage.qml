@@ -43,7 +43,7 @@ La integración se desarrollará en una próxima fase."; color: settings.categor
             ActionButton { width: 350; text: "Infantil · demo"; selected: settings.backend.profile==="child"; onClicked: settings.backend.setProfile("child") }
         }
         Column { x: 40; y: 110; spacing: 14; visible: settings.category===3; width: 1220
-            ActionButton { text: "Dolphin / carpetas…"; onClicked: dolphinSetup.open() }
+            ActionButton { text: "Emuladores / carpetas…"; onClicked: dolphinSetup.open() }
             ActionButton { text: "Importar juego"; onClicked: settings.importRequested() }
             ComboBox { id: games; width: 1100; model: settings.backend.managedGames; textRole: "title"; onActivated: {var e=model[currentIndex];settings.selectedGame=e.id;editName.text=e.name;editPlatform.text=e.platform;editPath.text=e.executable;editArgs.text=e.arguments} }
             Row { spacing: 15
@@ -64,14 +64,19 @@ La integración se desarrollará en una próxima fase."; color: settings.categor
             }
         }
         ActionButton { x: 900; y: 580; visible: settings.category===3; text: "Quitar de biblioteca…"; onClicked: removal.open() }
-        Popup { id: dolphinSetup; x: 50; y: 20; width: 1150; height: 540; modal: true
+        Popup { id: dolphinSetup; x: 50; y: 20; width: 1150; height: 800; modal: true
+            background: Rectangle {color: "#142333";radius: 18; border.color: "#a8f3de"}
             Column { spacing: 20; width: parent.width
-                Label { text: "Dolphin Wii / GameCube · Configuración excepcional" }
-                TextField { id: dolphinPath; width: 1050; placeholderText: "Ruta de Dolphin.exe" }
+                Label { color: "#edf5f8"; text: "Emuladores · Dolphin (Wii/GameCube), PCSX2 (PS2)" }
+                ComboBox { id: emulatorChoice; width: 1050; model: ["dolphin","pcsx2"] }
+                TextField { id: dolphinPath; width: 1050; placeholderText: "Ruta del ejecutable del emulador" }
                 TextField { id: romRoot; width: 1050; placeholderText: "Carpeta principal de ROMs (contiene Wii y GameCube)" }
-                ActionButton { text: "Guardar configuración"; onClicked: settings.backend.configureDolphin(dolphinPath.text,romRoot.text) }
-                ActionButton { text: "Escanear ahora"; onClicked: settings.backend.scanDolphin() }
-                Text { width: 1050; wrapMode: Text.Wrap; text: settings.backend.operationMessage; color: "white" }
+                ActionButton { text: "Guardar configuración"; onClicked: settings.backend.configureEmulator(emulatorChoice.currentText,dolphinPath.text,romRoot.text) }
+                ActionButton { text: "Escanear ahora"; onClicked: settings.backend.scanEmulator(emulatorChoice.currentText) }
+                Text { width: 1050; wrapMode: Text.Wrap; text: settings.backend.operationMessage; color: "#edf5f8" }
+                Text { color: "#edf5f8"; text: "Selecciona primero un juego en Biblioteca para asociar su perfil." }
+                TextField { id: profileReference; width: 1050; placeholderText: "Perfil INI existente (no se modifica)" }
+                ActionButton { text: "Asociar perfil"; onClicked: settings.backend.associateControlProfile(settings.selectedGame,profileReference.text) }
                 ActionButton { text: "Cerrar"; onClicked: dolphinSetup.close() }
             }
         }
