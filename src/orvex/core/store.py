@@ -4,7 +4,7 @@ import json
 import sqlite3
 from pathlib import Path
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 
 class StoreOpenError(RuntimeError):
@@ -12,6 +12,10 @@ class StoreOpenError(RuntimeError):
 
 
 MIGRATIONS = {
+    5: [
+        "ALTER TABLE real_games ADD COLUMN hidden INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE real_games ADD COLUMN metadata TEXT NOT NULL DEFAULT '{}'",
+    ],
     1: ["CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)"],
     2: [
         "CREATE TABLE IF NOT EXISTS favorites (profile TEXT NOT NULL, item_id TEXT NOT NULL, PRIMARY KEY(profile,item_id))"

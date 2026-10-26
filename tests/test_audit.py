@@ -84,7 +84,7 @@ class MigrationTests(unittest.TestCase):
                 db.execute(f"PRAGMA user_version={version}")
             store = Store(path)
             self.assertEqual(store.get("profile"), "child")
-            self.assertEqual(store.db.execute("PRAGMA user_version").fetchone()[0], 4)
+            self.assertEqual(store.db.execute("PRAGMA user_version").fetchone()[0], 5)
             self.assertTrue(store.backup_path.is_file())
             if version == 2:
                 self.assertEqual(store.favorites("child"), ["aurora"])
