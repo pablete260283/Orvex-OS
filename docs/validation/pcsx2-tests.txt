@@ -1,0 +1,65 @@
+test_manifest_assets_and_demo_separation (test_artwork.ArtworkTests.test_manifest_assets_and_demo_separation) ... ok
+test_start_route_showcase_independent_of_search_and_safe_profile (test_artwork.ArtworkTests.test_start_route_showcase_independent_of_search_and_safe_profile) ... QObject::startTimer: Timers can only be used with threads started with QThread
+ok
+test_unapproved_missing_remote_and_escape_rejected (test_artwork.ArtworkTests.test_unapproved_missing_remote_and_escape_rejected) ... ok
+test_corrupt_or_unopenable_database_is_not_replaced (test_audit.MigrationTests.test_corrupt_or_unopenable_database_is_not_replaced) ... ok
+test_future_version_refused_without_writes_or_downgrade (test_audit.MigrationTests.test_future_version_refused_without_writes_or_downgrade) ... ok
+test_invalid_preference_defaults_without_overwriting_value (test_audit.MigrationTests.test_invalid_preference_defaults_without_overwriting_value) ... ok
+test_migration_failure_rolls_back_and_keeps_backup (test_audit.MigrationTests.test_migration_failure_rolls_back_and_keeps_backup) ... ok
+test_migrations_from_legacy_versions_preserve_preferences (test_audit.MigrationTests.test_migrations_from_legacy_versions_preserve_preferences) ... ok
+test_opening_second_connection_does_not_interrupt_live_session (test_audit.MigrationTests.test_opening_second_connection_does_not_interrupt_live_session) ... ok
+test_v3_upgrade_preserves_games_and_requires_argument_confirmation (test_audit.MigrationTests.test_v3_upgrade_preserves_games_and_requires_argument_confirmation) ... ok
+test_bridge_and_all_child_surfaces_filter_before_projection (test_audit.PolicyTests.test_bridge_and_all_child_surfaces_filter_before_projection) ... QObject::startTimer: Timers can only be used with threads started with QThread
+ok
+test_shared_age_cases (test_audit.PolicyTests.test_shared_age_cases) ... ok
+test_app_name_icon_and_preference_location (test_brand.BrandTests.test_app_name_icon_and_preference_location) ... ok
+test_html_uses_original_svg_and_png (test_brand.BrandTests.test_html_uses_original_svg_and_png) ... ok
+test_svg_resources_are_valid (test_brand.BrandTests.test_svg_resources_are_valid) ... ok
+test_missing_paths_and_invalid_configuration (test_dolphin.DolphinTests.test_missing_paths_and_invalid_configuration) ... ok
+test_scan_commands_duplicates_and_persistence_without_boot (test_dolphin.DolphinTests.test_scan_commands_duplicates_and_persistence_without_boot) ... ok
+test_child_filter_every_surface (test_library.LibraryTests.test_child_filter_every_surface) ... ok
+test_detail_return_retains_state (test_library.LibraryTests.test_detail_return_retains_state) ... ok
+test_empty_results_and_filtered_favorite_removal (test_library.LibraryTests.test_empty_results_and_filtered_favorite_removal) ... ok
+test_favorites_profile_isolation (test_library.LibraryTests.test_favorites_profile_isolation) ... ok
+test_media_type_and_synopsis (test_library.LibraryTests.test_media_type_and_synopsis) ... ok
+test_migration_and_restart (test_library.LibraryTests.test_migration_and_restart) ... ok
+test_profile_switch_closes_adult_detail_and_search (test_library.LibraryTests.test_profile_switch_closes_adult_detail_and_search) ... ok
+test_search_and_platform_combined (test_library.LibraryTests.test_search_and_platform_combined) ... ok
+test_unknown_age_fails_closed (test_library.LibraryTests.test_unknown_age_fails_closed) ... ok
+test_index_persist_commands_and_duplicate_feedback (test_pcsx2.PCSX2Tests.test_index_persist_commands_and_duplicate_feedback) ... ok
+test_missing_root_and_file (test_pcsx2.PCSX2Tests.test_missing_root_and_file) ... ok
+test_arguments_are_literal_persisted_confirmed_and_states_observable (test_real_launch.RealLaunchTests.test_arguments_are_literal_persisted_confirmed_and_states_observable) ... ok
+test_artwork_preview_confirmation_replacement_and_persistence (test_real_launch.RealLaunchTests.test_artwork_preview_confirmation_replacement_and_persistence) ... ok
+test_cancel_then_changed_binary_requires_new_confirmation (test_real_launch.RealLaunchTests.test_cancel_then_changed_binary_requires_new_confirmation) ... ok
+test_child_demo_separation_and_pending_authorization (test_real_launch.RealLaunchTests.test_child_demo_separation_and_pending_authorization) ... ok
+test_confirm_launch_finish_time_and_repeat (test_real_launch.RealLaunchTests.test_confirm_launch_finish_time_and_repeat) ... ok
+test_failed_start_and_nonzero_exit (test_real_launch.RealLaunchTests.test_failed_start_and_nonzero_exit) ... ok
+test_import_does_not_execute_and_persists (test_real_launch.RealLaunchTests.test_import_does_not_execute_and_persists) ... ok
+test_interrupted_session_recovery_does_not_invent_duration (test_real_launch.RealLaunchTests.test_interrupted_session_recovery_does_not_invent_duration) ... ok
+test_invalid_arguments_rejected_without_import (test_real_launch.RealLaunchTests.test_invalid_arguments_rejected_without_import) ... ok
+test_invalid_paths_duplicate_and_no_shell_import (test_real_launch.RealLaunchTests.test_invalid_paths_duplicate_and_no_shell_import) ... ok
+test_missing_executable_after_import_and_running_busy (test_real_launch.RealLaunchTests.test_missing_executable_after_import_and_running_busy) ... ok
+test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_real_ui.RealUiTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+test_real_ui_import_confirm_launch_and_observed_statistics (test_real_ui.RealUiTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+test_demo_catalog (test_store.StoreTests.test_demo_catalog) ... ok
+test_roundtrip_across_restart (test_store.StoreTests.test_roundtrip_across_restart) ... ok
+test_update_and_safe_parameters (test_store.StoreTests.test_update_and_safe_parameters) ... ok
+test_favorite_keeps_selected_card_on_return (test_ui.UiTests.test_favorite_keeps_selected_card_on_return) ... ok
+test_featured_background_updates_on_focus (test_ui.UiTests.test_featured_background_updates_on_focus) ... ok
+test_keyboard_routes_and_back (test_ui.UiTests.test_keyboard_routes_and_back) ... ok
+test_keyboard_search_open_back_and_state (test_ui.UiTests.test_keyboard_search_open_back_and_state) ... ok
+test_mouse_filter_popup_and_empty_favorites (test_ui.UiTests.test_mouse_filter_popup_and_empty_favorites) ... ok
+test_mouse_profile_and_settings (test_ui.UiTests.test_mouse_profile_and_settings) ... ok
+test_mouse_routes_open_favorite_demo_and_back (test_ui.UiTests.test_mouse_routes_open_favorite_demo_and_back) ... ok
+test_render_pages_details_and_child_at_tv_resolutions (test_ui.UiTests.test_render_pages_details_and_child_at_tv_resolutions) ... ok
+test_hide_edit_remove_preserves_files_and_optional_history (test_v03.ManagementTests.test_hide_edit_remove_preserves_files_and_optional_history) ... ok
+test_metadata_requires_explicit_confirmation (test_v03.ManagementTests.test_metadata_requires_explicit_confirmation) ... ok
+test_background_modes_and_persistence (test_visual.VisualTests.test_background_modes_and_persistence) ... ok
+test_child_does_not_inherit_adult_art_or_progress (test_visual.VisualTests.test_child_does_not_inherit_adult_art_or_progress) ... ok
+test_movie_background_and_demo_separation (test_visual.VisualTests.test_movie_background_and_demo_separation) ... ok
+test_recent_games_and_unknown_percentage (test_visual.VisualTests.test_recent_games_and_unknown_percentage) ... ok
+
+----------------------------------------------------------------------
+Ran 58 tests in 11.893s
+
+OK

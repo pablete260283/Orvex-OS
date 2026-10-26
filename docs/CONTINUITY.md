@@ -9,3 +9,7 @@ Siguiente acción: probar administrador QML/Windows (selección y edición, elim
 ## Checkpoint Dolphin
 
 Implementación del adaptador, índice por ROM, carpeta configurable, escaneo manual/periódico y lanzamiento mediante supervisor común. Ver DOLPHIN.md y validation/dolphin-tests.txt. 56 pruebas Python/Qt. Aún NO validado Dolphin real: siguiente acción prioritaria ejecutar el procedimiento Windows con juego propio/autorizado y registrar versión/resultados. Pulir selector de ejecutable/detección en UI, edición de referencias de emulador y escaneo asíncrono después. No confundir fixtures unitarias con emulación real.
+
+## 0.3.1 PCSX2
+
+Rama feature/orvex-0.3.1; detalle vigente PCSx2: docs/PCSX2.md. Adaptador/indexador/registro común y comandos PCSX2 preparados; 58 tests Python/Qt. Próxima acción: probar PCSX2 Qt y regresión Dolphin en Windows. No afirmar PCSX2 funcionando hasta ejecución real. Completar escaneo asíncrono y aplicación segura de perfil por juego; la asociación actual solo guarda referencia sin tocar perfiles.

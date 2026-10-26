@@ -42,8 +42,8 @@ class GameLauncher(QObject):
             game = self.library.raw(game_id)
             if not game:
                 raise ValueError("Juego no encontrado.")
-            from ..adapters.dolphin import DolphinAdapter
-            resolved=DolphinAdapter(self.store).resolve_game(game_id)
+            from ..adapters.registry import resolve
+            resolved=resolve(self.store,game_id)
             if resolved:
                 game['executable']=resolved[0];game['arguments']=json.dumps(resolved[1])
             path, digest = validate_executable(game["executable"])
@@ -77,8 +77,8 @@ class GameLauncher(QObject):
             return
         try:
             game = self.library.raw(pending["id"])
-            from ..adapters.dolphin import DolphinAdapter
-            resolved=DolphinAdapter(self.store).resolve_game(pending['id'])
+            from ..adapters.registry import resolve
+            resolved=resolve(self.store,pending['id'])
             if resolved:game['executable']=resolved[0];game['arguments']=json.dumps(resolved[1])
             path, digest = validate_executable(game["executable"])
             arguments = validate_arguments(game["arguments"])
