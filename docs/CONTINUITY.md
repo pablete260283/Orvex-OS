@@ -1,15 +1,11 @@
-# Continuidad de ORVEX
+# Continuidad · ORVEX 0.3
 
-Rama: feature/orvex-real-launch. Base remota al retomar: a2bec127ed92311d9cb51ea0de6dcd3e1269a7e5 (PR #4). Correcciones locales identificables: 16706fc; el commit remoto de auditoría que contiene este documento es el punto vigente (consultar HEAD de la rama). No fusionar main ni PR #3 sin aprobación.
+Rama feature/orvex-0.3, basada en 9a0d7cc del PR #4. Estado y límites vigentes: ORVEX_0.3.md. El último commit de esta rama en GitHub es el checkpoint verificable. No fusionar main.
 
-Implementado: GameLauncher con Disponible/Preparando/Ejecutando/Finalizado/Error; parámetros como array JSON persistido, literal y confirmado junto con SHA-256. Se mantiene importación sin ejecución, sesiones observadas y recursos locales confirmados. Conserva interfaz de consola y HTML exclusivamente visual.
+54 pruebas Python/Qt aprobadas. Ejecutar requirements-dev.txt, unittest discover -s tests -v con PYTHONPATH=src y QT_QPA_PLATFORM=offscreen; Ruff check/format gradual. Capturas deben exportarse fuera del checkout con ORVEX_CAPTURE_DIR.
 
-Auditoría: Bridge.catalog eliminado; 45 casos compartidos Python/JS, incluidos 7.0 y valores inválidos. Política infantil acepta solo números integrales finitos 0–7, nunca bool/cadenas. Migraciones transaccionales 0→1→2→3→4, copia SQLite antes de migrar, rechazo de versión futura sin downgrade, comprobación de integridad y ventana de error sin borrar datos. JSON inválido conserva su valor y usa fallback. Recuperación de sesiones solo tras bloqueo de instancia.
+Siguiente acción: probar administrador QML/Windows (selección y edición, eliminación con/sin historial), actualizar HTML a 0.3, completar exportación de diagnóstico y conectar proveedor de metadatos con credenciales autorizadas. Después, detectar/configurar PPSSPP o Dolphin y ejecutar un recurso de prueba autorizado. No descargar ROM/BIOS ni afirmar funcionamiento sin ejecución real. Conservar logo y experiencia de consola.
 
-Pruebas: 74 comprobaciones aprobadas: 52 Python/Qt, 9 Node y 13 recorridos Chromium/QtWebEngine Linux, Ruff check/format en siete módulos auditados. Capturas temporales fuera del checkout mediante ORVEX_CAPTURE_DIR (rechaza rutas internas); selectores visuales estables sustituyen coordenadas; manejo de flechas de biblioteca unificado. Logs audit-*.txt. Capturas anteriores versionadas siguen siendo históricas.
+## Checkpoint Dolphin
 
-GitHub Actions: cero ejecuciones al revisar. Workflow manual actualizado con Ruff, timeout y artefactos fuera del checkout. No se despachó: cuota gratuita de repositorio privado no verificable. Ejecución remota pendiente; comprobaciones locales no equivalen a Actions aprobado.
-
-Pendientes: Windows físico, mandos físicos y prueba inicial de entrada; no se afirma compatibilidad DualSense/Xbox/Wiimote. No hay hardware disponible y se priorizó estabilidad. Seguimiento de procesos hijos, progreso real de campaña y proveedores remotos siguen pendientes. Los perfiles demo no son control parental seguro.
-
-Retomar: instalar requirements-dev.txt; ejecutar ruff check . y ruff format --check .; unittest discover -s tests -v con QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software PYTHONPATH=src; node --test tests/test_web_model.cjs. Navegador requiere Playwright/Chromium o QtWebEngine con dependencias gráficas. Windows: setup-windows.cmd y run-windows.cmd; importar ejecutable conocido con parámetros [] y confirmar. No repetir investigación ni reconstruir UI.
+Implementación del adaptador, índice por ROM, carpeta configurable, escaneo manual/periódico y lanzamiento mediante supervisor común. Ver DOLPHIN.md y validation/dolphin-tests.txt. 56 pruebas Python/Qt. Aún NO validado Dolphin real: siguiente acción prioritaria ejecutar el procedimiento Windows con juego propio/autorizado y registrar versión/resultados. Pulir selector de ejecutable/detección en UI, edición de referencias de emulador y escaneo asíncrono después. No confundir fixtures unitarias con emulación real.

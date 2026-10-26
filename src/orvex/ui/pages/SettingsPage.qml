@@ -1,7 +1,11 @@
 import QtQuick
+import QtQuick.Controls
 import "../components"
 Item {
     id: settings
+    signal importRequested()
+    signal artworkRequested(string gameId,string role)
+    property string selectedGame: ""
     property var backend
     property int category: 0
     property string message: ""
@@ -17,7 +21,7 @@ Item {
     }
     Rectangle { x: 410; y: 110; width: 1320; height: 660; radius: 26; color: "#132332"
         Text { x: 45; y: 38; text: settings.categories[settings.category]; color: "#edf5f8"; font.pixelSize: 38 }
-        Text { x: 45; y: 115; width: 1220; text: settings.category===0 ? "FUNCIONAL · Preferencias guardadas en SQLite" : settings.category===3 ? "FUNCIONAL · Filtros y favoritos por perfil" : settings.category===4 ? "DEMO · Filtro infantil hasta 7+. Sin autenticación ni PIN.
+        Text { visible: settings.category!==3; x: 45; y: 115; width: 1220; text: settings.category===0 ? "FUNCIONAL · Preferencias guardadas en SQLite" : settings.category===3 ? "FUNCIONAL · Filtros y favoritos por perfil" : settings.category===4 ? "DEMO · Filtro infantil hasta 7+. Sin autenticación ni PIN.
 El cambio de perfil es libre: no es un control parental seguro." : settings.category===5 ? "FUNCIONAL · ORVEX OS 0.2 Visual Preview
 Qt 6 / QML · PySide6 · SQLite
 Biblioteca local y catálogo demo separados. Sin servicios externos." : "FUTURO · Esta categoría no controla dispositivos.
@@ -33,10 +37,63 @@ La integración se desarrollará en una próxima fase."; color: settings.categor
             }
         }
         ActionButton { objectName: "reducedMotion"; x: 45; y: 300; width: 650; visible: settings.category===0; text: "Reducir movimiento: "+(settings.backend.reducedMotion ? "Sí" : "No"); onClicked: settings.backend.toggleMotion() }
-        ActionButton { x: 45; y: 300; width: 650; visible: settings.category===3; text: "Limpiar filtros de las bibliotecas"; onClicked: {settings.backend.clearFilters();settings.message="Filtros restablecidos. Tus favoritos se conservan."} }
+        ActionButton { x: 45; y: 300; width: 650; visible: false; text: "Limpiar filtros de las bibliotecas"; onClicked: {settings.backend.clearFilters();settings.message="Filtros restablecidos. Tus favoritos se conservan."} }
         Row { x: 45; y: 330; spacing: 30; visible: settings.category===4
             ActionButton { width: 350; text: "Adulto · demo"; selected: settings.backend.profile==="adult"; onClicked: settings.backend.setProfile("adult") }
             ActionButton { width: 350; text: "Infantil · demo"; selected: settings.backend.profile==="child"; onClicked: settings.backend.setProfile("child") }
+        }
+        Column { x: 40; y: 110; spacing: 14; visible: settings.category===3; width: 1220
+            ActionButton { text: "Dolphin / carpetas…"; onClicked: dolphinSetup.open() }
+            ActionButton { text: "Importar juego"; onClicked: settings.importRequested() }
+            ComboBox { id: games; width: 1100; model: settings.backend.managedGames; textRole: "title"; onActivated: {var e=model[currentIndex];settings.selectedGame=e.id;editName.text=e.name;editPlatform.text=e.platform;editPath.text=e.executable;editArgs.text=e.arguments} }
+            Row { spacing: 15
+                TextField { id: editName; width: 550; placeholderText: "Nombre" }
+                TextField { id: editPlatform; width: 550; placeholderText: "Plataforma" }
+            }
+            TextField { id: editPath; width: 1120; placeholderText: "Ruta del ejecutable" }
+            TextField { id: editArgs; width: 1120; placeholderText: "Argumentos JSON" }
+            Row { spacing: 15
+                ActionButton { width: 260; text: "Guardar edición"; onClicked: settings.backend.editGame(settings.selectedGame,editName.text,editPlatform.text,editPath.text,editArgs.text) }
+                ActionButton { width: 260; text: "Ocultar"; onClicked: settings.backend.hideGame(settings.selectedGame,true) }
+                ActionButton { width: 260; text: "Mostrar"; onClicked: settings.backend.hideGame(settings.selectedGame,false) }
+            }
+            Row { spacing: 15
+                ActionButton { width: 260; text: "Carátula…"; onClicked: settings.artworkRequested(settings.selectedGame,"cover") }
+                ActionButton { width: 260; text: "Fondo…"; onClicked: settings.artworkRequested(settings.selectedGame,"backdrop") }
+                ActionButton { width: 260; text: "Metadatos…"; onClicked: metadataEditor.open() }
+            }
+        }
+        ActionButton { x: 900; y: 580; visible: settings.category===3; text: "Quitar de biblioteca…"; onClicked: removal.open() }
+        Popup { id: dolphinSetup; x: 50; y: 20; width: 1150; height: 540; modal: true
+            Column { spacing: 20; width: parent.width
+                Label { text: "Dolphin Wii / GameCube · Configuración excepcional" }
+                TextField { id: dolphinPath; width: 1050; placeholderText: "Ruta de Dolphin.exe" }
+                TextField { id: romRoot; width: 1050; placeholderText: "Carpeta principal de ROMs (contiene Wii y GameCube)" }
+                ActionButton { text: "Guardar configuración"; onClicked: settings.backend.configureDolphin(dolphinPath.text,romRoot.text) }
+                ActionButton { text: "Escanear ahora"; onClicked: settings.backend.scanDolphin() }
+                Text { width: 1050; wrapMode: Text.Wrap; text: settings.backend.operationMessage; color: "white" }
+                ActionButton { text: "Cerrar"; onClicked: dolphinSetup.close() }
+            }
+        }
+        Popup { id: metadataEditor; x: 100; y: 20; width: 1100; height: 600; modal: true
+            Column { spacing: 20; width: parent.width
+                Label { text: "Propuesta local JSON. No es una búsqueda en Internet." }
+                TextArea { id: proposal; width: 1000; height: 180; text: '{"description":"","genre":"","year":2026,"edition":"","source":"local"}' }
+                ActionButton { text: "Revisar propuesta"; onClicked: review.text=settings.backend.proposeMetadata(settings.selectedGame,proposal.text) }
+                TextArea { id: review; width: 1000; height: 150; readOnly: true }
+                ActionButton { text: "Confirmar reemplazo"; onClicked: {settings.backend.confirmMetadata();metadataEditor.close()} }
+            }
+        }
+        Popup { id: removal; x: 120; y: 150; width: 1000; height: 350; modal: true
+            Column { spacing: 20
+                Label { text: "Quitar referencia. Nunca se borrarán juegos ni partidas." }
+                CheckBox { id: keepHistory; checked: true; text: "Conservar historial de sesiones" }
+                ActionButton { text: "Confirmar retirada"; onClicked: {settings.backend.removeGame(settings.selectedGame,keepHistory.checked);removal.close()} }
+                ActionButton { text: "Cancelar"; onClicked: removal.close() }
+            }
+        }
+        ScrollView { x: 40; y: 220; width: 1200; height: 380; visible: settings.category===5
+            TextArea { text: settings.backend.operationMessage+"\n\n"+settings.backend.diagnosticReport; readOnly: true; selectByMouse: true; wrapMode: TextEdit.Wrap; font.pixelSize: 18 }
         }
         Text { x: 45; y: 500; width: 1200; text: settings.message; color: "#a8f3de"; font.pixelSize: 24; wrapMode: Text.WordWrap }
     }

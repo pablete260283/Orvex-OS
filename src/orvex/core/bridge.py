@@ -26,14 +26,23 @@ class Bridge(QObject):
         if self._profile not in PROFILES:self._profile="adult"
         self._states={}
         self._detail_id=""
+        from ..adapters.dolphin import DolphinAdapter
+        self.dolphin=DolphinAdapter(store)
         self.installed=InstalledLibrary(store)
         self.launcher=GameLauncher(self.installed,self)
         self._temp_assets=tempfile.TemporaryDirectory(prefix="orvex-assets-") if store.path is None else None
         if self._temp_assets:weakref.finalize(self,self._temp_assets.cleanup)
         root=Path(self._temp_assets.name) if self._temp_assets else store.path.parent/"artwork"
         self.artwork=LocalArtwork(self.installed,root)
+        from .metadata_local import LocalMetadata
+        self.metadata=LocalMetadata(self.installed)
         self._message=""
         self.launcher.changed.connect(self._launch_updated)
+        from PySide6.QtCore import QTimer
+        self.romTimer=QTimer(self);self.romTimer.setInterval(10000)
+        self.romTimer.timeout.connect(self._poll_roms);self.romTimer.start()
+    def _poll_roms(self):
+        if self.store.get("rom_root","") and self._profile=="adult" and not self.launchBusy:self.scanDolphin()
     def _launch_updated(self):
         self._message=self.launcher.message;self.operationChanged.emit();self.refresh();self.detailChanged.emit()
     @Property(str,notify=libraryChanged)
@@ -91,6 +100,47 @@ class Bridge(QObject):
         self.operationChanged.emit();self.refresh();self.detailChanged.emit()
     @Slot()
     def cancelArtwork(self):self.artwork.discard();self.operationChanged.emit()
+    @Slot(str,str,result=bool)
+    def configureDolphin(self,executable,root):
+        if self._profile!="adult":return False
+        try:self.dolphin.configure(executable,root);self._message="Dolphin configurado. No se ha iniciado ningún juego.";self.operationChanged.emit();return True
+        except (OSError,ValueError) as e:self._message=str(e);self.operationChanged.emit();return False
+    @Slot()
+    def scanDolphin(self):
+        if self._profile!="adult" or self.launchBusy:return
+        try:self._message=str(self.dolphin.scan())+" juegos nuevos detectados.";self.setLibrarySource("real");self.refresh()
+        except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e)
+        self.operationChanged.emit()
+    @Slot(str,str,result=str)
+    def proposeMetadata(self,item_id,value):
+        if self._profile!="adult":return "Perfil no autorizado"
+        try:
+            import json
+            return json.dumps(self.metadata.propose(item_id,value),ensure_ascii=False,indent=2)
+        except (ValueError,TypeError) as e:return str(e)
+    @Slot()
+    def confirmMetadata(self):
+        if self._profile=="adult":self.metadata.confirm();self.refresh()
+    @Property("QVariantList",notify=libraryChanged)
+    def managedGames(self):
+        if self._profile!="adult":return []
+        return [dict(self.installed.raw(e['id']),title=e['title']) for e in self.installed.games('adult',True)]
+    @Slot(str,str,str,str,str,result=bool)
+    def editGame(self,item_id,name,platform,path,args):
+        if self._profile!="adult" or self.launchBusy:return False
+        try:self.installed.edit(item_id,name,platform,path,args);self.refresh();return True
+        except (ValueError,OSError,sqlite3.Error) as e:self._message=str(e);self.operationChanged.emit();return False
+    @Slot(str,bool)
+    def hideGame(self,item_id,hidden):
+        if self._profile=="adult" and not self.launchBusy:self.installed.hide(item_id,hidden);self._detail_id="";self.refresh();self.detailChanged.emit()
+    @Slot(str,bool)
+    def removeGame(self,item_id,keep_history):
+        if self._profile=="adult" and not self.launchBusy:self.installed.remove(item_id,keep_history);self._detail_id="";self.refresh();self.detailChanged.emit()
+    @Property(str,notify=operationChanged)
+    def diagnosticReport(self):
+        import json
+        rows=self.store.db.execute("SELECT started_at,ended_at,duration_ms,status,exit_code FROM play_sessions ORDER BY id DESC LIMIT 100").fetchall()
+        return json.dumps(dict(version="0.3",sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
     def real_games(self):return self.installed.games(self._profile)
     def lookup(self,item_id):
         if item_id.startswith("local-"):return next((e for e in self.real_games() if e["id"]==item_id),{})

@@ -48,8 +48,8 @@ Window {
                 }
             }
             ConsolePage { onImportRequested: localDialogs.openImport(); id: library; objectName: "consolePage"; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===1 || backend.page===2; backend: shellBackend }
-            Text { x: 92; y: 145; width: 1736; text: backend.operationMessage; color: "#a8f3de"; font.pixelSize: 18; elide: Text.ElideRight }
-            SettingsPage { id: settings; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===3; backend: shellBackend }
+            Text { x: 92; y: 145; width: 1736; text: backend.launchState==="Error"?"No se pudo completar la operación. Consulta Configuración → Sistema.":""; color: "#a8f3de"; font.pixelSize: 18; elide: Text.ElideRight }
+            SettingsPage { onImportRequested: localDialogs.openImport(); onArtworkRequested: function(gameId,role){localDialogs.selectArtwork(gameId,role)} id: settings; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===3; backend: shellBackend }
             Text { x: 94; y: 1042; text: "Flechas / Tab Navegar    Enter Elegir    Esc Volver    F11 Pantalla completa"; color: "#7891a5"; font.pixelSize: 17 }
             Text { x: 1120; y: 1042; text: "0.2 · Biblioteca local + catálogo demo · Perfiles sin PIN"; color: "#a8f3de"; font.pixelSize: 17 }
         }

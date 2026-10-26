@@ -29,7 +29,7 @@ class RealUiTests(unittest.TestCase):
  def click(self,name):
   item=find_item(self.window,name);p=item.mapToScene(item.boundingRect().center());QTest.mouseClick(self.window,Qt.LeftButton,pos=QPoint(round(p.x()),round(p.y())));QTest.qWait(40)
  def import_form(self):
-  self.click('importButton');QTest.qWait(100)
+  QMetaObject.invokeMethod(self.window,'openImport');QTest.qWait(100)
   for name,text in [('importName','ORVEX · Aplicación controlada'),('importPlatform','PC Linux'),('importExecutable',str(self.exe))]:self.window.findChild(QObject,name).setProperty('text',text)
   self.click('importSave');self.assertEqual(len(self.b.entries),1);self.assertFalse((self.exe.parent/'orvex-test-ran.txt').exists())
  def test_real_ui_import_confirm_launch_and_observed_statistics(self):
@@ -41,7 +41,7 @@ class RealUiTests(unittest.TestCase):
  def test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions(self):
   out=capture_dir('qt-real');out.mkdir(exist_ok=True)
   def snap(name):QTest.qWait(50);self.assertTrue(self.window.grabWindow().save(str(out/(name+'.png'))))
-  snap('empty');self.click('importButton');QTest.qWait(100);snap('import')
+  snap('empty');QMetaObject.invokeMethod(self.window,'openImport');QTest.qWait(100);snap('import')
   for name,text in [('importName','ORVEX · Aplicación controlada'),('importPlatform','PC Linux'),('importExecutable',str(self.exe))]:self.window.findChild(QObject,name).setProperty('text',text)
   self.click('importSave');self.b.openTitle(self.b.entries[0]['id']);self.b.requestLaunch(self.b.detail['id']);QTest.qWait(100);snap('confirmation');self.b.cancelLaunch();self.b.closeDetail()
   self.b.requestLaunch(self.b.entries[0]['id']);self.b.confirmLaunch()

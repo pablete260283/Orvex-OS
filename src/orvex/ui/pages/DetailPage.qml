@@ -19,12 +19,12 @@ FocusScope {
     Text { x: 850; y: 215; width: 970; text: entry.title || ""; color: "#f0f5f9"; height: 130; maximumLineCount: 2; elide: Text.ElideRight; font.pixelSize: 52; font.weight: Font.DemiBold; wrapMode: Text.WordWrap }
     Text { x: 855; y: 365; width: 965; text: (entry.platform || "")+"  ·  "+((entry.age===undefined || entry.age===null)?"Edad no verificada":entry.age===0 ? "General" : (entry.age || "")+"+"); color: "#a8f3de"; font.pixelSize: 27 }
     Text { x: 855; y: 420; width: 920; text: entry.description || ""; height: 145; maximumLineCount: 3; elide: Text.ElideRight; wrapMode: Text.WordWrap; color: "#bbcdd9"; font.pixelSize: 28; lineHeight: 1.4 }
-    Text { x: 855; y: 580; width: 930; height: 55; maximumLineCount: 2; elide: Text.ElideRight; text: entry.availability || ""; wrapMode: Text.WrapAnywhere; color: "#91a9bb"; font.pixelSize: 22 }
+    Text { x: 855; y: 580; width: 930; height: 55; maximumLineCount: 2; elide: Text.ElideRight; text: entry.installed?"":entry.availability || ""; wrapMode: Text.WrapAnywhere; color: "#91a9bb"; font.pixelSize: 22 }
     ProgressInfo { x: 855; y: 800; width: 930; visible: entry.kind==="game"; record: entry.progress || ({}) }
     ActionButton { id: play; objectName: "demoPlay"; x: 855; y: 700; width: 350; accent: true; text: entry.installed?(backend.launchBusy?"En ejecución":"Jugar"):entry.kind==="game" ? "Jugar · DEMO" : "Ver · DEMO"; enabled: !entry.installed || !backend.launchBusy; onClicked: {if(entry.installed)backend.requestLaunch(entry.id);else detailPage.notice="Demostración: no hay un lanzador ni un reproductor conectado."} KeyNavigation.tab: back; KeyNavigation.right: back; KeyNavigation.backtab: favorite }
     ActionButton { id: favorite; objectName: "detailFavorite"; x: 1235; y: 700; width: 550; text: entry.favorite ? "♥ Quitar de favoritos" : "♡ Agregar a favoritos"; onClicked: detailPage.backend.toggleFavorite(entry.id); KeyNavigation.tab: play; KeyNavigation.right: play; KeyNavigation.backtab: back }
-    Text { x: 855; y: 650; width: 940; text: entry.installed?backend.operationMessage:detailPage.notice; wrapMode: Text.WordWrap; color: "#a8f3de"; font.pixelSize: 20 }
-    ActionButton { visible: !!entry.installed; x: 92; y: 800; width: 330; text: "Asociar carátula…"; onClicked: detailPage.artworkRequested(entry.id,"cover") }
-    ActionButton { visible: !!entry.installed; x: 450; y: 800; width: 330; text: "Asociar fondo…"; onClicked: detailPage.artworkRequested(entry.id,"backdrop") }
+    Text { x: 855; y: 650; width: 940; text: entry.installed?(backend.launchState==="Error"?"No se pudo completar el lanzamiento. Consulta Configuración → Sistema.":""):detailPage.notice; wrapMode: Text.WordWrap; color: "#a8f3de"; font.pixelSize: 20 }
+    ActionButton { visible: false; x: 92; y: 800; width: 330; text: "Asociar carátula…"; onClicked: detailPage.artworkRequested(entry.id,"cover") }
+    ActionButton { visible: false; x: 450; y: 800; width: 330; text: "Asociar fondo…"; onClicked: detailPage.artworkRequested(entry.id,"backdrop") }
     Text { x: 92; y: 970; text: "ORVEX OS 0.2 · "+backend.profileLabel+" · Perfiles demostrativos sin PIN"; color: "#8fa7b9"; font.pixelSize: 22 }
 }

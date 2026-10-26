@@ -101,7 +101,7 @@ class InstalledLibrary:
         row = cursor.fetchone()
         return dict(zip([column[0] for column in cursor.description], row)) if row else {}
 
-    def games(self, profile="adult"):
+    def games(self, profile="adult", include_hidden=False):
         # Imported titles have unknown age; fail closed for the child demonstration.
         if profile != "adult":
             return []
@@ -110,6 +110,8 @@ class InstalledLibrary:
             "SELECT id FROM real_games ORDER BY created_at DESC,id"
         ):
             e = self.raw(game_id)
+            if e["hidden"] and not include_hidden:
+                continue
             elapsed_ms, last = self.store.db.execute(
                 "SELECT COALESCE(SUM(duration_ms),0),MAX(started_at) FROM play_sessions WHERE game_id=?",
                 (game_id,),
@@ -146,10 +148,38 @@ class InstalledLibrary:
                     backdrop_url=Path(e["backdrop"]).as_uri()
                     if e["backdrop"] and Path(e["backdrop"]).is_file()
                     else resolve_art("aurora", "backdrop"),
-                    description="Juego importado en tu biblioteca personal.",
+                    description=json.loads(e["metadata"]).get("description")
+                    or "Juego importado en tu biblioteca personal.",
                     availability=e["executable"],
                     progress=progress,
                     favorite=game_id in self.store.favorites(profile),
                 )
             )
         return result
+
+    def edit(self, game_id, name, platform, executable, arguments):
+        if not self.raw(game_id):
+            raise ValueError("Juego no encontrado")
+        path, _ = validate_executable(executable)
+        args = validate_arguments(arguments)
+        if not name.strip() or not platform.strip():
+            raise ValueError("Nombre y plataforma obligatorios")
+        with self.store.db:
+            self.store.db.execute(
+                "UPDATE real_games SET name=?,platform=?,executable=?,arguments=?,trusted_hash=NULL,trusted_arguments=NULL WHERE id=?",
+                (name.strip(), platform.strip(), path, args, game_id),
+            )
+
+    def hide(self, game_id, hidden):
+        with self.store.db:
+            self.store.db.execute(
+                "UPDATE real_games SET hidden=? WHERE id=?", (int(hidden), game_id)
+            )
+
+    def remove(self, game_id, keep_history):
+        # Never touch the executable, ROM, save files or personal artwork.
+        with self.store.db:
+            if not keep_history:
+                self.store.db.execute("DELETE FROM play_sessions WHERE game_id=?", (game_id,))
+            self.store.db.execute("DELETE FROM favorites WHERE item_id=?", (game_id,))
+            self.store.db.execute("DELETE FROM real_games WHERE id=?", (game_id,))

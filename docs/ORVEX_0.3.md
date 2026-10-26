@@ -1,0 +1,17 @@
+# ORVEX 0.3 · primera iteración funcional
+
+Base: rama feature/orvex-real-launch, commit 9a0d7cc809f74805d363c1aeb84817f04d8eb009. PR #3 y #4 revisados, ambos abiertos sin fusionar. Las mejoras visuales solicitadas del PR #3 ya estaban reaplicadas en #4; no se reconstruye la UI ni se fusiona main. Nueva rama feature/orvex-0.3.
+
+Implementado: migración aditiva 4→5 con ocultación y metadatos; biblioteca real existente conservada. Administración en Configuración/Biblioteca: importar, editar nombre/plataforma/ejecutable/parámetros, ocultar/mostrar, retirar con confirmación y elección de conservar historial, carátula/fondo local con confirmación, propuesta de metadatos JSON local con revisión. Retirar nunca borra ejecutables, ROMs ni partidas, y conserva imágenes personales. El historial conservado queda en sesiones aunque la referencia ya no exista.
+
+Jugador: se retiran herramientas de importación e imágenes, rutas de ejecutables y mensajes técnicos de finalización. Conserva carrusel/fondo, ficha, favoritos y lanzamiento real. Errores esenciales remiten a Sistema. Diagnóstico en Sistema muestra versión y sesiones con tiempos/códigos, sin rutas ni nombres personales; texto seleccionable. Exportación a archivo e incidencias de failed-to-start completas todavía pendientes.
+
+Metadatos: no hay credenciales ni llamadas remotas. El módulo metadata_local es funcional y guarda únicamente tras confirmar la propuesta local; no hace búsquedas ficticias. Recursos locales elegidos siguen el flujo aprobado existente. Investigación previa conservada en ARTWORK_PROVIDERS.md: IGDB requiere credenciales Twitch y condiciones aplicables; acceso API no implica permiso de redistribución de arte. SteamGridDB necesita autenticación y revisión de derechos. Pendiente proveedor de red, coincidencias por nombre/plataforma/edición, descarga autorizada y credenciales fuera del repositorio. No se incorporaron imágenes oficiales.
+
+Validación automatizada: 54 pruebas Python/Qt aprobadas, incluida aplicación C controlada con lanzamiento, argumentos, finalización, persistencia y regresiones de auditoría. Nuevas pruebas verifican ocultación/edición/retirada sin borrar archivos y confirmación de metadatos. Ruff aprobado en su alcance gradual. Logs v03-*.txt. No se repitió navegador: HTML conserva la vista visual 0.2, sin lanzamiento local; actualización visual HTML 0.3 pendiente. No hubo ejecución de Actions ni gastos.
+
+Validación manual comunicada por Pablo (no automatizada ni observada directamente aquí): Windows con Python 3.12/PySide6 6.8.3; Bloc de notas importado/ejecutado y sesiones persistentes; Bloody Roar II ejecutado mediante lanzador externo configurado, inicio directo, imágenes locales asociadas, sesión de 457,8 segundos y acumulado. Esta evidencia corresponde a la versión instalada por el usuario, no certifica todavía los nuevos cambios 0.3.
+
+Emuladores: no se encontró Dolphin ni PPSSPP en PATH del entorno. No se descargaron juegos, ROMs, BIOS o firmware. Adaptador ejecutable y prueba real de emulador pendientes; el lanzador externo configurado por el usuario continúa siendo la vía comprobada. No se afirma compatibilidad de un adaptador no probado.
+
+Pendientes prioritarios: validación manual 0.3 en Windows, pruebas completas del administrador QML, exportación de diagnóstico a archivo, proveedor real de metadatos y adaptador de emulador con recurso de prueba autorizado. No presentar esta iteración como cierre de todas las fases.
