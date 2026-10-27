@@ -25,6 +25,7 @@ class GameLauncher(QObject):
         self.started = None
         self.game_id = ""
         self.record_error = ""
+        self.controller_manager = None
 
     @Property(bool, notify=changed)
     def busy(self):
@@ -102,6 +103,8 @@ class GameLauncher(QObject):
         self.changed.emit()
 
     def _start(self, game_id, path, digest, arguments):
+        if self.controller_manager:
+            self.controller_manager.prepare_for_launch(game_id)
         self.game_id = game_id
         self.started = None
         self.session_id = None
@@ -114,6 +117,8 @@ class GameLauncher(QObject):
         process.setStandardErrorFile(QProcess.nullDevice())
 
         def began():
+            if self.controller_manager:
+                self.controller_manager.mark_running(process.processId())
             self.started = time.monotonic()
             self.state = "Ejecutando"
             try:
@@ -140,6 +145,14 @@ class GameLauncher(QObject):
         process.finished.connect(self._finished)
         process.errorOccurred.connect(self._error)
         self.message = "Iniciando…"
+        if self.controller_manager:
+            try:
+                self.controller_manager.mark_starting()
+            except sqlite3.Error:
+                self.controller_manager.recover(finished=True)
+                self.process = None
+                process.deleteLater()
+                raise
         process.start(path, json.loads(arguments))
 
     def _error(self, error):
@@ -179,6 +192,11 @@ class GameLauncher(QObject):
         self.changed.emit()
 
     def _release(self):
+        if self.controller_manager:
+            pending_recovery = bool(self.store.get("controller_restore_journal", {}))
+            self.controller_manager.recovery = self.controller_manager.recover(finished=True)
+            if pending_recovery:
+                self.controller_manager.notice = self.controller_manager.recovery
         process = self.process
         self.process = None
         self.session_id = None

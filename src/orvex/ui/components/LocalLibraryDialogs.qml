@@ -16,14 +16,14 @@ Item {
         Column { Keys.onEscapePressed: {if(manager.backend.pendingLaunch.id)manager.backend.cancelLaunch();else if(manager.backend.pendingArtwork.id)manager.backend.cancelArtwork();else importPopup.close()} spacing: 22; width: parent.width
             Text { text: "Importar juego instalado"; font.pixelSize: 38; color: "#edf5f8" }
             Text { text: "Se guardará una referencia. Importar no ejecuta el archivo.
-Windows: .exe nativo · Linux: ELF ejecutable · sin scripts; parámetros como lista JSON."; font.pixelSize: 22; color: "#9fb4c4" }
-            TextField { id: gameName; objectName: "importName"; Accessible.name: "Nombre del juego"; width: parent.width; height: 60; font.pixelSize: 25; placeholderText: "Nombre del juego" }
-            TextField { id: platform; objectName: "importPlatform"; Accessible.name: "Plataforma"; width: parent.width; height: 60; font.pixelSize: 25; placeholderText: "Plataforma (por ejemplo, PC Windows o PC Linux)" }
+Windows: .exe nativo · Linux: ELF ejecutable · sin scripts."; font.pixelSize: 22; color: "#9fb4c4" }
+            DarkField { id: gameName; objectName: "importName"; Accessible.name: "Nombre del juego"; width: parent.width; height: 60; font.pixelSize: 25; placeholderText: "Nombre del juego" }
+            DarkField { id: platform; objectName: "importPlatform"; Accessible.name: "Plataforma"; width: parent.width; height: 60; font.pixelSize: 25; placeholderText: "Plataforma (por ejemplo, PC Windows o PC Linux)" }
             Row { spacing: 20
-                TextField { id: executable; objectName: "importExecutable"; Accessible.name: "Ruta del ejecutable"; width: 735; height: 60; font.pixelSize: 21; placeholderText: "Ruta absoluta del ejecutable"; selectByMouse: true }
+                DarkField { id: executable; objectName: "importExecutable"; Accessible.name: "Ruta del ejecutable"; width: 735; height: 60; font.pixelSize: 21; placeholderText: "Ruta absoluta del ejecutable"; selectByMouse: true }
                 ActionButton { width: 240; text: "Examinar…"; onClicked: executablePicker.open() }
             }
-            TextField { id: arguments; objectName: "importArguments"; Accessible.name: "Parámetros como array JSON"; width: parent.width; height: 60; font.pixelSize: 22; text: "[]"; placeholderText: '["--fullscreen"]' }
+            DarkField { id: arguments; objectName: "importArguments"; Accessible.name: "Parámetros como array JSON"; visible: false; width: parent.width; height: 0; font.pixelSize: 22; text: "[]"; placeholderText: '["--fullscreen"]' }
             Text { text: manager.backend.operationMessage; width: parent.width; wrapMode: Text.WordWrap; color: "#a8f3de"; font.pixelSize: 22; height: 75 }
             Row { spacing: 25
                 ActionButton { objectName: "importSave"; width: 440; text: "Guardar sin ejecutar"; accent: true; onClicked: if(manager.backend.importGame(gameName.text,platform.text,executable.text,arguments.text)){importPopup.close();gameName.clear();executable.clear();arguments.text="[]"} }

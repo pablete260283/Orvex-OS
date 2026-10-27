@@ -59,6 +59,7 @@ def main():
     navigation = create_navigation(bridge, app)
     result = app.exec()
     navigation.timer.stop()
+    bridge.controller_inventory.close()
     del engine
     store.close()
     return result

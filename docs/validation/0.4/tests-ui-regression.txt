@@ -1,0 +1,13 @@
+test_favorite_keeps_selected_card_on_return (test_ui.UiTests.test_favorite_keeps_selected_card_on_return) ... ok
+test_featured_background_updates_on_focus (test_ui.UiTests.test_featured_background_updates_on_focus) ... ok
+test_filters_still_supported_without_secondary_screen (test_ui.UiTests.test_filters_still_supported_without_secondary_screen) ... ok
+test_keyboard_routes_and_back (test_ui.UiTests.test_keyboard_routes_and_back) ... ok
+test_keyboard_search_open_back_and_state (test_ui.UiTests.test_keyboard_search_open_back_and_state) ... ok
+test_mouse_profile_and_settings (test_ui.UiTests.test_mouse_profile_and_settings) ... ok
+test_mouse_routes_open_favorite_demo_and_back (test_ui.UiTests.test_mouse_routes_open_favorite_demo_and_back) ... ok
+test_render_pages_details_and_child_at_tv_resolutions (test_ui.UiTests.test_render_pages_details_and_child_at_tv_resolutions) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 6.386s
+
+OK

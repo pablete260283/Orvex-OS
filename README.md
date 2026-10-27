@@ -1,3 +1,5 @@
+> ORVEX 0.4 Controller Manager: avance en perfiles y recuperación protegida. [Estado, restricciones y validación pendiente](docs/ORVEX_0.4_CONTROLLER_MANAGER.md). No fusionado.
+
 > ORVEX 0.3.3: carrusel único, búsqueda con teclado virtual y adaptadores de mando. [Cambios, pruebas y validación Windows pendiente](docs/ORVEX_0.3.3.md). No fusionada.
 
 > Actualización nativa 0.3.2: biblioteca cinematográfica sobre juegos reales. [Cambios y validación Windows](docs/ORVEX_0.3.2.md). Pendiente aprobación visual; no fusionada.

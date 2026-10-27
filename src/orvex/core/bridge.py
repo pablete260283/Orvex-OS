@@ -36,9 +36,15 @@ class Bridge(QObject):
         if self._temp_assets:weakref.finalize(self,self._temp_assets.cleanup)
         root=Path(self._temp_assets.name) if self._temp_assets else store.path.parent/"artwork"
         self.artwork=LocalArtwork(self.installed,root)
+        from ..controls.discovery import SDLInventory
+        from ..controls.manager import ControllerManager
+        self.controller_inventory=SDLInventory(store.get('dolphin_executable',''))
+        self.controllers=ControllerManager(store,self.installed,(root/'controller-profiles' if store.path is None else store.path.parent/'controller-profiles'),self.controller_inventory)
+        self.controller_devices=[]
+        self.launcher.controller_manager=self.controllers
         from .metadata_local import LocalMetadata
         self.metadata=LocalMetadata(self.installed)
-        self._message=""
+        self._message=self.controllers.recovery if store.get("controller_restore_journal",{}) else ""
         self.launcher.changed.connect(self._launch_updated)
         from PySide6.QtCore import QTimer
         self.romTimer=QTimer(self);self.romTimer.setInterval(10000)
@@ -48,6 +54,70 @@ class Bridge(QObject):
         if self.store.get("rom_root","") and self._profile=="adult" and not self.launchBusy:self.scanDolphin()
     def _launch_updated(self):
         self._message=self.launcher.message;self.operationChanged.emit();self.refresh();self.detailChanged.emit()
+    @Property("QVariantList",notify=operationChanged)
+    def controllerDevices(self):return self.controller_devices if self._profile=="adult" else []
+    @Property("QVariantList",notify=operationChanged)
+    def controllerProfiles(self):return [dict(id=p['id'],name=p['name'],engine=p['engine'],family=p['family'],volatile=p['volatile']) for p in self.controllers.profiles()] if self._profile=="adult" else []
+    @Property(str,notify=operationChanged)
+    def controllerNotice(self):return self.controllers.notice if self._profile=="adult" else ""
+    @Property(bool,notify=operationChanged)
+    def controllerAutoApply(self):return self.store.get('controller_apply_enabled',False)
+    def _refresh_controllers(self,force):
+        if self._profile!="adult" or self.launchBusy:return
+        devices=self.controller_inventory.devices()
+        for d in devices:d['display']=d['name']+(' · identificado' if d['stable'] else ' · identidad no verificable')+' · sensores: '+d.get('sensors','no verificado')
+        if devices==self.controller_devices and not force:return
+        self.controller_devices=devices
+        self._message=self.controller_inventory.error or ('Mandos detectados: '+str(len(devices)))
+        if any(d.get('warning') for d in devices):self._message+=' XInput y SDL/Steam Input podrían duplicar un mando; comprueba antes de asignar.'
+        self.operationChanged.emit()
+    @Slot()
+    def refreshControllers(self):self._refresh_controllers(True)
+    @Slot()
+    def pollControllers(self):self._refresh_controllers(False)
+    @Slot(str,str,str,result=bool)
+    def captureControllerProfile(self,url,engine,family):
+        if self._profile!="adult" or self.launchBusy:return False
+        try:
+            from .installed import local_path
+            path=local_path(url)
+            profile=self.controllers.capture(str(path),path.stem,engine,family)
+            self._message='Copia aprobada guardada: '+profile['name']+('. Índice SDL variable: aplicación automática bloqueada.' if profile['volatile'] else '')
+            self.operationChanged.emit();return True
+        except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e);self.operationChanged.emit();return False
+    @Slot(str,str,str,str,str,int,result=bool)
+    def bindControllerProfile(self,profile_id,game_id,scope,device_id,family,player):
+        if self._profile!="adult" or self.launchBusy:return False
+        try:
+            present=[d for d in self.controller_inventory.devices() if d['device_id']==device_id and d['family']==family and d['stable']]
+            if len(present)!=1:raise ValueError('Mando ausente, sin identidad estable o duplicado.')
+            p=next(p for p in self.controllers.profiles() if p['id']==profile_id)
+            game=self.installed.raw(game_id)
+            self.controllers.bind(profile_id,scope,game_id,game['platform'] if game else '',p['engine'],device_id,family,player)
+            self._message='Asociación guardada; se seleccionará al iniciar el juego.';self.operationChanged.emit();return True
+        except (StopIteration,TypeError,OSError,ValueError,sqlite3.Error) as e:self._message='No se pudo asociar: '+str(e);self.operationChanged.emit();return False
+    @Slot()
+    def retryControllerRecovery(self):
+        if self._profile!="adult" or self.launchBusy:return
+        self.controllers.recovery=self.controllers.recover(finished=True)
+        self._message=self.controllers.recovery
+        journal=self.store.get('controller_restore_journal',{})
+        if journal:self._message+=' Copia: '+journal.get('backup','')
+        self.operationChanged.emit()
+    @Slot(str,result=bool)
+    def configureControllerTarget(self,url):
+        if self._profile!="adult" or self.launchBusy:return False
+        try:
+            from .installed import local_path
+            self.controllers.configure_target(str(local_path(url)))
+            self._message='Destino guardado. La aplicación temporal requiere activación explícita.';self.operationChanged.emit();return True
+        except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e);self.operationChanged.emit();return False
+    @Slot()
+    def toggleControllerAutoApply(self):
+        if self._profile!='adult' or self.launchBusy:return
+        self.store.set('controller_apply_enabled',not self.controllerAutoApply)
+        self._message='Aplicación temporal: '+('activada' if self.controllerAutoApply else 'desactivada')+'. Se exige perfil completo sin índices SDL variables; se conserva una copia de seguridad.'
+        self.operationChanged.emit()
     @Property(str,notify=operationChanged)
     def controllerLayout(self):return self.store.get("controller_layout","sony")
     @Slot()
@@ -121,7 +191,13 @@ class Bridge(QObject):
     def configureEmulator(self,key,path,root):
         if self._profile!="adult" or key not in ['dolphin','pcsx2']:return False
         try:
-            getattr(self,key).configure(path,root);self._message="Configuración guardada. Verifica BIOS y mandos dentro del emulador antes de jugar.";self.operationChanged.emit();return True
+            getattr(self,key).configure(path,root)
+            if key=="dolphin":
+                from ..controls.discovery import SDLInventory
+                self.controller_inventory.close()
+                self.controller_inventory=SDLInventory(self.store.get('dolphin_executable',''))
+                self.controllers.inventory=self.controller_inventory
+            self._message="Configuración guardada. Verifica BIOS y mandos dentro del emulador antes de jugar.";self.operationChanged.emit();return True
         except (OSError,ValueError) as e:self._message=str(e);self.operationChanged.emit();return False
     @Slot(str)
     def scanEmulator(self,key):
@@ -176,7 +252,7 @@ class Bridge(QObject):
     def diagnosticReport(self):
         import json
         rows=self.store.db.execute("SELECT started_at,ended_at,duration_ms,status,exit_code FROM play_sessions ORDER BY id DESC LIMIT 100").fetchall()
-        return json.dumps(dict(version="0.3.3",sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
+        return json.dumps(dict(version="0.4",controller=self.controllers.notice,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
     def real_games(self):return self.installed.games(self._profile)
     def lookup(self,item_id):
         if item_id.startswith("local-"):return next((e for e in self.real_games() if e["id"]==item_id),{})

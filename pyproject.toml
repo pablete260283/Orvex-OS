@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "orvex-entertainment-os"
-version = "0.3.3"
+version = "0.4.0"
 description = "ORVEX OS console launcher and offline visual preview"
 requires-python = ">=3.11"
 dependencies = ["PySide6==6.8.3"]
@@ -18,6 +18,6 @@ orvex = ["ui/*.qml", "ui/components/*.qml", "ui/pages/*.qml", "ui/assets/*.svg",
 [tool.ruff]
 target-version = "py311"
 line-length = 100
-include = ["src/orvex/__main__.py", "src/orvex/core/store.py", "src/orvex/core/library.py", "src/orvex/core/installed.py", "src/orvex/core/launcher.py", "tests/test_audit.py", "tests/artifacts.py", "src/orvex/controls/*.py", "tests/test_controller.py"]
+include = ["src/orvex/__main__.py", "src/orvex/core/store.py", "src/orvex/core/library.py", "src/orvex/core/installed.py", "src/orvex/core/launcher.py", "tests/test_audit.py", "tests/artifacts.py", "src/orvex/controls/*.py", "tests/test_controller.py", "tests/test_controller_manager.py", "tests/test_controller_manager_ui.py", "tests/test_controller_portable.py"]
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F"]
