@@ -248,3 +248,21 @@ class QuickMenuTests(unittest.TestCase):
         self.assertFalse(menu.opened)
         self.assertTrue(self.window.activeFocusItem().objectName().startswith("recent-"))
         self.router.timer.stop()
+
+    def test_reconfiguring_emulator_releases_input_before_inventory_shutdown(self):
+        import shutil
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        events = []
+        old = SimpleNamespace(close=lambda: events.append("inventory closed"))
+        self.b.controller_inventory = old
+        self.b.controllerInventoryChanging.connect(lambda: events.append("reader closed"))
+        executable = self.root / ("Dolphin.exe" if sys.platform == "win32" else "dolphin")
+        shutil.copy2(self.exe, executable)
+        replacement = SimpleNamespace()
+        with patch("orvex.controls.discovery.SDLInventory", return_value=replacement):
+            self.assertTrue(self.b.configureEmulator("dolphin", str(executable), str(self.root)))
+        self.assertEqual(events, ["reader closed", "inventory closed"])
+        self.assertIs(self.b.controller_inventory, replacement)
+        self.assertFalse((self.exe.parent / "orvex-test-ran.txt").exists())

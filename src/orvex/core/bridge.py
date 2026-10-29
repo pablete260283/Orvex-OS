@@ -8,6 +8,7 @@ from pathlib import Path
 import tempfile,weakref,sqlite3
 
 class Bridge(QObject):
+    controllerInventoryChanging = Signal()
     operationChanged = Signal()
     changed = Signal()
     visualChanged = Signal()
@@ -251,11 +252,12 @@ class Bridge(QObject):
         return dict(executable=self.store.get(key+"_executable",""),root=self.store.get("rom_root",""))
     @Slot(str,str,str,result=bool)
     def configureEmulator(self,key,path,root):
-        if self._profile!="adult" or key not in ['dolphin','pcsx2']:return False
+        if self._profile!="adult" or self.launchBusy or key not in ['dolphin','pcsx2']:return False
         try:
             getattr(self,key).configure(path,root)
             if key=="dolphin":
                 from ..controls.discovery import SDLInventory
+                self.controllerInventoryChanging.emit()
                 self.controller_inventory.close()
                 self.controller_inventory=SDLInventory(self.store.get('dolphin_executable',''))
                 self.controllers.inventory=self.controller_inventory

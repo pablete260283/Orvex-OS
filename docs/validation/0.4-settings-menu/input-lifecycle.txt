@@ -1,0 +1,12 @@
+test_reconfiguring_emulator_releases_input_before_inventory_shutdown (test_quick_menu.QuickMenuTests.test_reconfiguring_emulator_releases_input_before_inventory_shutdown) ... ok
+test_confirm_not_repeated_direction_repeat_and_resume_gate (test_controller.InputTests.test_confirm_not_repeated_direction_repeat_and_resume_gate) ... ok
+test_full_catalog_recent_order_and_persistence (test_controller.InputTests.test_full_catalog_recent_order_and_persistence) ... ok
+test_linux_event_decoder_and_nonblocking_reader (test_controller.InputTests.test_linux_event_decoder_and_nonblocking_reader) ... ok
+test_native_mappings_and_deadzone (test_controller.InputTests.test_native_mappings_and_deadzone) ... ok
+test_reconnect_and_read_failure_require_neutral_before_confirm (test_controller.InputTests.test_reconnect_and_read_failure_require_neutral_before_confirm) ... ok
+test_remote_select_back_and_repeat_suppression (test_controller.InputTests.test_remote_select_back_and_repeat_suppression) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.512s
+
+OK

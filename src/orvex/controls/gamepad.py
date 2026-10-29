@@ -274,6 +274,8 @@ def create_navigation(bridge, parent):
             reader.__init__(bridge.controller_inventory, reader.fallback)
             reader.connection_token = token
 
+    # Release SDL controller handles before the old inventory quits its subsystem.
+    bridge.controllerInventoryChanging.connect(reader.close)
     bridge.operationChanged.connect(refresh_reader)
     navigation.input_error_changed.connect(bridge.reportControllerInputError)
     QGuiApplication.instance().installEventFilter(navigation)
