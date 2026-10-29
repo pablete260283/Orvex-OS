@@ -1,5 +1,16 @@
 name: Preview checks
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/orvex-0.4-controller-manager
+  pull_request:
+    branches:
+      - main
+      - feature/orvex-0.3.3
+concurrency:
+  group: preview-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -10,7 +21,8 @@ jobs:
       QT_QPA_PLATFORM: offscreen
       QT_QUICK_BACKEND: software
       PYTHONPATH: src
-      ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures
+      PYTHONUTF8: '1'
+      ORVEX_REQUIRE_NATIVE_FIXTURE: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,9 +37,64 @@ jobs:
       - run: ruff format --check .
       - run: python scripts/build_web_preview.py
       - run: python -m unittest discover -s tests -v
+        env:
+          ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures
       - run: node --test tests/test_web_model.cjs
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: qt-preview-captures
           path: |
             ${{ runner.temp }}/orvex-captures/**/*.png
+
+  windows-regression:
+    # Hosted Windows executes the owned native fixture, not commercial games/hardware.
+    timeout-minutes: 15
+    runs-on: windows-2022
+    env:
+      QT_QPA_PLATFORM: offscreen
+      QT_QUICK_BACKEND: software
+      PYTHONPATH: src
+      PYTHONUTF8: '1'
+      ORVEX_REQUIRE_NATIVE_FIXTURE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enable preinstalled MSVC for native process fixtures
+        shell: pwsh
+        run: |
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'
+          $installation = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $installation) { throw 'MSVC installation not found' }
+          $vcvars = Join-Path $installation 'VC/Auxiliary/Build/vcvars64.bat'
+          $command = 'call "' + $vcvars + '" >nul && set'
+          $variables = & cmd.exe /s /c $command
+          if ($LASTEXITCODE -ne 0) { throw 'MSVC environment failed' }
+          foreach ($line in $variables) {
+            if ($line -match '^(PATH|INCLUDE|LIB|LIBPATH)=(.*)$') {
+              "$($matches[1])=$($matches[2])" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            }
+          }
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m ruff check .
+      - run: python -m ruff format --check .
+      - run: python -m unittest discover -s tests -v
+        env:
+          ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures
+      - run: node --test tests/test_web_model.cjs
+      - name: Settings navigation at Windows 150 percent scale
+        run: python -m unittest discover -s tests -p test_settings_console.py -v
+        env:
+          QT_SCALE_FACTOR: '1.5'
+          ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures/scaled-150
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-regression-captures
+          path: ${{ runner.temp }}/orvex-captures/**/*.png
+          if-no-files-found: ignore

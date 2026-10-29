@@ -9,8 +9,8 @@ import shutil
 import tempfile
 from pathlib import Path
 from PySide6.QtCore import QMetaObject
-from PySide6.QtGui import QGuiApplication
 from PySide6.QtTest import QTest
+from orvex.ui_runtime import ui_application
 from orvex.controls.gamepad import NavigationInput, xinput_actions, winmm_actions, Joy, State
 from orvex.core.bridge import Bridge
 from orvex.core.store import Store
@@ -80,7 +80,7 @@ class InputTests(unittest.TestCase):
         reader.fd = 123
         data = [struct.pack("=IhBB", 0, 1, 0x81, 0), struct.pack("=IhBB", 1, 32767, 2, 6)]
         with patch("orvex.controls.linux_joystick.os.read", side_effect=data + [BlockingIOError()]):
-            self.assertEqual(reader.read(), {"confirm", "right"})
+            self.assertEqual(reader.read(), {"confirm", "right", "raw-0"})
         reader.fd = None
 
     def test_remote_select_back_and_repeat_suppression(self):
@@ -98,6 +98,45 @@ class InputTests(unittest.TestCase):
         router.eventFilter(None, QKeyEvent(QEvent.KeyPress, Qt.Key_Back, Qt.NoModifier))
         self.assertEqual(events, ["confirm", "back"])
 
+    def test_reconnect_and_read_failure_require_neutral_before_confirm(self):
+        class ChangingReader:
+            connection_token = 0
+            actions = set()
+            broken = False
+
+            def read(self):
+                if self.broken:
+                    raise OSError("device removed")
+                return self.actions
+
+        reader = ChangingReader()
+        router = NavigationInput(target=lambda: True)
+        router.reader = reader
+        events = []
+        router.dispatch = events.append
+        router.poll(0)
+        reader.connection_token = 1
+        reader.actions = {"confirm"}
+        router.poll(1)
+        router.poll(2)
+        self.assertEqual(events, [])
+        reader.actions = set()
+        router.poll(3)
+        reader.actions = {"confirm"}
+        router.poll(4)
+        self.assertEqual(events, ["confirm"])
+        reader.broken = True
+        router.poll(5)
+        self.assertEqual(router.last_error, "device removed")
+        reader.broken = False
+        router.poll(6)
+        self.assertEqual(events, ["confirm"])
+        reader.actions = set()
+        router.poll(7)
+        reader.actions = {"confirm"}
+        router.poll(8)
+        self.assertEqual(events, ["confirm", "confirm"])
+
     def test_full_catalog_recent_order_and_persistence(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -106,7 +145,7 @@ class InputTests(unittest.TestCase):
             b = Bridge(store)
             ids = []
             for n in range(15):
-                target = root / ("game" + str(n))
+                target = root / ("game" + str(n) + exe.suffix)
                 shutil.copy2(exe, target)
                 ids.append(b.installed.import_game("Game " + str(n).zfill(2), "PC", str(target)))
             for key, date in [
@@ -137,7 +176,7 @@ class InputTests(unittest.TestCase):
 class ControllerUiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QGuiApplication.instance() or QGuiApplication([])
+        cls.app = ui_application()
 
     setUp = test_ui.UiTests.setUp
     tearDown = test_ui.UiTests.tearDown
@@ -235,7 +274,7 @@ class ControllerUiTests(unittest.TestCase):
 class ControllerLaunchTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QGuiApplication.instance() or QGuiApplication([])
+        cls.app = ui_application()
 
     import test_real_ui as _real
 

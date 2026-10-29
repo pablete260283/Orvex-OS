@@ -9,6 +9,7 @@ from pathlib import Path
 class LinuxJoystick:
     def __init__(self):
         self.fd = None
+        self.connection_token = 0
         self.axes = {}
         self.buttons = {}
         self.retry = 0
@@ -16,6 +17,7 @@ class LinuxJoystick:
     def close(self):
         if self.fd is not None:
             os.close(self.fd)
+            self.connection_token += 1
         self.fd = None
         self.axes.clear()
         self.buttons.clear()
@@ -36,6 +38,7 @@ class LinuxJoystick:
             for path in sorted(Path("/dev/input").glob("js*")):
                 try:
                     self.fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK)
+                    self.connection_token += 1
                     break
                 except OSError:
                     continue
@@ -67,4 +70,4 @@ class LinuxJoystick:
             value = self.axes.get(axis, 0)
             if abs(value) > 16000:
                 actions.add(positive if value > 0 else negative)
-        return actions
+        return actions | {"raw-" + str(i) for i, value in self.buttons.items() if value}

@@ -158,17 +158,33 @@ class InstalledLibrary:
         return result
 
     def edit(self, game_id, name, platform, executable, arguments):
-        if not self.raw(game_id):
+        existing = self.raw(game_id)
+        if not existing:
             raise ValueError("Juego no encontrado")
-        path, _ = validate_executable(executable)
-        args = validate_arguments(arguments)
+        # ROM entries refer to an adapter-owned virtual executable. Editing the
+        # display name must not validate or replace that reference as a PC binary.
+        from ..controls.manager import engine_for
+
+        if engine_for(self.store, game_id) in ("dolphin", "pcsx2"):
+            if executable != existing["executable"] or arguments != existing["arguments"]:
+                raise ValueError("Configura la ruta del emulador en Emuladores / carpetas.")
+            path, args = executable, arguments
+        else:
+            path, _ = validate_executable(executable)
+            args = validate_arguments(arguments)
         if not name.strip() or not platform.strip():
             raise ValueError("Nombre y plataforma obligatorios")
         with self.store.db:
-            self.store.db.execute(
-                "UPDATE real_games SET name=?,platform=?,executable=?,arguments=?,trusted_hash=NULL,trusted_arguments=NULL WHERE id=?",
-                (name.strip(), platform.strip(), path, args, game_id),
-            )
+            if path == existing["executable"] and args == existing["arguments"]:
+                self.store.db.execute(
+                    "UPDATE real_games SET name=?,platform=? WHERE id=?",
+                    (name.strip(), platform.strip(), game_id),
+                )
+            else:
+                self.store.db.execute(
+                    "UPDATE real_games SET name=?,platform=?,executable=?,arguments=?,trusted_hash=NULL,trusted_arguments=NULL WHERE id=?",
+                    (name.strip(), platform.strip(), path, args, game_id),
+                )
 
     def hide(self, game_id, hidden):
         with self.store.db:

@@ -1,0 +1,8 @@
+test_profile_selection_persistence_and_backups (test_controller_portable.PortableTests.test_profile_selection_persistence_and_backups) ... ok
+test_journal_failure_does_not_leave_launcher_busy (test_controller_portable.RecoveryOwnershipTests.test_journal_failure_does_not_leave_launcher_busy) ... ok
+test_other_launch_and_manual_retry_never_restore_a_running_session (test_controller_portable.RecoveryOwnershipTests.test_other_launch_and_manual_retry_never_restore_a_running_session) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.048s
+
+OK

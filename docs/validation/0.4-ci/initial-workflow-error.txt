@@ -1,0 +1,11 @@
+GitHub Actions run 40808098790
+Commit ae0f70fd96f642278dfe1be2b74ce66d4337850e
+https://github.com/pablete260283/Orvex-OS/actions/runs/40808098790
+Jobs returned by API: []
+Public run annotation:
+Invalid workflow file: .github/workflows/tests.yml
+(Line: 20, Col: 26): Unrecognized named-value: 'runner'. Located at position 1 within expression: runner.temp
+
+Cause: runner context is not available in jobs.<job_id>.env.
+Correction: move ORVEX_CAPTURE_DIR to the unittest step's env.
+Both existing CI commits are preserved as ancestors, not duplicated.

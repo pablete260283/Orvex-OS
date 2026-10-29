@@ -3,11 +3,15 @@ from pathlib import Path
 from PySide6.QtCore import QStandardPaths, QUrl, QLockFile
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtQml import QQmlApplicationEngine
+from PySide6.QtQuickControls2 import QQuickStyle
 from .core.store import Store, StoreOpenError
 from .core.bridge import Bridge
 
 
 def configure_application(app):
+    from .ui_runtime import ensure_application_font
+
+    ensure_application_font(app)
     app.setOrganizationName("ORVEX")
     # Retain the 0.1 preference location; expose the official application name.
     app.setApplicationName("Entertainment Preview")
@@ -22,6 +26,7 @@ def configure_application(app):
 
 
 def main():
+    QQuickStyle.setStyle("Basic")
     app = QGuiApplication(sys.argv)
     path = configure_application(app)
 
@@ -59,6 +64,7 @@ def main():
     navigation = create_navigation(bridge, app)
     result = app.exec()
     navigation.timer.stop()
+    bridge.controller_inventory.close()
     del engine
     store.close()
     return result

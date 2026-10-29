@@ -8,7 +8,7 @@ from real_fixture import build_fixture
 class DolphinTests(unittest.TestCase):
  def test_scan_commands_duplicates_and_persistence_without_boot(self):
   with tempfile.TemporaryDirectory() as d:
-   root=Path(d);exe=build_fixture(root);dolphin=exe.with_name('dolphin-emu');exe.rename(dolphin)
+   root=Path(d);exe=build_fixture(root);dolphin=exe.with_name('dolphin-emu'+exe.suffix);exe.rename(dolphin)
    for platform in ['Wii','GameCube']:
     (root/platform).mkdir();(root/platform/'Title with spaces.rvz').write_bytes(b'unit test placeholder, not a ROM')
    s=Store(root/'prefs.sqlite3');a=DolphinAdapter(s);a.configure(str(dolphin),str(root));self.assertIn(str(dolphin),a.detect())

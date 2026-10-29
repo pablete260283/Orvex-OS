@@ -1,0 +1,25 @@
+{
+  "run": 40809085146,
+  "commit": "762ca034436ee183da451a52cce51827397d7bfa",
+  "windows_job": 123234885678,
+  "conclusion": "failure",
+  "summary": "80 tests; 1 failure and 9 errors; native C fixtures executed",
+  "errors": [
+    "ERROR: test_scan_commands_duplicates_and_persistence_without_boot (test_dolphin.DolphinTests.test_scan_commands_duplicates_and_persistence_without_boot)",
+    "ERROR: test_artwork_preview_confirmation_replacement_and_persistence (test_real_launch.RealLaunchTests.test_artwork_preview_confirmation_replacement_and_persistence)",
+    "ERROR: test_cancel_then_changed_binary_requires_new_confirmation (test_real_launch.RealLaunchTests.test_cancel_then_changed_binary_requires_new_confirmation)",
+    "ERROR: test_child_demo_separation_and_pending_authorization (test_real_launch.RealLaunchTests.test_child_demo_separation_and_pending_authorization)",
+    "ERROR: test_confirm_launch_finish_time_and_repeat (test_real_launch.RealLaunchTests.test_confirm_launch_finish_time_and_repeat)",
+    "ERROR: test_import_does_not_execute_and_persists (test_real_launch.RealLaunchTests.test_import_does_not_execute_and_persists)",
+    "ERROR: test_interrupted_session_recovery_does_not_invent_duration (test_real_launch.RealLaunchTests.test_interrupted_session_recovery_does_not_invent_duration)",
+    "ERROR: test_invalid_paths_duplicate_and_no_shell_import (test_real_launch.RealLaunchTests.test_invalid_paths_duplicate_and_no_shell_import)",
+    "ERROR: test_missing_executable_after_import_and_running_busy (test_real_launch.RealLaunchTests.test_missing_executable_after_import_and_running_busy)",
+    "FAIL: test_failed_start_and_nonzero_exit (test_real_launch.RealLaunchTests.test_failed_start_and_nonzero_exit)"
+  ],
+  "causes": [
+    "Short and canonical Windows TEMP paths differ as text",
+    "Failure-to-launch fixture was ELF-only"
+  ],
+  "linux_job": 123234885825,
+  "linux_conclusion": "success"
+}

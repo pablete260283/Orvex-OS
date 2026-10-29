@@ -1,0 +1,24 @@
+test_real_process_confirm_and_return_using_router (test_controller.ControllerLaunchTests.test_real_process_confirm_and_return_using_router) ... ok
+test_search_confirm_cancel_return_and_section_scope (test_controller.ControllerUiTests.test_search_confirm_cancel_return_and_section_scope) ... ok
+test_confirm_not_repeated_direction_repeat_and_resume_gate (test_controller.InputTests.test_confirm_not_repeated_direction_repeat_and_resume_gate) ... ok
+test_full_catalog_recent_order_and_persistence (test_controller.InputTests.test_full_catalog_recent_order_and_persistence) ... ok
+test_linux_event_decoder_and_nonblocking_reader (test_controller.InputTests.test_linux_event_decoder_and_nonblocking_reader) ... ok
+test_native_mappings_and_deadzone (test_controller.InputTests.test_native_mappings_and_deadzone) ... ok
+test_reconnect_and_read_failure_require_neutral_before_confirm (test_controller.InputTests.test_reconnect_and_read_failure_require_neutral_before_confirm) ... ok
+test_remote_select_back_and_repeat_suppression (test_controller.InputTests.test_remote_select_back_and_repeat_suppression) ... ok
+test_actual_process_temporary_profile_and_restore (test_controller_manager.ManagerTests.test_actual_process_temporary_profile_and_restore) ... ok
+test_backup_restore_conflict_crash_and_volatile_sdl (test_controller_manager.ManagerTests.test_backup_restore_conflict_crash_and_volatile_sdl) ... ok
+test_crash_recovery_waits_for_running_or_unconfirmed_emulator (test_controller_manager.ManagerTests.test_crash_recovery_waits_for_running_or_unconfirmed_emulator) ... ok
+test_detect_family_does_not_assume_model_guid_is_unique (test_controller_manager.ManagerTests.test_detect_family_does_not_assume_model_guid_is_unique) ... ok
+test_game_version_engine_and_recent_title_preserved_during_scan (test_controller_manager.ManagerTests.test_game_version_engine_and_recent_title_preserved_during_scan) ... ok
+test_hierarchy_players_ambiguity_disconnection_and_restart (test_controller_manager.ManagerTests.test_hierarchy_players_ambiguity_disconnection_and_restart) ... ok
+test_child_profile_cannot_expose_or_modify_personal_controller_profiles (test_controller_manager_ui.ManagerUiTests.test_child_profile_cannot_expose_or_modify_personal_controller_profiles) ... ok
+test_manager_focus_and_capture (test_controller_manager_ui.ManagerUiTests.test_manager_focus_and_capture) ... ok
+test_profile_selection_persistence_and_backups (test_controller_portable.PortableTests.test_profile_selection_persistence_and_backups) ... ok
+test_journal_failure_does_not_leave_launcher_busy (test_controller_portable.RecoveryOwnershipTests.test_journal_failure_does_not_leave_launcher_busy) ... ok
+test_other_launch_and_manual_retry_never_restore_a_running_session (test_controller_portable.RecoveryOwnershipTests.test_other_launch_and_manual_retry_never_restore_a_running_session) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 13.424s
+
+OK

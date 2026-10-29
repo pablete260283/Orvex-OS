@@ -1,10 +1,10 @@
+from orvex.ui_runtime import ui_application
 import base64
 import json
 import hashlib
 import unittest
 from html.parser import HTMLParser
 from pathlib import Path
-from PySide6.QtGui import QGuiApplication
 from PySide6.QtSvg import QSvgRenderer
 from orvex.__main__ import configure_application
 
@@ -19,7 +19,7 @@ class Tags(HTMLParser):
 class BrandTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app=QGuiApplication.instance() or QGuiApplication([])
+        cls.app=ui_application()
     def test_svg_resources_are_valid(self):
         for p in (BRAND/"svg").glob("*.svg"):
             self.assertTrue(QSvgRenderer(str(p)).isValid(),p.name)

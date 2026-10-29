@@ -1,8 +1,9 @@
-import os
+from orvex.ui_runtime import ui_application
+import os,sys
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen');os.environ.setdefault('QT_QUICK_BACKEND','software')
 import tempfile,time,unittest
 from pathlib import Path
-from PySide6.QtGui import QGuiApplication,QImage,QColor
+from PySide6.QtGui import QImage,QColor
 from PySide6.QtTest import QTest
 from orvex.core.store import Store
 from orvex.core.bridge import Bridge
@@ -11,7 +12,7 @@ from real_fixture import build_fixture
 
 class RealLaunchTests(unittest.TestCase):
  @classmethod
- def setUpClass(cls):cls.app=QGuiApplication.instance() or QGuiApplication([])
+ def setUpClass(cls):cls.app=ui_application()
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);self.exe=build_fixture(self.root)
   self.store=Store(self.root/'prefs.sqlite3');self.b=Bridge(self.store)
@@ -51,7 +52,7 @@ class RealLaunchTests(unittest.TestCase):
   self.assertFalse(self.b.importGame('script','PC',str(script)));self.imported();self.assertFalse(self.b.importGame('duplicate','PC',str(self.exe)))
   self.assertEqual(len(self.b.entries),1)
  def test_failed_start_and_nonzero_exit(self):
-  bad=self.root/'invalid-elf';bad.write_bytes(b'\x7fELFinvalid');bad.chmod(0o755)
+  bad=self.root/('invalid-native.exe' if sys.platform=='win32' else 'invalid-elf');bad.write_bytes(b'MZinvalid' if sys.platform=='win32' else b'\x7fELFinvalid');bad.chmod(0o755)
   self.assertTrue(self.b.importGame('invalid','Linux',str(bad)));game_id=self.b.entries[0]['id'];self.b.requestLaunch(game_id);self.b.confirmLaunch();self.wait_finished()
   self.assertIn('No se pudo iniciar',self.b.operationMessage);self.assertEqual(self.store.db.execute('SELECT COUNT(*) FROM play_sessions').fetchone()[0],0)
   build_fixture(self.root,7);game_id=self.imported();self.b.requestLaunch(game_id);self.b.confirmLaunch();self.wait_finished();self.assertEqual(self.store.db.execute('SELECT status,exit_code FROM play_sessions').fetchone(),('error',7))

@@ -1,0 +1,56 @@
+> Corrección de Configuración y menú durante juegos: [implementación y límites de pausa/foco](SETTINGS_AND_QUICK_MENU.md). Issue #14 sigue pendiente de validación física.
+
+> Actualización de CI y recuperación: [CI_AND_RECOVERY_0.4.md](CI_AND_RECOVERY_0.4.md). Linux y Windows ejecutaron pruebas nativas en Actions; los límites físicos que se enumeran abajo siguen pendientes.
+
+# ORVEX 0.4 — Controller Manager
+
+Rama `feature/orvex-0.4-controller-manager`, basada en `feature/orvex-0.3.3` / PR #11, sin fusionar. Issue #12 permanece abierto: este PR es un avance funcional, no certificación universal ni aceptación física.
+
+## Estado previo contrastado
+
+- Issue #6 / PR #7: Dolphin y PCSX2 tienen indexador, comandos, registro de sesiones y selección de INI por referencia. Escaneo es síncrono, activación automática del perfil anterior no está implementada y faltan pruebas físicas específicas de PCSX2. Pablo comunicó tres juegos Wii funcionando, DualSense USB/SDL y touchpad mediante Steam Input.
+- Issue #8 / PR #9: diseño cinematográfico, carátulas 2:3 y gestión manual de imágenes; proveedor remoto de imágenes no implementado. Debe validarse con biblioteca del usuario.
+- Issue #10 / PR #11: carrusel único, búsqueda, teclado virtual y rutas de mando simuladas. Pendiente validar sin teclado/ratón con hardware físico y Windows. Los comentarios agregaron argumentos avanzados y título editable: esta rama oculta los argumentos en importación conservando edición avanzada y validación; corrige edición del título de juegos indexados por ROM sin reemplazar su referencia virtual. El escaneo no reescribe el título. Se mejoró contraste de campos y selectores.
+- Prueba reportada por Pablo: **Joy-Con derecho por Bluetooth funcionó con Dolphin/Wii Sports desde ORVEX**, con acelerómetro y giroscopio a través de SDL; no necesitó BetterJoy/DSU. Es evidencia manual comunicada por el usuario, no una prueba realizada por este entorno.
+
+## Qué funciona en esta rama
+
+- Inventario SDL2 opcional existente, actualizado al abrir el gestor y cada tres segundos mientras permanece abierto, y también al solicitar un lanzamiento: nombre, familia probable, VID/PID y hash de serie cuando SDL lo informa; nunca se usa el índice SDL para identidad. Distingue por nombre Joy-Con L/R, DualSense, Xbox y Wiimote; la clasificación es heurística y requiere prueba física. SDL puede informar disponibilidad de acelerómetro y giroscopio si el dispositivo expone la API de GameController; sin dicha API se muestra «no verificado». No se leen datos de movimiento ni se modifican sensores. No se determina de forma fiable Bluetooth vs USB.
+- En Windows se muestran slots XInput detectados sin tratarlos como identidades físicas persistentes. Un nombre genérico «Wireless Controller» no se clasifica automáticamente como DualSense. Si SDL y XInput aparecen simultáneamente, se advierte la posible duplicación por Steam Input y se evita la selección automática mientras no se puedan correlacionar con seguridad. Un slot XInput puede representar un mando virtual y no identifica por sí solo la marca física. Si SDL no ofrece número de serie, el dispositivo se muestra pero no se asocia automáticamente: dos mandos del mismo modelo no deben confundirse. SDL2 se busca en el sistema o junto al Dolphin ya configurado; ORVEX no descarga bibliotecas.
+- Copia aprobada de un INI existente en almacenamiento personal de ORVEX; tamaño, sintaxis y hash comprobados. El original no se edita y el perfil aprobado no se reemplaza silenciosamente. Puede importarse un perfil Dolphin `[Profile]` o un archivo completo de configuración. El archivo de Pablo aún no está disponible aquí; no se ha inventado mapeo alguno.
+- Asociaciones persistentes en SQLite sin migración de esquema: perfil + identidad estable + jugador 1–4; prioridad juego/versión exacta → plataforma y motor → predeterminado del dispositivo. El motor se infiere de la tabla del adaptador de cada registro, no del nombre del juego; un port nativo nunca se trata como Dolphin por compartir título. Si falta el mando, la identidad es ambigua o hay duplicados, conserva configuración existente y muestra aviso.
+- Interfaz Configuración → Controles → Gestor de mandos y perfiles. Mover arriba/abajo entre campos y cambiar el valor con izquierda/derecha; seleccionar un INI se realiza mediante el diálogo de archivos del sistema. En esta versión se pueden reemplazar asociaciones escogiendo otro perfil; no se editan dentro de ORVEX las asignaciones de botones o sensores del archivo.
+- Selección automática de perfiles asociados al lanzar; aplicación externa **opcional, desactivada por defecto y limitada**: un solo jugador, motor Dolphin, archivo de configuración completo con sección `[Wiimote1]`, identidad estable, sin referencias `SDL/<índice>/`, archivo destino `WiimoteNew.ini` elegido expresamente y consentimiento. Los perfiles de Dolphin con sección `[Profile]` se respaldan pero todavía no se activan automáticamente; no se convierten inventando mapeos. PCSX2 y ports conservan sus ajustes existentes.
+- Al aplicar un archivo completo permitido: copia de seguridad local nueva, registro de recuperación en SQLite antes de modificar el destino, verificación hash y reemplazo temporal; al terminar el proceso directo se intenta restaurar. Si el archivo cambió durante la sesión, se conservan el archivo actual y la copia, y se informa conflicto. Tras un fallo, una fase de inicio sin PID o un proceso aún activo bloquea la restauración automática; tras cerrar Dolphin se puede confirmar reintento. El selector y la recuperación no borran respaldos personales.
+- ORVEX intenta recuperar el foco de su ventana al finalizar el proceso supervisado; el enrutador de mando anterior exige retorno a estado neutral para no repetir Confirmar. Si un launcher inicia procesos hijos y termina, ORVEX no puede inferir la duración ni el estado de esos procesos.
+
+## Límites importantes de aplicación temporal
+
+El caso Joy-Con real contiene un índice `SDL/0` y por seguridad la activación automática queda bloqueada hasta poder identificar el dispositivo real y validar cómo Dolphin resuelve el índice. No se debe cambiar manualmente ese índice en la copia sin revisar el mando y volver a probar. La activación para varios jugadores, perfiles `[Profile]`, PCSX2 y ports está pendiente. La conexión a Dolphin SDL, movimiento y sensores no están certificados por las pruebas de este PR.
+
+Antes de activar la aplicación temporal, cerrar cualquier otra instancia de Dolphin que use ese archivo. No hay una exclusión coordinada con procesos Dolphin externos; si otro proceso modifica el archivo a la vez puede haber una carrera entre verificación y reemplazo. Las pruebas no verifican ACL de Windows ni compartición de archivos; se conserva el modo POSIX básico. Por eso la función es opt-in y no debe utilizarse con la configuración de producción de Pablo hasta que se valide en Windows con una copia de prueba. Para una configuración con conflicto, abrir Diagnóstico o «Recuperar respaldo» y conservar ambos archivos; no forzar una sustitución.
+
+## Probar la rama en Windows
+
+Descargar `feature/orvex-0.4-controller-manager` desde GitHub → Code → Download ZIP y extraerla a una carpeta nueva. Con Python 3.12 instalado, ejecutar `setup-windows.cmd` una vez y después `run-windows.cmd`; el instalador prefiere 3.12 y, si no está, 3.11, evitando seleccionar 3.14 por accidente. Se instala PySide6 en `.venv` dentro de esa carpeta. La base de datos personal existente mantiene la ubicación de ORVEX y no se migra en esta entrega. GitHub es la fuente para descargar la rama; estos pasos no se han probado en Windows en este entorno.
+
+Primero probar solo detección y respaldo con una copia, dejando la aplicación temporal desactivada. Los registros y perfiles personales no se incorporan al repositorio.
+
+## Capturar el perfil real del Joy-Con
+
+1. En Dolphin, con tu configuración de Wii Sports que ya funciona, abre Configurar del mando Wii y usa la función de guardar perfil con un nombre identificable. No modifiques el mapeo funcional.
+2. Localiza el INI guardado en la carpeta de perfiles de Wiimote de la instalación de Dolphin (habitualmente `Config/Profiles/Wiimote`, dentro de la carpeta de usuario de Dolphin; instalaciones portables pueden usar `User/Config/Profiles/Wiimote`). Conserva también una copia independiente de `Config/WiimoteNew.ini` si existe.
+3. En ORVEX → Configuración → Controles → Gestor, selecciona Dolphin y Joy-Con derecho y usa «Importar copia de INI…». El original no se modifica. Si ORVEX indica que la identidad no es verificable o que el índice SDL es variable, deja la aplicación temporal desactivada y continúa usando la configuración Dolphin que ya funciona.
+4. Para avanzar en la integración real, proporcionar el perfil exportado **y**, si se desea, una copia saneada de `WiimoteNew.ini`; pueden contener rutas o identificadores personales. No subir perfiles personales al repositorio público. Solo un fichero de perfil completo permite revisar los botones, orientación y entradas de movimiento sin suposiciones.
+
+## Pruebas y evidencia
+
+Python 3.12 / PySide6 6.8.3, Linux sin mando físico y Qt offscreen. Resultado: 78 ejecuciones de la suite completa antes de la última restricción infantil; después, 15 ejecuciones específicas de controles y 2 de interfaz/aislamiento infantil, todas correctas. Se repiten escenarios entre conjuntos. Resultados completos en `docs/validation/0.4/`. El conjunto contiene repeticiones heredadas; los totales no son escenarios únicos. Se ejecutaron pruebas de restauración, cambios externos, caída/reinicio, proceso aún activo, perfil con SDL volátil, dos mandos y jugadores, conflictos por entradas duplicadas, jerarquía y persistencia, error de ruta, diferenciación port/ROM, nombre editado tras reescaneo, foco y selectores Qt. Un ejecutable C controlado se lanzó realmente y permitió comprobar backup, finalización, restauración y sesión; simula Dolphin y no emula un juego. Hay una prueba portable que no requiere compilador Linux; no ha sido ejecutada en Windows.
+
+Captura `manager-1080.webp`: ventana Qt real en Linux, con un Joy-Con simulado identificado como PRUEBA; no acredita detección física. `ruff check`, `ruff format --check`, regresiones de la interfaz y modelo JavaScript se documentan junto a los logs. No se activó GitHub Actions.
+
+## Pendiente de aceptación
+
+Pruebas Windows físicas con Joy-Con L/R, DualSense, Xbox y eventualmente Wiimote; conexión USB/Bluetooth; reconexión y duplicación Steam Input; captura real de datos de movimiento; perfil Wii Sports exportado; aplicación automática segura sin depender del índice SDL; aplicación de perfiles por juego con Dolphin real; compatibilidad de PCSX2 y ports; aplicación simultánea a más de un jugador; edición de mapeos desde mando; estados de escaneo de Issue #6 y proveedor gráfico de Issue #8. Continuar sobre esta rama sin fusionar y dejar los issues abiertos hasta validar.
+
+Fuentes primarias de referencia: https://github.com/dolphin-emu/dolphin/blob/master/Source/Core/InputCommon/InputConfig.cpp , https://github.com/dolphin-emu/dolphin/blob/master/Readme.md , https://wiki.libsdl.org/SDL2/SDL_JoystickGetSerial , https://wiki.libsdl.org/SDL2/SDL_GameControllerHasSensor y https://wiki.libsdl.org/SDL2/SDL_SensorType .

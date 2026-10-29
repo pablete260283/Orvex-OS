@@ -7,7 +7,7 @@ Hardware-specific mappings still require physical validation.
 import ctypes as c
 import sys
 import time
-from PySide6.QtCore import QObject, QTimer, QCoreApplication, QEvent, Qt
+from PySide6.QtCore import QObject, QTimer, QCoreApplication, QEvent, Qt, Signal
 from PySide6.QtGui import QGuiApplication, QKeyEvent
 
 KEYS = {
@@ -73,6 +73,10 @@ def xinput_actions(buttons, x=0, y=0):
         actions.add("right" if x > 0 else "left")
     if abs(y) > 16000:
         actions.add("up" if y > 0 else "down")
+    if buttons & 0x10:
+        actions.add("menu")
+    if buttons & 0x20:
+        actions.add("view")
     return actions
 
 
@@ -101,6 +105,8 @@ def winmm_actions(buttons, pov=65535, x=32767, y=32767, sony=True):
 class WindowsPad:
     def __init__(self, sony=True):
         self.xinput = None
+        self.connection_token = 0
+        self._source = None
         self.sony = sony
         for name in ("xinput1_4", "xinput1_3", "xinput9_1_0"):
             try:
@@ -114,31 +120,51 @@ class WindowsPad:
         self.winmm.argtypes = [c.c_uint, c.POINTER(Joy)]
         self.winmm.restype = c.c_uint32
 
+    def _connection(self, source):
+        # A runtime source is only a navigation reset token, not a physical ID.
+        if source != self._source:
+            self._source = source
+            self.connection_token += 1
+
     def read(self):
         if self.xinput:
             for index in range(4):
                 state = State()
                 if self.xinput(index, c.byref(state)) == 0:
                     p = state.pad
-                    return xinput_actions(p.buttons, p.lx, p.ly)
+                    self._connection(("xinput", index))
+                    return xinput_actions(p.buttons, p.lx, p.ly) | {
+                        "raw-" + str(n)
+                        for n in range(16)
+                        if p.buttons & (1 << n) and n not in (10, 11)
+                    }
         for index in range(16):
             joy = Joy()
             joy.size = c.sizeof(Joy)
             joy.flags = 0xFF
             if self.winmm(index, c.byref(joy)) == 0:
-                return winmm_actions(joy.buttons, joy.pov, joy.x, joy.y, self.sony)
+                self._connection(("winmm", index))
+                return winmm_actions(joy.buttons, joy.pov, joy.x, joy.y, self.sony) | {
+                    "raw-" + str(n) for n in range(32) if joy.buttons & (1 << n)
+                }
+        self._connection(None)
         return set()
 
 
 class NavigationInput(QObject):
     """Edge-trigger confirm/back; direction-only repeat; neutral gate on return."""
 
+    input_error_changed = Signal(str)
+
     def __init__(self, reader=None, target=None, enabled=None, parent=None):
         super().__init__(parent)
         self.reader = reader
+        self.system_gesture = None
         self.target = target or QGuiApplication.focusWindow
         self.enabled = enabled or (lambda: True)
         self.previous = set()
+        self.last_connection = object()
+        self.last_error = ""
         self.next_repeat = {}
         self.armed = False
         self.timer = QTimer(self)
@@ -166,7 +192,35 @@ class NavigationInput(QObject):
 
     def poll(self, now=None):
         now = time.monotonic() if now is None else now
-        actions = set(self.reader.read()) if self.reader else set()
+        try:
+            actions = set(self.reader.read()) if self.reader else set()
+            if self.last_error:
+                self.last_error = ""
+                self.input_error_changed.emit("")
+        except (OSError, RuntimeError) as error:
+            message = str(error)
+            if self.last_error != message:
+                self.last_error = message
+                self.input_error_changed.emit(message)
+            self.armed = False
+            self.previous = set()
+            self.next_repeat.clear()
+            if self.system_gesture:
+                self.system_gesture.update(set(), now, reset=True)
+            return
+        connection = getattr(self.reader, "connection_token", None)
+        reconnected = connection != self.last_connection
+        if reconnected:
+            self.last_connection = connection
+            self.armed = False
+            self.previous = set()
+            self.next_repeat.clear()
+        if self.system_gesture and self.system_gesture.update(actions, now, reset=reconnected):
+            self.armed = False
+            self.previous = actions
+            return
+        # Raw buttons serve only gesture recognition, never ordinary UI activation.
+        actions.intersection_update(KEYS)
         if not self.enabled() or not self.target():
             self.armed = False
             self.previous = actions
@@ -201,12 +255,32 @@ def create_navigation(bridge, parent):
 
         reader = LinuxJoystick()
         QGuiApplication.instance().aboutToQuit.connect(reader.close)
+    from .sdl_navigation import SDLNavigation
+    from .system_gesture import SystemGesture
+
+    reader = SDLNavigation(bridge.controller_inventory, reader)
+    QGuiApplication.instance().aboutToQuit.connect(reader.close)
     navigation = NavigationInput(
-        reader=reader, enabled=lambda: not bridge.launchBusy, parent=parent
+        reader=reader,
+        enabled=lambda: not bridge.launchBusy or bridge.quick_menu.opened,
+        parent=parent,
     )
+    navigation.system_gesture = SystemGesture(bridge)
+
+    def refresh_reader():
+        if reader.inventory is not bridge.controller_inventory:
+            reader.close()
+            token = reader.connection_token + 1
+            reader.__init__(bridge.controller_inventory, reader.fallback)
+            reader.connection_token = token
+
+    # Release SDL controller handles before the old inventory quits its subsystem.
+    bridge.controllerInventoryChanging.connect(reader.close)
+    bridge.operationChanged.connect(refresh_reader)
+    navigation.input_error_changed.connect(bridge.reportControllerInputError)
     QGuiApplication.instance().installEventFilter(navigation)
     if sys.platform == "win32":
         bridge.operationChanged.connect(
-            lambda: setattr(reader, "sony", bridge.controllerLayout == "sony")
+            lambda: setattr(reader.fallback, "sony", bridge.controllerLayout == "sony")
         )
     return navigation

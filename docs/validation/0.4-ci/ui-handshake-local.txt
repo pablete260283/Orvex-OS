@@ -1,0 +1,7 @@
+test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_real_ui.RealUiTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+test_real_ui_import_confirm_launch_and_observed_statistics (test_real_ui.RealUiTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.997s
+
+OK

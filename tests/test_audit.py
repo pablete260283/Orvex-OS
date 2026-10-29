@@ -1,6 +1,7 @@
 """Shared age policy, non-destructive migration and launcher argument regressions."""
 
 import json
+from contextlib import closing
 import sqlite3
 import tempfile
 import unittest
@@ -63,7 +64,7 @@ class MigrationTests(unittest.TestCase):
         self.temp.cleanup()
 
     def version3(self):
-        with sqlite3.connect(self.path) as db:
+        with closing(sqlite3.connect(self.path)) as db, db:
             db.executescript((FIXTURES / "schema_v3.sql").read_text())
             db.execute("INSERT INTO settings VALUES ('reduced_motion','true')")
             db.execute(
@@ -73,7 +74,7 @@ class MigrationTests(unittest.TestCase):
     def test_migrations_from_legacy_versions_preserve_preferences(self):
         for version in [0, 1, 2]:
             path = self.path.with_name(f"legacy-{version}.db")
-            with sqlite3.connect(path) as db:
+            with closing(sqlite3.connect(path)) as db, db:
                 db.execute("CREATE TABLE settings(key TEXT PRIMARY KEY,value TEXT NOT NULL)")
                 db.execute("INSERT INTO settings VALUES('profile','\"child\"')")
                 if version == 2:
@@ -100,14 +101,14 @@ class MigrationTests(unittest.TestCase):
         )
         backup = store.backup_path
         store.close()
-        with sqlite3.connect(backup) as db:
+        with closing(sqlite3.connect(backup)) as db, db:
             self.assertEqual(db.execute("PRAGMA user_version").fetchone()[0], 3)
         store = Store(self.path)
         self.assertIsNone(store.backup_path)
         store.close()
 
     def test_future_version_refused_without_writes_or_downgrade(self):
-        with sqlite3.connect(self.path) as db:
+        with closing(sqlite3.connect(self.path)) as db, db:
             db.execute("PRAGMA user_version=99")
         before = self.path.read_bytes()
         with self.assertRaisesRegex(StoreOpenError, "99"):
@@ -130,7 +131,7 @@ class MigrationTests(unittest.TestCase):
         ):
             with self.assertRaises(StoreOpenError):
                 Store(self.path)
-        with sqlite3.connect(self.path) as db:
+        with closing(sqlite3.connect(self.path)) as db, db:
             self.assertEqual(db.execute("PRAGMA user_version").fetchone()[0], 3)
             self.assertNotIn(
                 "injected", [row[1] for row in db.execute("PRAGMA table_info(real_games)")]
