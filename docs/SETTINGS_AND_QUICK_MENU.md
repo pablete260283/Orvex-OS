@@ -67,3 +67,9 @@ La pausa física y el foco sobre Dolphin/PCSX2/juegos comerciales siguen pendien
 ## Ejecutar en Windows
 
 Descargar la rama `feature/orvex-0.4-controller-manager`, extraer y ejecutar setup-windows.cmd (Python 3.12 de 64 bits), luego run-windows.cmd. Conservar la carpeta de datos personal; no es necesario recrear SQLite. Configuración se abre con el engranaje; confirmar entra al contenido y a desplegables/campos. Para jugar se mantiene la validación del primer ejecutable. Para el menú usar GUIDE si está expuesto, el atajo aprendido o F10 con foco ORVEX. No cambiar un perfil Dolphin funcional para probar el menú.
+
+## Regresión adicional al finalizar un juego
+
+Se reprodujo un cierre externo mientras estaba abierto el gestor desde el menú: el estado volvía a Videojuegos, pero controllerManager.opened permanecía true. SettingsPage ahora cierra sus diálogos al ocultarse y el retorno cancela teclado/explorador pendientes sin guardar. Una prueba nueva ejecuta una sesión real controlada, abre el gestor por el enrutador, finaliza el proceso y exige biblioteca enfocada y diálogo cerrado. Once pruebas específicas pasan después de la corrección.
+
+La primera CI de este ciclo (40816150762) quedó esperando la cancelación de un runner Windows sin pasos ejecutados y bloqueó el run PR 40816154776 por concurrencia de rama. El grupo de concurrencia incluye ahora el SHA del head: sigue deduplicando push/PR del mismo código y permite validar un commit posterior sin esperar una cancelación ajena. Esto no convierte un job bloqueado en éxito; los resultados finales se registran en el PR.

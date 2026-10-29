@@ -17,6 +17,7 @@ from orvex.runtime.window_control import WindowControl
 from orvex.ui_runtime import ui_application
 from real_fixture import build_fixture
 from test_controller import Reader
+from ui_selectors import find_item
 
 
 class QuickMenuTests(unittest.TestCase):
@@ -215,3 +216,35 @@ class QuickMenuTests(unittest.TestCase):
         self.assertEqual(reader.read(), {"confirm"})
         lib.SDL_GameControllerClose.assert_called_once_with(321)
         reader.close()
+
+    def test_exit_from_controller_settings_closes_modal_and_restores_library(self):
+        from PySide6.QtCore import QObject
+
+        self.start_session()
+        menu = self.b.quick_menu
+        menu.open()
+        QTest.qWait(30)
+        overlay = self.overlay()
+        self.reader = Reader()
+        self.router = NavigationInput(
+            target=lambda: overlay if menu.state != "controls" else self.window
+        )
+        self.router.reader = self.reader
+        self.router.poll()
+        self.action("down")
+        self.action("down")
+        self.action("confirm")
+        find_item(self.window, "openControllerManager").forceActiveFocus()
+        self.action("confirm")
+        manager = self.window.findChild(QObject, "controllerManager")
+        self.assertTrue(manager.property("opened"))
+        (self.exe.parent / "orvex-test-release.txt").touch()
+        deadline = time.monotonic() + 3
+        while self.b.launchBusy and time.monotonic() < deadline:
+            QTest.qWait(20)
+        QTest.qWait(60)
+        self.assertFalse(manager.property("opened"))
+        self.assertEqual(self.b.page, 1)
+        self.assertFalse(menu.opened)
+        self.assertTrue(self.window.activeFocusItem().objectName().startswith("recent-"))
+        self.router.timer.stop()

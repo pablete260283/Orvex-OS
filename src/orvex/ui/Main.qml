@@ -15,7 +15,7 @@ Window {
     Connections { target: backend
         function onOperationChanged() {
             if(window.wasGameRunning && !backend.launchBusy){
-                if(backend.page===3){backend.closeDetail();backend.navigate(1)}
+                if(backend.page===3)window.returnToLibrary()
                 window.requestActivate()
                 if(!backend.detailOpen && (backend.page===1 || backend.page===2))Qt.callLater(library.restore)
             }
@@ -24,6 +24,7 @@ Window {
     }
     property var gameMenu: backend.inGameMenu
     function browseFile(title,handler,types,folders){fileBrowser.begin(title,handler,types,folders)}
+    function returnToLibrary(){fileBrowser.finish("");textEditor.finish(false);backend.closeDetail();backend.navigate(1);window.requestActivate();Qt.callLater(library.restore)}
     function editField(field){textEditor.begin(field)}
     function moveControlFocus(item,forward){
         var root=item.parent
@@ -32,7 +33,7 @@ Window {
     }
     InGameMenu {id:inGameOverlay;controller:window.gameMenu;onControlsRequested:{window.navigate(3);settings.category=1;settings.firstContent();window.requestActivate()}}
     Connections {target:window.gameMenu
-        function onReturned(){backend.navigate(1);backend.closeDetail();window.requestActivate();Qt.callLater(library.restore)}
+        function onReturned(){window.returnToLibrary()}
     }
     Shortcut {sequence:"F10";onActivated:window.gameMenu.open()}
     readonly property int page: backend.page

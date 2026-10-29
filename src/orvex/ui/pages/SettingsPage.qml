@@ -26,7 +26,7 @@ FocusScope {
     }
     function firstContent(){FocusTools.first(content)}
     function resetEdits(){loadGame();message="Cambios sin guardar descartados."}
-    onVisibleChanged: if(visible)Qt.callLater(enter)
+    onVisibleChanged: {if(visible)Qt.callLater(enter);else {recoveryConsent.close();controlConsent.close();controllerPopup.close();dolphinSetup.close();metadataEditor.close();removal.close()}}
     Text {text:"Configuración";color:"#edf5f8";font.pixelSize:46}
     FocusColumn {y:100;spacing:18
         Repeater {id:choices;model:settings.categories
