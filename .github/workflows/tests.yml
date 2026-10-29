@@ -1,5 +1,12 @@
 name: Preview checks
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/orvex-0.4-controller-manager
+  pull_request:
+    branches:
+      - main
 permissions:
   contents: read
 jobs:
