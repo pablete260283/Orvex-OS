@@ -133,7 +133,7 @@ class Bridge(QObject):
     @Property(str,notify=libraryChanged)
     def librarySource(self):return self.store.get("library_source","real")
     @Property(str,notify=operationChanged)
-    def operationMessage(self):return self._message
+    def operationMessage(self):return self._message if self._profile=="adult" else ""
     @Property(str,notify=operationChanged)
     def launchState(self):return self.launcher.state
     @Property(bool,notify=operationChanged)
@@ -257,6 +257,7 @@ class Bridge(QObject):
     @Property(str,notify=operationChanged)
     def diagnosticReport(self):
         import json
+        if self._profile!="adult":return json.dumps(dict(version="0.4",message="Diagnóstico disponible en el perfil Adulto."),ensure_ascii=False)
         rows=self.store.db.execute("SELECT started_at,ended_at,duration_ms,status,exit_code FROM play_sessions ORDER BY id DESC LIMIT 100").fetchall()
         return json.dumps(dict(version="0.4",controller=self.controllers.notice,input_error=self.controller_input_error,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
     def real_games(self):return self.installed.games(self._profile)
@@ -364,6 +365,7 @@ class Bridge(QObject):
         if profile not in PROFILES or profile==self._profile:return
         self.launcher.cancel();self.artwork.discard()
         self._profile=profile;self._detail_id="";self.store.set("profile",profile)
+        self.operationChanged.emit()
         self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit();self.detailChanged.emit();self.visualChanged.emit()
     @Slot()
     def refresh(self):

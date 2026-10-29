@@ -1,0 +1,35 @@
+{
+  "base": "ae0f70fd96f642278dfe1be2b74ce66d4337850e",
+  "preserved_ci_commits": [
+    "3b06f2d5a2c7f04ba10c9a4f1691c16a51fefdc5",
+    "ae0f70fd96f642278dfe1be2b74ce66d4337850e"
+  ],
+  "validated_commit": "af0ea3bf9613f812afad3a3cd49b282324e0c5d6",
+  "run_id": 40810250925,
+  "url": "https://github.com/pablete260283/Orvex-OS/actions/runs/40810250925",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 123238614382,
+      "name": "qt-preview",
+      "os": "ubuntu-24.04",
+      "python": "3.11",
+      "tests": 83,
+      "skipped": 0,
+      "javascript": 9,
+      "conclusion": "success"
+    },
+    {
+      "id": 123238614650,
+      "name": "windows-regression",
+      "os": "windows-2022",
+      "python": "3.12",
+      "tests": 83,
+      "skipped": 0,
+      "javascript": 9,
+      "conclusion": "success"
+    }
+  ],
+  "visual_inspection": "Downloaded Windows artifact 12869982826; inspected manager-1080.png and native-1920.png; Spanish text rendered correctly after font initialization.",
+  "hardware": "No physical controllers or commercial emulators tested. Native C process compiled and executed on both runners."
+}

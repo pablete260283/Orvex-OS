@@ -1,3 +1,5 @@
+> Actualización de CI y recuperación: [CI_AND_RECOVERY_0.4.md](CI_AND_RECOVERY_0.4.md). Linux y Windows ejecutaron pruebas nativas en Actions; los límites físicos que se enumeran abajo siguen pendientes.
+
 # ORVEX 0.4 — Controller Manager
 
 Rama `feature/orvex-0.4-controller-manager`, basada en `feature/orvex-0.3.3` / PR #11, sin fusionar. Issue #12 permanece abierto: este PR es un avance funcional, no certificación universal ni aceptación física.

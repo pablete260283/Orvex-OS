@@ -1,0 +1,7 @@
+test_child_profile_cannot_expose_or_modify_personal_controller_profiles (test_controller_manager_ui.ManagerUiTests.test_child_profile_cannot_expose_or_modify_personal_controller_profiles) ... ok
+test_manager_focus_and_capture (test_controller_manager_ui.ManagerUiTests.test_manager_focus_and_capture) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.327s
+
+OK

@@ -88,7 +88,11 @@ class ManagerUiTests(unittest.TestCase):
             ],
         )
         self.assertEqual(len(self.b.controllerProfiles), 1)
+        self.b.controllers.notice = "adult game name"
+        self.b._message = "adult game name"
         self.b.setProfile("child")
+        self.assertNotIn("adult game name", self.b.diagnosticReport)
+        self.assertEqual(self.b.operationMessage, "")
         self.assertEqual(self.b.controllerProfiles, [])
         self.assertEqual(self.b.controllerDevices, [])
         self.assertEqual(self.b.controllerNotice, "")
