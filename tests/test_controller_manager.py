@@ -34,7 +34,7 @@ class ManagerTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
         self.exe = build_fixture(self.root)
-        self.emulator = self.root / "dolphin-emu"
+        self.emulator = self.root / ("dolphin-emu" + self.exe.suffix)
         shutil.copy2(self.exe, self.emulator)
         (self.root / "Wii").mkdir()
         (self.root / "Wii" / "Title (USA).rvz").write_bytes(b"test-only")

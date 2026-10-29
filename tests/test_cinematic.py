@@ -13,7 +13,7 @@ from artifacts import capture_dir
 class CinematicTests(RealUiTests):
  def test_posters_real_library_artwork_approval_and_keyboard(self):
   for index in range(6):
-   target=self.root/('controlled-'+str(index));shutil.copy2(self.exe,target)
+   target=self.root/('controlled-'+str(index)+self.exe.suffix);shutil.copy2(self.exe,target)
    self.b.importGame('Aplicación controlada '+str(index+1),'PC Linux',str(target))
   ids=[e['id'] for e in self.b.showcase]
   image=QImage(1200,1800,QImage.Format_RGB32)

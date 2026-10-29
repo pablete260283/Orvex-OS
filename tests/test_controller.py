@@ -106,7 +106,7 @@ class InputTests(unittest.TestCase):
             b = Bridge(store)
             ids = []
             for n in range(15):
-                target = root / ("game" + str(n))
+                target = root / ("game" + str(n) + exe.suffix)
                 shutil.copy2(exe, target)
                 ids.append(b.installed.import_game("Game " + str(n).zfill(2), "PC", str(target)))
             for key, date in [
