@@ -47,3 +47,7 @@ Tras registrar las fuentes, el run [40810250925](https://github.com/pablete26028
 Además, una prueba posterior encontró que el diagnóstico técnico podía exponer el nombre de un perfil personal al cambiar a Infantil. Se restringieron diagnóstico/mensajes de operación al adulto y se emitió la notificación al cambiar de perfil para actualizar QML inmediatamente. La prueba se conserva antes (fallo) y después (correcta). Los perfiles demo continúan sin autenticación/PIN; esto no es control parental seguro.
 
 Resultados, commits y enlaces de las ejecuciones: docs/validation/0.4-ci. Las capturas de runners son de Qt offscreen y datos controlados, no de juegos del usuario. Las pruebas físicas siguen diferenciadas de las automáticas.
+
+## Carrera detectada en la comprobación final
+
+Run 40811017258 encontró una aserción temporal inestable en Linux: la fixture de 250 ms podía finalizar antes de verificar el bloqueo de cierre de ventana. Se reemplaza esa suposición por una señal explícita de liberación en la fixture C, con tiempo máximo y liberación en teardown. El producto no cambia y el proceso sigue siendo nativo real.

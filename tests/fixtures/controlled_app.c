@@ -22,5 +22,19 @@ int main(int argc, char **argv) {
 #else
     usleep(250000);
 #endif
+#ifdef WAIT_FOR_RELEASE
+    /* Test-only handshake: keep the process alive until UI checks finish. */
+    int released = 0;
+    for (int i = 0; i < 200; ++i) {
+        FILE *release = fopen("orvex-test-release.txt", "r");
+        if (release) { fclose(release); released = 1; break; }
+#ifdef _WIN32
+        Sleep(50);
+#else
+        usleep(50000);
+#endif
+    }
+    if (!released) return 92;
+#endif
     return EXIT_CODE;
 }

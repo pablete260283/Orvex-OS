@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 
-def build_fixture(root, code=0):
+def build_fixture(root, code=0, wait_for_release=False):
     windows = sys.platform == "win32"
     compiler = shutil.which("cl" if windows else "cc")
     if not compiler:
@@ -34,5 +34,7 @@ def build_fixture(root, code=0):
         ]
     else:
         args = [compiler, "-DEXIT_CODE=" + str(code), str(source), "-o", str(target)]
+    if wait_for_release:
+        args.insert(1, "/DWAIT_FOR_RELEASE=1" if windows else "-DWAIT_FOR_RELEASE=1")
     subprocess.run(args, check=True, capture_output=True, cwd=folder)
     return target.resolve(strict=True)
