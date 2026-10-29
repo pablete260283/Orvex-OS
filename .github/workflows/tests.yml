@@ -38,3 +38,26 @@ jobs:
           name: qt-preview-captures
           path: |
             ${{ runner.temp }}/orvex-captures/**/*.png
+
+  windows-regression:
+    # This validates Windows imports, Qt offscreen, and portable tests only.
+    # Linux-only C fixtures are explicitly skipped by tests/real_fixture.py.
+    timeout-minutes: 15
+    runs-on: windows-2022
+    env:
+      QT_QPA_PLATFORM: offscreen
+      QT_QUICK_BACKEND: software
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m ruff check .
+      - run: python -m ruff format --check .
+      - run: python -m unittest discover -s tests -v
+      - run: node --test tests/test_web_model.cjs
