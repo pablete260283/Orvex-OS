@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+      - feature/orvex-0.3.3
+concurrency:
+  group: preview-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -17,7 +21,7 @@ jobs:
       QT_QPA_PLATFORM: offscreen
       QT_QUICK_BACKEND: software
       PYTHONPATH: src
-      ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures
+      PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -32,8 +36,11 @@ jobs:
       - run: ruff format --check .
       - run: python scripts/build_web_preview.py
       - run: python -m unittest discover -s tests -v
+        env:
+          ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures
       - run: node --test tests/test_web_model.cjs
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: qt-preview-captures
           path: |
@@ -48,6 +55,7 @@ jobs:
       QT_QPA_PLATFORM: offscreen
       QT_QUICK_BACKEND: software
       PYTHONPATH: src
+      PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -60,4 +68,12 @@ jobs:
       - run: python -m ruff check .
       - run: python -m ruff format --check .
       - run: python -m unittest discover -s tests -v
+        env:
+          ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures
       - run: node --test tests/test_web_model.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-regression-captures
+          path: ${{ runner.temp }}/orvex-captures/**/*.png
+          if-no-files-found: ignore
