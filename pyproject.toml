@@ -12,12 +12,12 @@ orvex-preview = "orvex.__main__:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 [tool.setuptools.package-data]
-orvex = ["ui/*.qml", "ui/components/*.qml", "ui/pages/*.qml", "ui/assets/*.svg", "core/*.json", "ui/assets/brand/svg/*.svg", "ui/assets/brand/png/*.png", "ui/assets/brand/*.md", "ui/assets/brand/*.json"]
+orvex = ["ui/*.qml", "ui/components/*.qml", "ui/components/*.js", "ui/pages/*.qml", "ui/assets/*.svg", "core/*.json", "ui/assets/brand/svg/*.svg", "ui/assets/brand/png/*.png", "ui/assets/brand/*.md", "ui/assets/brand/*.json"]
 
 # Gradual adoption: audited modules first, without reformatting all legacy UI glue.
 [tool.ruff]
 target-version = "py311"
 line-length = 100
-include = ["src/orvex/__main__.py", "src/orvex/core/store.py", "src/orvex/core/library.py", "src/orvex/core/installed.py", "src/orvex/core/launcher.py", "tests/test_audit.py", "tests/artifacts.py", "src/orvex/controls/*.py", "tests/test_controller.py", "tests/test_controller_manager.py", "tests/test_controller_manager_ui.py", "tests/test_controller_portable.py", "tests/real_fixture.py", "src/orvex/__init__.py", "src/orvex/ui_runtime.py"]
+include = ["src/orvex/__main__.py", "src/orvex/core/store.py", "src/orvex/core/library.py", "src/orvex/core/installed.py", "src/orvex/core/launcher.py", "tests/test_audit.py", "tests/artifacts.py", "src/orvex/controls/*.py", "tests/test_controller.py", "tests/test_controller_manager.py", "tests/test_controller_manager_ui.py", "tests/test_controller_portable.py", "tests/real_fixture.py", "src/orvex/__init__.py", "src/orvex/ui_runtime.py", "src/orvex/runtime/*.py", "tests/test_settings_console.py", "tests/test_quick_menu.py"]
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F"]

@@ -73,6 +73,10 @@ def xinput_actions(buttons, x=0, y=0):
         actions.add("right" if x > 0 else "left")
     if abs(y) > 16000:
         actions.add("up" if y > 0 else "down")
+    if buttons & 0x10:
+        actions.add("menu")
+    if buttons & 0x20:
+        actions.add("view")
     return actions
 
 
@@ -129,14 +133,20 @@ class WindowsPad:
                 if self.xinput(index, c.byref(state)) == 0:
                     p = state.pad
                     self._connection(("xinput", index))
-                    return xinput_actions(p.buttons, p.lx, p.ly)
+                    return xinput_actions(p.buttons, p.lx, p.ly) | {
+                        "raw-" + str(n)
+                        for n in range(16)
+                        if p.buttons & (1 << n) and n not in (10, 11)
+                    }
         for index in range(16):
             joy = Joy()
             joy.size = c.sizeof(Joy)
             joy.flags = 0xFF
             if self.winmm(index, c.byref(joy)) == 0:
                 self._connection(("winmm", index))
-                return winmm_actions(joy.buttons, joy.pov, joy.x, joy.y, self.sony)
+                return winmm_actions(joy.buttons, joy.pov, joy.x, joy.y, self.sony) | {
+                    "raw-" + str(n) for n in range(32) if joy.buttons & (1 << n)
+                }
         self._connection(None)
         return set()
 
@@ -149,6 +159,7 @@ class NavigationInput(QObject):
     def __init__(self, reader=None, target=None, enabled=None, parent=None):
         super().__init__(parent)
         self.reader = reader
+        self.system_gesture = None
         self.target = target or QGuiApplication.focusWindow
         self.enabled = enabled or (lambda: True)
         self.previous = set()
@@ -194,13 +205,22 @@ class NavigationInput(QObject):
             self.armed = False
             self.previous = set()
             self.next_repeat.clear()
+            if self.system_gesture:
+                self.system_gesture.update(set(), now, reset=True)
             return
         connection = getattr(self.reader, "connection_token", None)
-        if connection != self.last_connection:
+        reconnected = connection != self.last_connection
+        if reconnected:
             self.last_connection = connection
             self.armed = False
             self.previous = set()
             self.next_repeat.clear()
+        if self.system_gesture and self.system_gesture.update(actions, now, reset=reconnected):
+            self.armed = False
+            self.previous = actions
+            return
+        # Raw buttons serve only gesture recognition, never ordinary UI activation.
+        actions.intersection_update(KEYS)
         if not self.enabled() or not self.target():
             self.armed = False
             self.previous = actions
@@ -235,13 +255,30 @@ def create_navigation(bridge, parent):
 
         reader = LinuxJoystick()
         QGuiApplication.instance().aboutToQuit.connect(reader.close)
+    from .sdl_navigation import SDLNavigation
+    from .system_gesture import SystemGesture
+
+    reader = SDLNavigation(bridge.controller_inventory, reader)
+    QGuiApplication.instance().aboutToQuit.connect(reader.close)
     navigation = NavigationInput(
-        reader=reader, enabled=lambda: not bridge.launchBusy, parent=parent
+        reader=reader,
+        enabled=lambda: not bridge.launchBusy or bridge.quick_menu.opened,
+        parent=parent,
     )
+    navigation.system_gesture = SystemGesture(bridge)
+
+    def refresh_reader():
+        if reader.inventory is not bridge.controller_inventory:
+            reader.close()
+            token = reader.connection_token + 1
+            reader.__init__(bridge.controller_inventory, reader.fallback)
+            reader.connection_token = token
+
+    bridge.operationChanged.connect(refresh_reader)
     navigation.input_error_changed.connect(bridge.reportControllerInputError)
     QGuiApplication.instance().installEventFilter(navigation)
     if sys.platform == "win32":
         bridge.operationChanged.connect(
-            lambda: setattr(reader, "sony", bridge.controllerLayout == "sony")
+            lambda: setattr(reader.fallback, "sony", bridge.controllerLayout == "sony")
         )
     return navigation

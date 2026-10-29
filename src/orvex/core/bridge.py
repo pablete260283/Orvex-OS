@@ -32,6 +32,10 @@ class Bridge(QObject):
         self.pcsx2=PCSX2Adapter(store)
         self.installed=InstalledLibrary(store)
         self.launcher=GameLauncher(self.installed,self)
+        from ..runtime.quick_menu import QuickMenu
+        self.quick_menu=QuickMenu(self.launcher,store,parent=self)
+        self.shortcut_capture=False
+        self.shortcut_message="Mantén el atajo durante un segundo. F10 abre el menú desde ORVEX."
         self._temp_assets=tempfile.TemporaryDirectory(prefix="orvex-assets-") if store.path is None else None
         if self._temp_assets:weakref.finalize(self,self._temp_assets.cleanup)
         root=Path(self._temp_assets.name) if self._temp_assets else store.path.parent/"artwork"
@@ -55,6 +59,54 @@ class Bridge(QObject):
         if self.store.get("rom_root","") and self._profile=="adult" and not self.launchBusy:self.scanDolphin()
     def _launch_updated(self):
         self._message=self.launcher.message;self.operationChanged.emit();self.refresh();self.detailChanged.emit()
+    @Slot(str,result="QVariantMap")
+    def browseDirectory(self,value):
+        if self._profile!="adult":return dict(directory="",parent="",items=[],error="Disponible en el perfil Adulto.")
+        from .installed import local_path
+        import os
+        try:
+            if value=="computer":
+                roots=[str(Path(chr(c)+":/")) for c in range(65,91) if Path(chr(c)+":/").is_dir()] if os.name=="nt" else ["/"]
+                return dict(directory="computer",parent="computer",items=[dict(name=p,path=p,directory=True) for p in roots],error="")
+            folder=local_path(value) if value else Path.home()
+            folder=folder.expanduser().resolve(strict=True)
+            if not folder.is_dir():raise ValueError("Selecciona una carpeta existente.")
+            entries=[]
+            for child in sorted(folder.iterdir(),key=lambda p:(not p.is_dir(),p.name.casefold())):
+                if child.name.startswith("."):continue
+                entries.append(dict(name=child.name,path=str(child),directory=child.is_dir()))
+                if len(entries)>=1000:break
+            return dict(directory=str(folder),parent=str(folder.parent) if folder.parent!=folder else "computer",items=entries,error="Se muestran hasta 1000 elementos; usa Ruta para ir directamente." if len(entries)==1000 else "")
+        except (OSError,ValueError) as e:return dict(directory=value,parent="computer",items=[],error="No se pudo abrir la carpeta: "+str(e))
+    @Property(QObject,constant=True)
+    def inGameMenu(self):return self.quick_menu
+    @Property(str,notify=operationChanged)
+    def quickMenuShortcutLabel(self):return " + ".join(self.store.get("quick_menu_buttons",["view","menu"]))
+    @Property(str,notify=operationChanged)
+    def quickMenuCaptureMessage(self):return self.shortcut_message
+    @Slot()
+    def beginShortcutCapture(self):
+        self.shortcut_capture=True
+        self.shortcut_message="Suelta todos los botones y mantén la combinación deseada. Volver cancela."
+        self.operationChanged.emit()
+    def save_quick_shortcut(self,buttons):
+        self.store.set("quick_menu_buttons",sorted(buttons));self.shortcut_capture=False
+        self.shortcut_message="Atajo guardado: "+self.quickMenuShortcutLabel;self.operationChanged.emit()
+    @Slot(str,str,result=bool)
+    def approvePauseConfig(self,engine,path):
+        if self._profile!="adult" or self.launchBusy or engine not in ("dolphin","pcsx2"):return False
+        from .installed import local_path
+        from ..runtime.quick_menu import FocusPausePolicy
+        try:
+            value=str(local_path(path).resolve(strict=True))
+            previous=self.store.get("quick_pause_config_"+engine,"")
+            self.store.set("quick_pause_config_"+engine,value)
+            if not FocusPausePolicy.configured(self.store,engine):
+                self.store.set("quick_pause_config_"+engine,previous)
+                raise ValueError("Activa pausa al perder foco en el emulador y selecciona su INI activo. ORVEX no lo modifica.")
+            self._message="Referencia aprobada; ORVEX solo lee la configuración. Pausa física pendiente de validación."
+            self.operationChanged.emit();return True
+        except (OSError,ValueError) as e:self._message=str(e);self.operationChanged.emit();return False
     @Slot(str)
     def reportControllerInputError(self,message):
         self.controller_input_error=message
@@ -69,7 +121,7 @@ class Bridge(QObject):
     @Property(bool,notify=operationChanged)
     def controllerAutoApply(self):return self.store.get('controller_apply_enabled',False)
     def _refresh_controllers(self,force):
-        if self._profile!="adult" or self.launchBusy:return
+        if self._profile!="adult":return
         devices=self.controller_inventory.devices()
         for d in devices:d['display']=d['name']+(' · identificado' if d['stable'] else ' · identidad no verificable')+' · sensores: '+d.get('sensors','no verificado')
         if devices==self.controller_devices and not force:return
@@ -145,7 +197,7 @@ class Bridge(QObject):
     @Slot(str)
     def setLibrarySource(self,source):
         if source not in ["real","demo"]:return
-        self.launcher.cancel();self.artwork.discard()
+        self.launcher.cancel();self.artwork.discard();self.metadata.pending=None
         self._detail_id="";self._focused_id="";self.store.set("library_source",source)
         self.libraryChanged.emit();self.indexChanged.emit();self.detailChanged.emit();self.visualChanged.emit()
     @Slot(str,str,str,result=bool)
@@ -193,6 +245,10 @@ class Bridge(QObject):
             self._message="Selecciona un perfil INI existente con ruta absoluta.";self.operationChanged.emit();return False
         self.store.set('control_profile:'+item_id,str(profile.resolve()))
         self._message="Asociación conservada. Activa ese perfil dentro del emulador; ORVEX no sobrescribe perfiles. Aplicación automática pendiente.";self.operationChanged.emit();return True
+    @Slot(str,result="QVariantMap")
+    def emulatorConfiguration(self,key):
+        if self._profile!="adult" or key not in ("dolphin","pcsx2"):return {}
+        return dict(executable=self.store.get(key+"_executable",""),root=self.store.get("rom_root",""))
     @Slot(str,str,str,result=bool)
     def configureEmulator(self,key,path,root):
         if self._profile!="adult" or key not in ['dolphin','pcsx2']:return False
@@ -229,16 +285,24 @@ class Bridge(QObject):
         try:self.scanEmulator("dolphin");self.scanEmulator("pcsx2");self.setLibrarySource("real");self.refresh()
         except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e)
         self.operationChanged.emit()
+    @Property(bool,notify=operationChanged)
+    def metadataPending(self):return self._profile=="adult" and self.metadata.pending is not None
+    @Slot()
+    def cancelMetadata(self):self.metadata.pending=None;self.operationChanged.emit()
     @Slot(str,str,result=str)
     def proposeMetadata(self,item_id,value):
-        if self._profile!="adult":return "Perfil no autorizado"
+        if self._profile!="adult" or self.launchBusy:return "Perfil u operación no autorizados"
         try:
             import json
-            return json.dumps(self.metadata.propose(item_id,value),ensure_ascii=False,indent=2)
-        except (ValueError,TypeError) as e:return str(e)
-    @Slot()
+            result=json.dumps(self.metadata.propose(item_id,value),ensure_ascii=False,indent=2)
+        except (ValueError,TypeError) as e:result=str(e)
+        self.operationChanged.emit();return result
+    @Slot(result=bool)
     def confirmMetadata(self):
-        if self._profile=="adult":self.metadata.confirm();self.refresh()
+        if self._profile!="adult" or self.launchBusy or not self.metadataPending:return False
+        try:
+            self.metadata.confirm();self.refresh();self.operationChanged.emit();return True
+        except (OSError,ValueError,sqlite3.Error) as e:self._message=str(e);self.operationChanged.emit();return False
     @Property("QVariantList",notify=libraryChanged)
     def managedGames(self):
         if self._profile!="adult":return []
@@ -259,7 +323,7 @@ class Bridge(QObject):
         import json
         if self._profile!="adult":return json.dumps(dict(version="0.4",message="Diagnóstico disponible en el perfil Adulto."),ensure_ascii=False)
         rows=self.store.db.execute("SELECT started_at,ended_at,duration_ms,status,exit_code FROM play_sessions ORDER BY id DESC LIMIT 100").fetchall()
-        return json.dumps(dict(version="0.4",controller=self.controllers.notice,input_error=self.controller_input_error,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
+        return json.dumps(dict(version="0.4",quick_menu=dict(state=self.quick_menu.state,message=self.quick_menu.message),controller=self.controllers.notice,input_error=self.controller_input_error,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
     def real_games(self):return self.installed.games(self._profile)
     def lookup(self,item_id):
         if item_id.startswith("local-"):return next((e for e in self.real_games() if e["id"]==item_id),{})
@@ -363,7 +427,7 @@ class Bridge(QObject):
     @Slot(str)
     def setProfile(self,profile):
         if profile not in PROFILES or profile==self._profile:return
-        self.launcher.cancel();self.artwork.discard()
+        self.launcher.cancel();self.artwork.discard();self.metadata.pending=None
         self._profile=profile;self._detail_id="";self.store.set("profile",profile)
         self.operationChanged.emit()
         self.libraryChanged.emit();self.indexChanged.emit();self.visualChanged.emit();self.detailChanged.emit();self.visualChanged.emit()

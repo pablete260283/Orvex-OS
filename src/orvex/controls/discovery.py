@@ -93,6 +93,8 @@ class SDLInventory:
                 lib.SDL_GameControllerHasSensor.argtypes = [ctypes.c_void_p, ctypes.c_int]
                 lib.SDL_GameControllerHasSensor.restype = ctypes.c_int
                 lib.SDL_GameControllerClose.argtypes = [ctypes.c_void_p]
+            lib.SDL_SetHint.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+            lib.SDL_SetHint(b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", b"1")
             if lib.SDL_InitSubSystem(0x2200) != 0:
                 raise RuntimeError("SDL no pudo inicializar el subsistema de mandos.")
             self.initialized = True

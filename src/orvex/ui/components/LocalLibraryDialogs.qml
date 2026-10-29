@@ -1,19 +1,18 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Dialogs
+import QtQuick.Window
 Item {
     id: manager
     required property var backend
+    readonly property bool modalActive: importPopup.opened
     property string imageGame: ""
     property string imageRole: "cover"
     function openImport(){importPopup.open()}
-    function selectArtwork(gameId,role){imageGame=gameId;imageRole=role;imagePicker.open()}
-    FileDialog { id: executablePicker; title: "Selecciona el ejecutable instalado"; fileMode: FileDialog.OpenFile; onAccepted: executable.text=selectedFile.toString() }
-    FileDialog { id: imagePicker; title: "Selecciona una imagen que tengas derecho a utilizar"; nameFilters: ["Imágenes (*.png *.jpg *.jpeg *.webp)"]; onAccepted: manager.backend.prepareArtwork(manager.imageGame,manager.imageRole,selectedFile.toString()) }
+    function selectArtwork(gameId,role){imageGame=gameId;imageRole=role;Window.window.browseFile("Selecciona imagen local",function(path){manager.backend.prepareArtwork(gameId,role,path)},["png","jpg","jpeg","webp"],false)}
     Popup {
-        id: importPopup; objectName: "importPopup"; x: 410; y: 180; width: 1100; height: 790; modal: true; focus: true; padding: 40
+        id: importPopup; onOpened:gameName.forceActiveFocus(); objectName: "importPopup"; x: 410; y: 180; width: 1100; height: 790; modal: true; focus: true; padding: 40
         background: Rectangle { color: "#10202d"; radius: 22; border.color: "#a8f3de" }
-        Column { Keys.onEscapePressed: {if(manager.backend.pendingLaunch.id)manager.backend.cancelLaunch();else if(manager.backend.pendingArtwork.id)manager.backend.cancelArtwork();else importPopup.close()} spacing: 22; width: parent.width
+        FocusColumn { Keys.onEscapePressed: {if(manager.backend.pendingLaunch.id)manager.backend.cancelLaunch();else if(manager.backend.pendingArtwork.id)manager.backend.cancelArtwork();else importPopup.close()} spacing: 22; width: parent.width
             Text { text: "Importar juego instalado"; font.pixelSize: 38; color: "#edf5f8" }
             Text { text: "Se guardará una referencia. Importar no ejecuta el archivo.
 Windows: .exe nativo · Linux: ELF ejecutable · sin scripts."; font.pixelSize: 22; color: "#9fb4c4" }
@@ -21,7 +20,7 @@ Windows: .exe nativo · Linux: ELF ejecutable · sin scripts."; font.pixelSize: 
             DarkField { id: platform; objectName: "importPlatform"; Accessible.name: "Plataforma"; width: parent.width; height: 60; font.pixelSize: 25; placeholderText: "Plataforma (por ejemplo, PC Windows o PC Linux)" }
             Row { spacing: 20
                 DarkField { id: executable; objectName: "importExecutable"; Accessible.name: "Ruta del ejecutable"; width: 735; height: 60; font.pixelSize: 21; placeholderText: "Ruta absoluta del ejecutable"; selectByMouse: true }
-                ActionButton { width: 240; text: "Examinar…"; onClicked: executablePicker.open() }
+                ActionButton { width: 240; text: "Examinar…"; onClicked:Window.window.browseFile("Ejecutable instalado",function(path){executable.text=path},[],false) }
             }
             DarkField { id: arguments; objectName: "importArguments"; Accessible.name: "Parámetros como array JSON"; visible: false; width: parent.width; height: 0; font.pixelSize: 22; text: "[]"; placeholderText: '["--fullscreen"]' }
             Text { text: manager.backend.operationMessage; width: parent.width; wrapMode: Text.WordWrap; color: "#a8f3de"; font.pixelSize: 22; height: 75 }
@@ -35,7 +34,7 @@ Windows: .exe nativo · Linux: ELF ejecutable · sin scripts."; font.pixelSize: 
         objectName: "launchConfirmation"; enter: Transition {} exit: Transition {} onOpened: cancelFirstLaunch.forceActiveFocus(); x: 410; y: 210; width: 1100; height: 690; padding: 40; modal: true; focus: true; closePolicy: Popup.NoAutoClose
         visible: !!manager.backend.pendingLaunch.id
         background: Rectangle { color: "#10202d"; radius: 22; border.color: "#a8f3de" }
-        Column { Keys.onEscapePressed: {if(manager.backend.pendingLaunch.id)manager.backend.cancelLaunch();else if(manager.backend.pendingArtwork.id)manager.backend.cancelArtwork();else importPopup.close()} spacing: 28; width: parent.width
+        FocusColumn { Keys.onEscapePressed: {if(manager.backend.pendingLaunch.id)manager.backend.cancelLaunch();else if(manager.backend.pendingArtwork.id)manager.backend.cancelArtwork();else importPopup.close()} spacing: 28; width: parent.width
             Text { text: "Confirmar lanzamiento"; color: "#edf5f8"; font.pixelSize: 38 }
             Text { text: manager.backend.pendingLaunch.title || ""; color: "#a8f3de"; font.pixelSize: 30 }
             Text { text: manager.backend.pendingLaunch.path || ""; width: parent.width; wrapMode: Text.WrapAnywhere; font.pixelSize: 23; color: "#edf5f8" }
@@ -54,7 +53,7 @@ Se supervisa el proceso directo, sin detectar procesos hijos de un launcher."; w
         objectName: "artworkConfirmation"; x: 410; y: 150; width: 1100; height: 780; padding: 40; modal: true; focus: true; closePolicy: Popup.NoAutoClose
         visible: !!manager.backend.pendingArtwork.id
         background: Rectangle { color: "#10202d"; radius: 22; border.color: "#a8f3de" }
-        Column { Keys.onEscapePressed: {if(manager.backend.pendingLaunch.id)manager.backend.cancelLaunch();else if(manager.backend.pendingArtwork.id)manager.backend.cancelArtwork();else importPopup.close()} spacing: 24; width: parent.width
+        FocusColumn { Keys.onEscapePressed: {if(manager.backend.pendingLaunch.id)manager.backend.cancelLaunch();else if(manager.backend.pendingArtwork.id)manager.backend.cancelArtwork();else importPopup.close()} spacing: 24; width: parent.width
             Text { text: manager.backend.pendingArtwork.replacing?"Reemplazar recurso gráfico":"Asociar recurso gráfico"; font.pixelSize: 38; color: "#edf5f8" }
             Image { width: parent.width; height: 330; source: manager.backend.pendingArtwork.preview || ""; fillMode: Image.PreserveAspectFit }
             Text { text: manager.backend.pendingArtwork.source || ""; width: parent.width; wrapMode: Text.WrapAnywhere; color: "#edf5f8"; font.pixelSize: 21 }

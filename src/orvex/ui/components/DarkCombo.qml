@@ -1,9 +1,18 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Window
 ComboBox {
     id: control
+    Keys.onUpPressed: Window.window.moveControlFocus(control,false)
+    Keys.onDownPressed: Window.window.moveControlFocus(control,true)
     Keys.onLeftPressed: { if (count>0) currentIndex=(currentIndex+count-1)%count; activated(currentIndex) }
     Keys.onRightPressed: { if (count>0) currentIndex=(currentIndex+1)%count; activated(currentIndex) }
+    property string emptyText: "Sin opciones disponibles"
+    displayText: count ? currentText : emptyText
+    focusPolicy: Qt.StrongFocus
+    Accessible.name: displayText
+    Keys.onReturnPressed: if(count)popup.open()
+    Keys.onEnterPressed: if(count)popup.open()
     implicitHeight: 60
     font.pixelSize: 21
     leftPadding: 15
@@ -27,20 +36,41 @@ ComboBox {
         border.color: control.activeFocus ? "#a8f3de" : "#506975"
     }
     delegate: ItemDelegate {
-        width: control.width; height: 55
-        text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
+        id: option
+        objectName: "comboOption-"+index
+        width: control.width; height: 64
+        text: control.textAt(index)
         font.pixelSize: 20
-        highlighted: control.highlightedIndex === index
-        contentItem: Text { text: parent.text; font: parent.font; color: "#edf5f8"; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
-        background: Rectangle { color: parent.highlighted ? "#325b58" : "#192d3a" }
+        highlighted: options.currentIndex === index
+        onClicked:{control.currentIndex=index;control.activated(index);control.popup.close()}
+        contentItem: Text { text: option.text; font: option.font; color: "#edf5f8"; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter }
+        background: Rectangle { color: option.highlighted ? "#325b58" : "#192d3a" }
     }
     popup: Popup {
-        y: control.height; width: control.width; padding: 2
-        implicitHeight: Math.min(contentItem.implicitHeight+4, 360)
+        objectName: control.objectName+"-popup"
+        y: control.height; width: control.width; padding: 4
+        modal: true; focus: true
+        onClosed: control.forceActiveFocus()
+        onOpened: {options.currentIndex=control.currentIndex;options.forceActiveFocus()}
+        implicitHeight: Math.max(72,Math.min(control.count*64+8, 328))
         contentItem: ListView {
+            id: options
             clip: true; implicitHeight: contentHeight
+            boundsBehavior: Flickable.StopAtBounds
             model: control.popup.visible ? control.delegateModel : null
             currentIndex: control.highlightedIndex
+            Keys.onPressed: function(event) {
+                if(event.key===Qt.Key_Down || event.key===Qt.Key_Up){
+                    currentIndex=(currentIndex+control.count+(event.key===Qt.Key_Down?1:-1))%control.count
+                    positionViewAtIndex(currentIndex,ListView.Contain);event.accepted=true;return
+                }
+                if(event.key===Qt.Key_Escape){control.popup.close();event.accepted=true;return}
+                if(event.key===Qt.Key_Return || event.key===Qt.Key_Enter){
+                    if(currentIndex>=0){control.currentIndex=currentIndex;control.activated(currentIndex)}
+                    control.popup.close();event.accepted=true;return
+                }
+                event.accepted=false
+            }
             ScrollIndicator.vertical: ScrollIndicator {}
         }
         background: Rectangle { color: "#192d3a"; border.color: "#a8f3de"; radius: 10 }

@@ -3,9 +3,11 @@ import QtQuick.Window
 import QtQuick.Controls
 import "components"
 import "pages"
+import "components/FocusTools.js" as FocusTools
 Window {
     id: window
     width: 1440; height: 810; minimumWidth: 960; minimumHeight: 540; visible: true
+    flags: Qt.Window | (gameMenu && gameMenu.state==="controls" ? Qt.WindowStaysOnTopHint : 0)
     title: "ORVEX OS 0.4 · Biblioteca local"; color: "#0b1320"
     onActiveChanged: if(active && !backend.launchBusy)backend.refresh()
     onClosing: function(close) { if(backend.launchBusy){close.accepted=false;backend.explainClose()} }
@@ -13,19 +15,33 @@ Window {
     Connections { target: backend
         function onOperationChanged() {
             if(window.wasGameRunning && !backend.launchBusy){
+                if(backend.page===3){backend.closeDetail();backend.navigate(1)}
                 window.requestActivate()
                 if(!backend.detailOpen && (backend.page===1 || backend.page===2))Qt.callLater(library.restore)
             }
             window.wasGameRunning=backend.launchBusy
         }
     }
+    property var gameMenu: backend.inGameMenu
+    function browseFile(title,handler,types,folders){fileBrowser.begin(title,handler,types,folders)}
+    function editField(field){textEditor.begin(field)}
+    function moveControlFocus(item,forward){
+        var root=item.parent
+        while(root && root.navigationScope!==true)root=root.parent
+        if(root)FocusTools.move(root,item,forward)
+    }
+    InGameMenu {id:inGameOverlay;controller:window.gameMenu;onControlsRequested:{window.navigate(3);settings.category=1;settings.firstContent();window.requestActivate()}}
+    Connections {target:window.gameMenu
+        function onReturned(){backend.navigate(1);backend.closeDetail();window.requestActivate();Qt.callLater(library.restore)}
+    }
+    Shortcut {sequence:"F10";onActivated:window.gameMenu.open()}
     readonly property int page: backend.page
     readonly property bool brandReady: brandLogo.status===Image.Ready
     function openImport(){localDialogs.openImport()}
-    function navigate(p) { backend.navigate(p); if(nav.itemAt(p-1)) nav.itemAt(p-1).forceActiveFocus() }
+    function navigate(p) { backend.navigate(p); if(p===3){settings.enter();return} if(nav.itemAt(p-1)) nav.itemAt(p-1).forceActiveFocus() }
     function enter() { if(page===1 || page===2) library.enter(); else if(page===3) settings.enter();  }
     function focusNext(forward) { var item=window.activeFocusItem; if(item) item.nextItemInFocusChain(forward).forceActiveFocus(Qt.TabFocusReason) }
-    Shortcut { sequence: "Escape"; onActivated: { if(searchOverlay.opened)searchOverlay.cancel();else if(backend.pendingLaunch.id)backend.cancelLaunch();else if(backend.pendingArtwork.id)backend.cancelArtwork();else if(backend.detailOpen) detail.close(); else window.navigate(1) } }
+    Shortcut { sequence: "Escape"; enabled: !settings.modalActive && !textEditor.opened && !fileBrowser.opened && !profileMenu.opened && !localDialogs.modalActive; onActivated: { if(window.gameMenu.state==="controls")window.gameMenu.back();else if(searchOverlay.opened)searchOverlay.cancel();else if(backend.pendingLaunch.id)backend.cancelLaunch();else if(backend.pendingArtwork.id)backend.cancelArtwork();else if(backend.detailOpen) detail.close(); else window.navigate(1) } }
     Shortcut { sequence: "F11"; onActivated: window.visibility=window.visibility===Window.FullScreen ? Window.Windowed : Window.FullScreen }
     Item {
         id: stage; width: 1920; height: 1080; anchors.centerIn: parent; scale: Math.min(window.width/1920,window.height/1080)
@@ -66,10 +82,12 @@ Window {
             }
             ConsolePage { onHeaderRequested: searchButton.forceActiveFocus(); onImportRequested: localDialogs.openImport(); id: library; objectName: "consolePage"; enabled: !searchOverlay.opened; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===1 || backend.page===2; backend: shellBackend }
             Text { x: 92; y: 145; width: 1736; text: backend.launchState==="Error"?"No se pudo completar la operación. Consulta Configuración → Sistema.":""; color: "#a8f3de"; font.pixelSize: 18; elide: Text.ElideRight }
-            SettingsPage { onImportRequested: localDialogs.openImport(); onArtworkRequested: function(gameId,role){localDialogs.selectArtwork(gameId,role)} id: settings; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===3; backend: shellBackend }
+            SettingsPage { onBackRequested:{if(window.gameMenu.state==="controls")window.gameMenu.back();else window.navigate(1)} onImportRequested: localDialogs.openImport(); onArtworkRequested: function(gameId,role){localDialogs.selectArtwork(gameId,role)} id: settings; objectName:"settingsPage"; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===3; backend: shellBackend }
             Text { x: 94; y: 1042; text: "Navegar · Confirmar: abrir · Volver: regresar"; color: "#7891a5"; font.pixelSize: 17 }
             Text { x: 1120; y: 1042; text: "0.4 · Biblioteca local · Perfiles sin PIN"; color: "#a8f3de"; font.pixelSize: 17 }
         }
+        TextEntryOverlay {id:textEditor}
+        FileBrowser {id:fileBrowser;backend:shellBackend}
         LocalLibraryDialogs { id: localDialogs; anchors.fill: parent; backend: shellBackend }
         DetailPage { onArtworkRequested: function(gameId,role){localDialogs.selectArtwork(gameId,role)} id: detail; objectName: "detailPage"; anchors.fill: parent; backend: shellBackend; onDismissed: {if(backend.page===1 || backend.page===2)library.restore();else if(nav.itemAt(backend.page-1)) nav.itemAt(backend.page-1).forceActiveFocus()} }
     }

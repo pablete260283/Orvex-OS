@@ -80,7 +80,7 @@ class InputTests(unittest.TestCase):
         reader.fd = 123
         data = [struct.pack("=IhBB", 0, 1, 0x81, 0), struct.pack("=IhBB", 1, 32767, 2, 6)]
         with patch("orvex.controls.linux_joystick.os.read", side_effect=data + [BlockingIOError()]):
-            self.assertEqual(reader.read(), {"confirm", "right"})
+            self.assertEqual(reader.read(), {"confirm", "right", "raw-0"})
         reader.fd = None
 
     def test_remote_select_back_and_repeat_suppression(self):

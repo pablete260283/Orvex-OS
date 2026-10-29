@@ -87,6 +87,11 @@ jobs:
         env:
           ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures
       - run: node --test tests/test_web_model.cjs
+      - name: Settings navigation at Windows 150 percent scale
+        run: python -m unittest discover -s tests -p test_settings_console.py -v
+        env:
+          QT_SCALE_FACTOR: '1.5'
+          ORVEX_CAPTURE_DIR: ${{ runner.temp }}/orvex-captures/scaled-150
       - uses: actions/upload-artifact@v4
         if: always()
         with:

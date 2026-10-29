@@ -70,4 +70,4 @@ class LinuxJoystick:
             value = self.axes.get(axis, 0)
             if abs(value) > 16000:
                 actions.add(positive if value > 0 else negative)
-        return actions
+        return actions | {"raw-" + str(i) for i, value in self.buttons.items() if value}

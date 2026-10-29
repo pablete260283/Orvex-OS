@@ -1,3 +1,5 @@
+> Corrección de Configuración y menú durante juegos: [implementación y límites de pausa/foco](SETTINGS_AND_QUICK_MENU.md). Issue #14 sigue pendiente de validación física.
+
 > Actualización de CI y recuperación: [CI_AND_RECOVERY_0.4.md](CI_AND_RECOVERY_0.4.md). Linux y Windows ejecutaron pruebas nativas en Actions; los límites físicos que se enumeran abajo siguen pendientes.
 
 # ORVEX 0.4 — Controller Manager

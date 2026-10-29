@@ -1,0 +1,15 @@
+test_controller_file_browser_and_nested_dialog_return (test_settings_console.SettingsConsoleTests.test_controller_file_browser_and_nested_dialog_return) ... ok
+test_controller_text_keyboard_save_cancel_and_edit_persistence (test_settings_console.SettingsConsoleTests.test_controller_text_keyboard_save_cancel_and_edit_persistence) ... ok
+test_many_long_names_combo_text_selection_and_empty_state (test_settings_console.SettingsConsoleTests.test_many_long_names_combo_text_selection_and_empty_state) ... ok
+test_six_sections_focus_actions_and_saved_preferences (test_settings_console.SettingsConsoleTests.test_six_sections_focus_actions_and_saved_preferences) ... ok
+test_close_failure_and_unexpected_exit_leave_no_stuck_menu (test_quick_menu.QuickMenuTests.test_close_failure_and_unexpected_exit_leave_no_stuck_menu) ... ok
+test_native_window_close_or_explicit_unsupported (test_quick_menu.QuickMenuTests.test_native_window_close_or_explicit_unsupported) ... ok
+test_pause_config_is_read_only_conservative_and_engine_specific (test_quick_menu.QuickMenuTests.test_pause_config_is_read_only_conservative_and_engine_specific) ... ok
+test_popup_resume_controls_confirm_close_and_session_record (test_quick_menu.QuickMenuTests.test_popup_resume_controls_confirm_close_and_session_record) ... ok
+test_sdl_mapped_guide_disconnect_and_fallback_are_single_source (test_quick_menu.QuickMenuTests.test_sdl_mapped_guide_disconnect_and_fallback_are_single_source) ... ok
+test_system_held_gesture_learning_disconnect_and_reserved_bits (test_quick_menu.QuickMenuTests.test_system_held_gesture_learning_disconnect_and_reserved_bits) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 10.513s
+
+OK

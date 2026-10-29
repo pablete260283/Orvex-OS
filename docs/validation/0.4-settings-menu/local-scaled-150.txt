@@ -1,0 +1,11 @@
+test_controller_file_browser_and_nested_dialog_return (test_settings_console.SettingsConsoleTests.test_controller_file_browser_and_nested_dialog_return) ... ok
+test_controller_text_keyboard_save_cancel_and_edit_persistence (test_settings_console.SettingsConsoleTests.test_controller_text_keyboard_save_cancel_and_edit_persistence) ... ok
+test_many_long_names_combo_text_selection_and_empty_state (test_settings_console.SettingsConsoleTests.test_many_long_names_combo_text_selection_and_empty_state) ... ok
+test_six_sections_focus_actions_and_saved_preferences (test_settings_console.SettingsConsoleTests.test_six_sections_focus_actions_and_saved_preferences) ... ok
+test_child_profile_cannot_expose_or_modify_personal_controller_profiles (test_controller_manager_ui.ManagerUiTests.test_child_profile_cannot_expose_or_modify_personal_controller_profiles) ... ok
+test_manager_focus_and_capture (test_controller_manager_ui.ManagerUiTests.test_manager_focus_and_capture) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 10.273s
+
+OK
