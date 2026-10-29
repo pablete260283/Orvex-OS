@@ -98,6 +98,45 @@ class InputTests(unittest.TestCase):
         router.eventFilter(None, QKeyEvent(QEvent.KeyPress, Qt.Key_Back, Qt.NoModifier))
         self.assertEqual(events, ["confirm", "back"])
 
+    def test_reconnect_and_read_failure_require_neutral_before_confirm(self):
+        class ChangingReader:
+            connection_token = 0
+            actions = set()
+            broken = False
+
+            def read(self):
+                if self.broken:
+                    raise OSError("device removed")
+                return self.actions
+
+        reader = ChangingReader()
+        router = NavigationInput(target=lambda: True)
+        router.reader = reader
+        events = []
+        router.dispatch = events.append
+        router.poll(0)
+        reader.connection_token = 1
+        reader.actions = {"confirm"}
+        router.poll(1)
+        router.poll(2)
+        self.assertEqual(events, [])
+        reader.actions = set()
+        router.poll(3)
+        reader.actions = {"confirm"}
+        router.poll(4)
+        self.assertEqual(events, ["confirm"])
+        reader.broken = True
+        router.poll(5)
+        self.assertEqual(router.last_error, "device removed")
+        reader.broken = False
+        router.poll(6)
+        self.assertEqual(events, ["confirm"])
+        reader.actions = set()
+        router.poll(7)
+        reader.actions = {"confirm"}
+        router.poll(8)
+        self.assertEqual(events, ["confirm", "confirm"])
+
     def test_full_catalog_recent_order_and_persistence(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

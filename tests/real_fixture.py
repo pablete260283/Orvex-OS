@@ -35,4 +35,4 @@ def build_fixture(root, code=0):
     else:
         args = [compiler, "-DEXIT_CODE=" + str(code), str(source), "-o", str(target)]
     subprocess.run(args, check=True, capture_output=True, cwd=folder)
-    return target
+    return target.resolve(strict=True)

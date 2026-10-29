@@ -41,6 +41,7 @@ class Bridge(QObject):
         self.controller_inventory=SDLInventory(store.get('dolphin_executable',''))
         self.controllers=ControllerManager(store,self.installed,(root/'controller-profiles' if store.path is None else store.path.parent/'controller-profiles'),self.controller_inventory)
         self.controller_devices=[]
+        self.controller_input_error=""
         self.launcher.controller_manager=self.controllers
         from .metadata_local import LocalMetadata
         self.metadata=LocalMetadata(self.installed)
@@ -54,6 +55,11 @@ class Bridge(QObject):
         if self.store.get("rom_root","") and self._profile=="adult" and not self.launchBusy:self.scanDolphin()
     def _launch_updated(self):
         self._message=self.launcher.message;self.operationChanged.emit();self.refresh();self.detailChanged.emit()
+    @Slot(str)
+    def reportControllerInputError(self,message):
+        self.controller_input_error=message
+        if message:self._message="No se pudo leer el mando. Reconéctalo; puedes usar otro control. Detalle: "+message
+        self.operationChanged.emit()
     @Property("QVariantList",notify=operationChanged)
     def controllerDevices(self):return self.controller_devices if self._profile=="adult" else []
     @Property("QVariantList",notify=operationChanged)
@@ -252,7 +258,7 @@ class Bridge(QObject):
     def diagnosticReport(self):
         import json
         rows=self.store.db.execute("SELECT started_at,ended_at,duration_ms,status,exit_code FROM play_sessions ORDER BY id DESC LIMIT 100").fetchall()
-        return json.dumps(dict(version="0.4",controller=self.controllers.notice,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
+        return json.dumps(dict(version="0.4",controller=self.controllers.notice,input_error=self.controller_input_error,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
     def real_games(self):return self.installed.games(self._profile)
     def lookup(self,item_id):
         if item_id.startswith("local-"):return next((e for e in self.real_games() if e["id"]==item_id),{})

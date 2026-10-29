@@ -82,3 +82,24 @@ class RecoveryOwnershipTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), original)
             self.assertFalse(store.get("controller_restore_journal", {}))
             store.close()
+
+    def test_journal_failure_does_not_leave_launcher_busy(self):
+        import sqlite3
+        from orvex.core.launcher import GameLauncher
+
+        class BrokenManager:
+            active_transaction = "owned"
+            recovery = ""
+            notice = ""
+
+            def finish_launch(self):
+                raise sqlite3.OperationalError("simulated journal failure")
+
+        store = Store(":memory:")
+        launcher = GameLauncher(InstalledLibrary(store))
+        launcher.controller_manager = BrokenManager()
+        launcher._release()
+        self.assertFalse(launcher.busy)
+        self.assertEqual(launcher.state, "Error")
+        self.assertIn("Recuperación pendiente", launcher.message)
+        store.close()

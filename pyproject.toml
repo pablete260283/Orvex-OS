@@ -18,6 +18,6 @@ orvex = ["ui/*.qml", "ui/components/*.qml", "ui/pages/*.qml", "ui/assets/*.svg",
 [tool.ruff]
 target-version = "py311"
 line-length = 100
-include = ["src/orvex/__main__.py", "src/orvex/core/store.py", "src/orvex/core/library.py", "src/orvex/core/installed.py", "src/orvex/core/launcher.py", "tests/test_audit.py", "tests/artifacts.py", "src/orvex/controls/*.py", "tests/test_controller.py", "tests/test_controller_manager.py", "tests/test_controller_manager_ui.py", "tests/test_controller_portable.py"]
+include = ["src/orvex/__main__.py", "src/orvex/core/store.py", "src/orvex/core/library.py", "src/orvex/core/installed.py", "src/orvex/core/launcher.py", "tests/test_audit.py", "tests/artifacts.py", "src/orvex/controls/*.py", "tests/test_controller.py", "tests/test_controller_manager.py", "tests/test_controller_manager_ui.py", "tests/test_controller_portable.py", "tests/real_fixture.py", "src/orvex/__init__.py"]
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F"]

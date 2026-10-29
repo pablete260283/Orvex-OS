@@ -194,7 +194,14 @@ class GameLauncher(QObject):
     def _release(self):
         if self.controller_manager:
             pending_recovery = bool(self.controller_manager.active_transaction)
-            self.controller_manager.recovery = self.controller_manager.finish_launch()
+            try:
+                self.controller_manager.recovery = self.controller_manager.finish_launch()
+            except (sqlite3.Error, OSError, ValueError) as error:
+                self.controller_manager.recovery = (
+                    "Recuperación pendiente; conserva el respaldo: " + str(error)
+                )
+                self.state = "Error"
+                self.message = self.controller_manager.recovery
             if pending_recovery:
                 self.controller_manager.notice = self.controller_manager.recovery
         process = self.process
