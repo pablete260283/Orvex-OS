@@ -191,10 +191,10 @@ Utiliza los ajustes de audio de Windows o del juego.":settings.category===4?"Per
                 ActionButton {text:"Cancelar";onClicked:metadataEditor.close()}
             }
         }
-        Popup { id: removal; objectName:"removalDialog"; focus:true; onOpened:cancelRemoval.forceActiveFocus(); onClosed:settings.firstContent(); background:Rectangle{color:"#142333";radius:18;border.color:"#a8f3de"} x: 120; y: 150; width: 1000; height: 350; modal: true
+        Popup { id: removal; objectName:"removalDialog"; focus:true; onOpened:{keepHistory.checked=true;cancelRemoval.forceActiveFocus()} onClosed:settings.firstContent(); background:Rectangle{color:"#142333";radius:18;border.color:"#a8f3de"} x: 120; y: 150; width: 1000; height: 350; modal: true
             FocusColumn { spacing: 20
                 Label { color:"#edf5f8"; font.pixelSize:22; text: "Quitar referencia. Nunca se borrarán juegos ni partidas." }
-                CheckBox { id: keepHistory; checked: true; contentItem:Text{text:keepHistory.text;color:"#edf5f8";font.pixelSize:23;leftPadding:50} text: "Conservar historial de sesiones" }
+                CheckBox { id: keepHistory; width:900;height:60; background:Rectangle{radius:10;color:keepHistory.activeFocus?"#29424a":"transparent";border.width:keepHistory.activeFocus?3:0;border.color:"#a8f3de"} Keys.onReturnPressed:checked=!checked; Keys.onEnterPressed:checked=!checked; checked: true; contentItem:Text{text:keepHistory.text;color:"#edf5f8";font.pixelSize:23;leftPadding:50} text: "Conservar historial de sesiones" }
                 ActionButton { text: "Confirmar retirada"; onClicked: {settings.backend.removeGame(settings.selectedGame,keepHistory.checked);removal.close()} }
                 ActionButton { id:cancelRemoval;text: "Cancelar"; onClicked: removal.close() }
             }

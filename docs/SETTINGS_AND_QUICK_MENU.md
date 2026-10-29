@@ -73,3 +73,9 @@ Descargar la rama `feature/orvex-0.4-controller-manager`, extraer y ejecutar set
 Se reprodujo un cierre externo mientras estaba abierto el gestor desde el menú: el estado volvía a Videojuegos, pero controllerManager.opened permanecía true. SettingsPage ahora cierra sus diálogos al ocultarse y el retorno cancela teclado/explorador pendientes sin guardar. Una prueba nueva ejecuta una sesión real controlada, abre el gestor por el enrutador, finaliza el proceso y exige biblioteca enfocada y diálogo cerrado. Once pruebas específicas pasan después de la corrección.
 
 La primera CI de este ciclo (40816150762) quedó esperando la cancelación de un runner Windows sin pasos ejecutados y bloqueó el run PR 40816154776 por concurrencia de rama. El grupo de concurrencia incluye ahora el SHA del head: sigue deduplicando push/PR del mismo código y permite validar un commit posterior sin esperar una cancelación ajena. Esto no convierte un job bloqueado en éxito; los resultados finales se registran en el PR.
+
+## Segunda comprobación Windows y decisión sobre historial
+
+Run 40816638345: Linux pasó 94 Python/Qt y 9 JS; Windows completó 94 casos con un error de compilación de la nueva fixture GUI (93 correctos). No se presenta ese run como verde. Se pasa user32.lib explícitamente al enlazador mediante /link y se conserva stdout/stderr del compilador si falla, en lugar de ocultar el diagnóstico. La siguiente CI debe ejecutar nuevamente la ventana real y el escalado.
+
+Se reprodujo además que Enter/Confirmar no alternaba el CheckBox de historial. Se añadió activación explícita y foco visible; cada apertura restablece Conservar historial y enfoca Cancelar. Una prueba antes/después comprueba alternar y cancelar sin retirar el juego ni tocar archivos. Doce pruebas de Configuración/menú pasan tras los cambios.

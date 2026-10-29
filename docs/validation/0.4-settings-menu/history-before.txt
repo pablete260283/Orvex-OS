@@ -1,0 +1,14 @@
+test_history_choice_can_be_toggled_and_cancelled_with_controller (test_settings_console.SettingsConsoleTests.test_history_choice_can_be_toggled_and_cancelled_with_controller) ... FAIL
+
+======================================================================
+FAIL: test_history_choice_can_be_toggled_and_cancelled_with_controller (test_settings_console.SettingsConsoleTests.test_history_choice_can_be_toggled_and_cancelled_with_controller)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/d847edc0b4c6/orvex-04-ci/tests/test_settings_console.py", line 220, in test_history_choice_can_be_toggled_and_cancelled_with_controller
+    self.assertFalse(checkbox.property("checked"))
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.763s
+
+FAILED (failures=1)

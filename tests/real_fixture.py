@@ -38,6 +38,9 @@ def build_fixture(root, code=0, wait_for_release=False, gui=False):
         args.insert(1, "/DWAIT_FOR_RELEASE=1" if windows else "-DWAIT_FOR_RELEASE=1")
     if gui and windows:
         args.insert(1, "/DGUI_FIXTURE=1")
-        args.append("user32.lib")
-    subprocess.run(args, check=True, capture_output=True, cwd=folder)
+        args.extend(["/link", "user32.lib"])
+    result = subprocess.run(args, capture_output=True, cwd=folder)
+    if result.returncode:
+        output = (result.stdout + result.stderr).decode("utf-8", "replace")
+        raise RuntimeError("Native fixture compiler failed:\n" + output)
     return target.resolve(strict=True)
