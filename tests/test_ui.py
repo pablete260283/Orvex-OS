@@ -1,9 +1,9 @@
+from orvex.ui_runtime import ui_application
 import os
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen');os.environ.setdefault('QT_QUICK_BACKEND','software')
 import unittest
 from pathlib import Path
 from PySide6.QtCore import QUrl,Qt,QPoint,QObject
-from PySide6.QtGui import QGuiApplication
 from PySide6.QtQuick import QQuickWindow
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtTest import QTest
@@ -15,7 +15,7 @@ from orvex.core.bridge import Bridge
 
 class UiTests(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):cls.app=QGuiApplication.instance() or QGuiApplication([])
+    def setUpClass(cls):cls.app=ui_application()
     def setUp(self):
         self.store=Store(':memory:');self.store.set("library_source","demo");self.b=Bridge(self.store);self.store.set('reduced_motion',True)
         self.engine=QQmlApplicationEngine();self.errors=[]

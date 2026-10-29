@@ -1,10 +1,10 @@
+from orvex.ui_runtime import ui_application
 import os
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 os.environ.setdefault("QT_QUICK_BACKEND", "software")
 import unittest
 from PySide6.QtCore import QObject, Qt
-from PySide6.QtGui import QGuiApplication
 from PySide6.QtTest import QTest
 import test_real_ui
 from artifacts import capture_dir
@@ -13,7 +13,7 @@ from artifacts import capture_dir
 class ManagerUiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QGuiApplication.instance() or QGuiApplication([])
+        cls.app = ui_application()
 
     setUp = test_real_ui.RealUiTests.setUp
     tearDown = test_real_ui.RealUiTests.tearDown

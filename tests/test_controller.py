@@ -9,8 +9,8 @@ import shutil
 import tempfile
 from pathlib import Path
 from PySide6.QtCore import QMetaObject
-from PySide6.QtGui import QGuiApplication
 from PySide6.QtTest import QTest
+from orvex.ui_runtime import ui_application
 from orvex.controls.gamepad import NavigationInput, xinput_actions, winmm_actions, Joy, State
 from orvex.core.bridge import Bridge
 from orvex.core.store import Store
@@ -176,7 +176,7 @@ class InputTests(unittest.TestCase):
 class ControllerUiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QGuiApplication.instance() or QGuiApplication([])
+        cls.app = ui_application()
 
     setUp = test_ui.UiTests.setUp
     tearDown = test_ui.UiTests.tearDown
@@ -274,7 +274,7 @@ class ControllerUiTests(unittest.TestCase):
 class ControllerLaunchTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QGuiApplication.instance() or QGuiApplication([])
+        cls.app = ui_application()
 
     import test_real_ui as _real
 

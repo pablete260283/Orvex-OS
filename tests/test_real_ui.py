@@ -1,9 +1,10 @@
+from orvex.ui_runtime import ui_application
 import os
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen');os.environ.setdefault('QT_QUICK_BACKEND','software')
 import tempfile,time,unittest
 from pathlib import Path
 from PySide6.QtCore import QObject,QUrl,Qt,QPoint,QMetaObject
-from PySide6.QtGui import QGuiApplication,QImage,QColor
+from PySide6.QtGui import QImage,QColor
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtQuick import QQuickItem,QQuickWindow
 from PySide6.QtTest import QTest
@@ -15,7 +16,7 @@ from orvex.core.bridge import Bridge
 from real_fixture import build_fixture
 class RealUiTests(unittest.TestCase):
  @classmethod
- def setUpClass(cls):cls.app=QGuiApplication.instance() or QGuiApplication([])
+ def setUpClass(cls):cls.app=ui_application()
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);self.exe=build_fixture(self.root)
   self.store=Store(self.root/'test.sqlite3');self.b=Bridge(self.store);self.store.set('reduced_motion',True)

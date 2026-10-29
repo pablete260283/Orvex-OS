@@ -9,6 +9,9 @@ from .core.bridge import Bridge
 
 
 def configure_application(app):
+    from .ui_runtime import ensure_application_font
+
+    ensure_application_font(app)
     app.setOrganizationName("ORVEX")
     # Retain the 0.1 preference location; expose the official application name.
     app.setApplicationName("Entertainment Preview")

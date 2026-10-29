@@ -1,3 +1,4 @@
+from orvex.ui_runtime import ui_application
 import os
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
@@ -6,7 +7,6 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
-from PySide6.QtGui import QGuiApplication
 from PySide6.QtTest import QTest
 from orvex.core.installed import InstalledLibrary
 from orvex.core.store import Store
@@ -28,7 +28,7 @@ class Inventory:
 class ManagerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QGuiApplication.instance() or QGuiApplication([])
+        cls.app = ui_application()
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
