@@ -79,3 +79,9 @@ La primera CI de este ciclo (40816150762) quedó esperando la cancelación de un
 Run 40816638345: Linux pasó 94 Python/Qt y 9 JS; Windows completó 94 casos con un error de compilación de la nueva fixture GUI (93 correctos). No se presenta ese run como verde. Se pasa user32.lib explícitamente al enlazador mediante /link y se conserva stdout/stderr del compilador si falla, en lugar de ocultar el diagnóstico. La siguiente CI debe ejecutar nuevamente la ventana real y el escalado.
 
 Se reprodujo además que Enter/Confirmar no alternaba el CheckBox de historial. Se añadió activación explícita y foco visible; cada apertura restablece Conservar historial y enfoca Cancelar. Una prueba antes/después comprueba alternar y cancelar sin retirar el juego ni tocar archivos. Doce pruebas de Configuración/menú pasan tras los cambios.
+
+## Validación Windows obtenida
+
+Run [40817124951](https://github.com/pablete260283/Orvex-OS/actions/runs/40817124951), commit 5d880aa38bfd5a812bc80583c7772828ce4b7d0d: ambos jobs SUCCESS. Linux ejecutó 95 Python/Qt y 9 JS; Windows 95 Python/Qt, 9 JS y cinco pruebas adicionales de Configuración a escala 150 %, sin skips. La ventana C Win32 recibió WM_CLOSE y terminó normalmente: se ejecutó la prueba, no un mock de esa API. Las pruebas de mando/pausa interna siguen siendo simulaciones/política de configuración, no hardware ni emulación física.
+
+Se descargó e inspeccionó el artefacto Windows 12873027623 (menú, Biblioteca y escalado): texto visible, selección y cinco filas correctas. Las tres capturas Windows se guardan aquí junto con los resultados. La última corrección visual amplía el campo de familia para mostrar Joy-Con derecho completo y muestra el detalle del dispositivo en texto separado; dos pruebas del gestor pasan localmente. Los Checks del último commit deben confirmarlo nuevamente.

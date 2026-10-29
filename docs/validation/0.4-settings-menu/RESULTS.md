@@ -13,3 +13,7 @@ Base 03558a6, PR #13.
 - Pausa/reanudación efectiva de Dolphin/PCSX2/comerciales, fullscreen exclusivo, restricciones de foco de Windows e interferencia de Steam Input permanecen pendientes. La política de pausa solo lee el INI aprobado; no consulta el estado interno del emulador.
 
 Ver ../../SETTINGS_AND_QUICK_MENU.md.
+
+## CI ejecutada, no solo configurada
+
+Run 40817124951, commit 5d880aa: Linux y Windows SUCCESS. 95 Python/Qt + 9 JS en cada sistema, cero skips. Windows añadió cinco pruebas a escala 150 %. Ruff/formato OK. Ventana Win32 propia: WM_CLOSE real y salida normal. Logs resumidos: linux-ci-95.txt y windows-ci-95-and-scaled.txt. Capturas Windows inspeccionadas: windows-library.webp, windows-menu.webp y windows-library-scaled-150.webp. No equivale a validación de mandos/emuladores físicos.
