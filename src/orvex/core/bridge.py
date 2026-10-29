@@ -99,7 +99,7 @@ class Bridge(QObject):
     @Slot()
     def retryControllerRecovery(self):
         if self._profile!="adult" or self.launchBusy:return
-        self.controllers.recovery=self.controllers.recover(finished=True)
+        self.controllers.recovery=self.controllers.recover(confirmed_stopped=True)
         self._message=self.controllers.recovery
         journal=self.store.get('controller_restore_journal',{})
         if journal:self._message+=' Copia: '+journal.get('backup','')

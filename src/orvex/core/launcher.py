@@ -149,7 +149,7 @@ class GameLauncher(QObject):
             try:
                 self.controller_manager.mark_starting()
             except sqlite3.Error:
-                self.controller_manager.recover(finished=True)
+                self.controller_manager.finish_launch()
                 self.process = None
                 process.deleteLater()
                 raise
@@ -193,8 +193,8 @@ class GameLauncher(QObject):
 
     def _release(self):
         if self.controller_manager:
-            pending_recovery = bool(self.store.get("controller_restore_journal", {}))
-            self.controller_manager.recovery = self.controller_manager.recover(finished=True)
+            pending_recovery = bool(self.controller_manager.active_transaction)
+            self.controller_manager.recovery = self.controller_manager.finish_launch()
             if pending_recovery:
                 self.controller_manager.notice = self.controller_manager.recovery
         process = self.process

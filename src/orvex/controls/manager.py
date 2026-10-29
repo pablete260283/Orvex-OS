@@ -36,6 +36,7 @@ class ControllerManager:
         self.root = Path(root)
         self.inventory = inventory
         self.notice = ""
+        self.active_transaction = None
         self.recovery = self.recover()
 
     def profiles(self):
@@ -223,7 +224,9 @@ class ControllerManager:
             stream.write(original)
             stream.flush()
             os.fsync(stream.fileno())
+        transaction_id = uuid.uuid4().hex
         journal = dict(
+            transaction_id=transaction_id,
             target=str(target),
             backup=str(backup),
             original=digest(original),
@@ -231,6 +234,7 @@ class ControllerManager:
             phase="prepared",
         )
         self.store.set("controller_restore_journal", journal)
+        self.active_transaction = transaction_id
         if digest(target.read_bytes()) != journal["original"]:
             raise ValueError(
                 "La configuración Dolphin cambió durante el respaldo; no se aplicó el perfil."
@@ -255,13 +259,13 @@ class ControllerManager:
 
     def mark_starting(self):
         journal = self.store.get("controller_restore_journal", {})
-        if journal:
+        if self.active_transaction and journal.get("transaction_id") == self.active_transaction:
             journal["phase"] = "starting"
             self.store.set("controller_restore_journal", journal)
 
     def mark_running(self, pid):
         journal = self.store.get("controller_restore_journal", {})
-        if journal:
+        if self.active_transaction and journal.get("transaction_id") == self.active_transaction:
             journal["phase"] = "running"
             journal["pid"] = int(pid)
             try:
@@ -300,13 +304,29 @@ class ControllerManager:
         except OSError:
             return True
 
-    def recover(self, finished=False):
+    def finish_launch(self):
+        transaction_id = self.active_transaction
+        try:
+            if not transaction_id:
+                return self.recovery
+            return self.recover(finished_transaction=transaction_id)
+        finally:
+            self.active_transaction = None
+
+    def recover(self, finished_transaction=None, confirmed_stopped=False):
         journal = self.store.get("controller_restore_journal", {})
         if not journal:
             return "Sin cambios pendientes en configuraciones de emulador."
         try:
-            if not finished and (
-                journal.get("phase") == "starting"
+            owned_finished = bool(finished_transaction) and (
+                finished_transaction == self.active_transaction == journal.get("transaction_id")
+            )
+            if finished_transaction and not owned_finished:
+                raise ValueError(
+                    "El respaldo pertenece a otro lanzamiento; no se modificó el destino."
+                )
+            if not owned_finished and (
+                (journal.get("phase") == "starting" and not confirmed_stopped)
                 or (journal.get("phase") == "running" and self._process_running(journal.get("pid")))
             ):
                 raise ValueError(

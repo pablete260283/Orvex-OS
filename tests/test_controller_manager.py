@@ -185,5 +185,5 @@ class ManagerTests(unittest.TestCase):
         self.m.mark_running(os.getpid())
         self.assertIn("podría seguir abierto", self.m.recover())
         self.assertNotEqual(target.read_bytes(), original)
-        self.assertIn("restaurada", self.m.recover(finished=True))
+        self.assertIn("restaurada", self.m.finish_launch())
         self.assertEqual(target.read_bytes(), original)

@@ -9,7 +9,7 @@ on:
       - main
       - feature/orvex-0.3.3
 concurrency:
-  group: preview-${{ github.workflow }}-${{ github.ref }}
+  group: preview-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 permissions:
   contents: read
