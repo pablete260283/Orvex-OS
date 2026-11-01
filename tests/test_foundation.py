@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from orvex.core.store import Store
-from orvex.foundation.models import Content, ContentUnavailable, ProposalConflict
+from orvex.foundation.models import Content, ContentUnavailable, ProposalConflict, source_identity
 from orvex.foundation.profiles import AuthenticationUnavailable, ProfileService
 from orvex.foundation.services import FoundationServices
 
@@ -129,6 +129,18 @@ class FoundationTests(unittest.TestCase):
                 source_type="local",
                 source_ref="relative/file.mp4",
             )
+
+    def test_windows_short_alias_and_resolved_path_share_source_identity(self):
+        # Simulated Windows filesystem resolution; the native Windows integration test
+        # also exercises actual TemporaryDirectory aliases when the runner uses 8.3 paths.
+        short = r"C:\Users\RUNNER~1\Games\owned.iso"
+        canonical = r"C:\Users\RunnerAdmin\Games\owned.iso"
+        with patch("orvex.foundation.models.sys.platform", "win32"):
+            with patch("orvex.foundation.models.Path") as native_path:
+                native_path.return_value.resolve.return_value = canonical
+                self.assertEqual(
+                    source_identity("local", short), source_identity("local", canonical)
+                )
 
     def test_search_alternate_title_filters_and_profile_favorites(self):
         safe = self.add("Océano", alternate_title="Ocean", format="MKV")

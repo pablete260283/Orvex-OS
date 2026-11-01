@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import sys
 import unicodedata
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -41,6 +42,11 @@ def source_identity(source_type, reference):
             # Windows case-insensitive paths are stable even when tested on Linux.
             from ntpath import normpath
 
+            if sys.platform == "win32":
+                # Resolve real filesystem aliases (8.3 paths/junctions) before folding.
+                # The legacy scanners already store Path.resolve(), so lexical-only
+                # normalization would register the same ROM twice on Windows runners.
+                reference = str(Path(reference).resolve(strict=False))
             return "win:" + normpath(reference).replace("\\", "/").casefold()
         path = Path(reference).expanduser()
         if not path.is_absolute():

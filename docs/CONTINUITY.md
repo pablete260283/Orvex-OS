@@ -1,8 +1,10 @@
 # Continuidad vigente · ORVEX 0.5 Foundation
 
-Rama `feature/orvex-0.5-foundation` creada exactamente desde `0f6c76112884723e42bb893179fb6bdcf5f06b1c`. PR #13 y main deben permanecer intactos. El commit de implementación se identifica por `feat: establish ORVEX 0.5 offline catalog and profile foundation`; el SHA definitivo se consulta en el PR nuevo para evitar autorreferencias imposibles. Si hay un checkpoint documental posterior, su padre identifica el código validado.
+Rama `feature/orvex-0.5-foundation` creada exactamente desde `0f6c76112884723e42bb893179fb6bdcf5f06b1c`. PR #13 y main deben permanecer intactos. El commit de implementación se identifica por `feat: establish ORVEX 0.5 offline catalog and profile foundation`; el SHA definitivo se consulta en el PR nuevo para evitar autorreferencias imposibles. Primer código publicado: `e44e373fc032cccb9b0511c2b366f6c9a30a2209`. PR de Foundation: #15, base 0.4, sin fusionar. Corrección posterior identificable por `fix: canonicalize Windows aliases before catalog deduplication`; revisar su SHA y Checks antes de retomar.
 
 Implementado: catálogo offline de cinco tipos, proyección de juegos existentes sin copiarlos, perfiles persistentes/favoritos/actividad aislados, propuestas con aprobación y conflicto, migración 6/backup/restore-copy, gateway al launcher actual y sesiones con perfil de inicio. Entrada GUI `--data-dir` para pruebas aisladas. No se han editado configuraciones externas ni bibliotecas reales.
+
+La primera CI 0.5 pasó Linux pero descubrió una diferencia entre alias 8.3 y rutas Windows expandidas al deduplicar ROMs. Se preserva el fallo y se corrige en la normalización del catálogo, sin tocar escáneres ni bibliotecas.
 
 Pruebas y comandos: [validation/0.5-foundation/RESULTS.md](validation/0.5-foundation/RESULTS.md). Detalles de arquitectura/pendientes en [ORVEX_0.5_FOUNDATION.md](ORVEX_0.5_FOUNDATION.md); recuperación y compatibilidad en [ORVEX_0.5_MIGRATION.md](ORVEX_0.5_MIGRATION.md). Una base 6 no se abre directamente con 0.4: recuperar una copia del respaldo previo, conservando la base actualizada.
 

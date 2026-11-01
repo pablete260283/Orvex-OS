@@ -1,0 +1,33 @@
+Windows CI run 41263162074 / job 124720420202 / code e44e373fc032cccb9b0511c2b366f6c9a30a2209
+Initial failure, preserved before correction. Linux 118 passed; Windows exposed canonical path alias mismatch.
+
+======================================================================
+2026-11-01T01:59:28.5767558Z FAIL: test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged (test_foundation_integration.FoundationRuntimeTests.test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged) (engine='dolphin')
+2026-11-01T01:59:28.5768570Z ----------------------------------------------------------------------
+2026-11-01T01:59:28.5768942Z Traceback (most recent call last):
+2026-11-01T01:59:28.5769643Z   File "D:\a\Orvex-OS\Orvex-OS\tests\test_foundation_integration.py", line 91, in test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged
+2026-11-01T01:59:28.5770195Z     self.assertFalse(duplicate.created)
+2026-11-01T01:59:28.5770446Z AssertionError: True is not false
+2026-11-01T01:59:28.5770576Z
+2026-11-01T01:59:28.5770708Z ======================================================================
+2026-11-01T01:59:28.5771586Z FAIL: test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged (test_foundation_integration.FoundationRuntimeTests.test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged) (engine='pcsx2')
+2026-11-01T01:59:28.5772364Z ----------------------------------------------------------------------
+2026-11-01T01:59:28.5772640Z Traceback (most recent call last):
+2026-11-01T01:59:28.5773963Z   File "D:\a\Orvex-OS\Orvex-OS\tests\test_foundation_integration.py", line 91, in test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged
+2026-11-01T01:59:28.5774478Z     self.assertFalse(duplicate.created)
+2026-11-01T01:59:28.5774720Z AssertionError: True is not false
+2026-11-01T01:59:28.5774855Z
+2026-11-01T01:59:28.5774984Z ======================================================================
+2026-11-01T01:59:28.5775781Z FAIL: test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged (test_foundation_integration.FoundationRuntimeTests.test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged)
+2026-11-01T01:59:28.5776509Z ----------------------------------------------------------------------
+2026-11-01T01:59:28.5776783Z Traceback (most recent call last):
+2026-11-01T01:59:28.5777338Z   File "D:\a\Orvex-OS\Orvex-OS\tests\test_foundation_integration.py", line 102, in test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged
+2026-11-01T01:59:28.5777819Z     self.assertEqual(
+2026-11-01T01:59:28.5778001Z AssertionError: 2 != 0
+2026-11-01T01:59:28.5778099Z
+2026-11-01T01:59:28.5778262Z ----------------------------------------------------------------------
+2026-11-01T01:59:28.5778557Z Ran 118 tests in 89.641s
+2026-11-01T01:59:28.5778674Z
+2026-11-01T01:59:28.5778752Z FAILED (failures=3)
+2026-11-01T01:59:28.6903951Z ##[error]Process completed with exit code 1.
+2026-11-01T01:59:28.7044172Z
