@@ -26,6 +26,7 @@ class GameLauncher(QObject):
         self.game_id = ""
         self.record_error = ""
         self.controller_manager = None
+        self.profile_provider = lambda: "adult"
 
     @Property(bool, notify=changed)
     def busy(self):
@@ -103,6 +104,7 @@ class GameLauncher(QObject):
         self.changed.emit()
 
     def _start(self, game_id, path, digest, arguments):
+        profile_id = self.profile_provider()
         if self.controller_manager:
             self.controller_manager.prepare_for_launch(game_id)
         self.game_id = game_id
@@ -128,8 +130,8 @@ class GameLauncher(QObject):
                         (digest, arguments, game_id),
                     )
                     cursor = self.store.db.execute(
-                        "INSERT INTO play_sessions(game_id,started_at,status) VALUES(?,?,'running')",
-                        (game_id, utc_now()),
+                        "INSERT INTO play_sessions(game_id,started_at,status,profile_id) VALUES(?,?,'running',?)",
+                        (game_id, utc_now(), profile_id),
                     )
                     self.session_id = cursor.lastrowid
             except sqlite3.Error as error:

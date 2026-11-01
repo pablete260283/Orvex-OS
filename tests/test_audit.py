@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 from orvex.core.bridge import Bridge
 from orvex.core.library import LibraryService
-from orvex.core.store import MIGRATIONS, Store, StoreOpenError
+from orvex.core.store import MIGRATIONS, SCHEMA_VERSION, Store, StoreOpenError
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -85,7 +85,7 @@ class MigrationTests(unittest.TestCase):
                 db.execute(f"PRAGMA user_version={version}")
             store = Store(path)
             self.assertEqual(store.get("profile"), "child")
-            self.assertEqual(store.db.execute("PRAGMA user_version").fetchone()[0], 5)
+            self.assertEqual(store.db.execute("PRAGMA user_version").fetchone()[0], SCHEMA_VERSION)
             self.assertTrue(store.backup_path.is_file())
             if version == 2:
                 self.assertEqual(store.favorites("child"), ["aurora"])

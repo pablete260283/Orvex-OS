@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - feature/orvex-0.4-controller-manager
+  # Foundation runs on its PR only, avoiding push/PR cancellation races for one SHA.
   pull_request:
     branches:
       - main
       - feature/orvex-0.3.3
+      - feature/orvex-0.4-controller-manager
 concurrency:
   group: preview-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true

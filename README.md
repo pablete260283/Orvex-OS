@@ -1,3 +1,18 @@
+# ORVEX OS 0.5 · Sprint 1 Foundation
+
+Base validada: `0f6c76112884723e42bb893179fb6bdcf5f06b1c`. Rama `feature/orvex-0.5-foundation`, versión `0.5.0a1`. Se conserva la consola funcional de 0.4 y se añaden catálogo offline, perfiles persistentes, contratos y migración SQLite 6.
+
+- [Implementación, arquitectura y límites](docs/ORVEX_0.5_FOUNDATION.md).
+- [Instalar, probar en carpeta aislada y recuperar a 0.4](docs/ORVEX_0.5_MIGRATION.md). **Usar `--data-dir` para revisar sin actualizar la biblioteca habitual.**
+- [Resultados reproducibles de este sprint](docs/validation/0.5-foundation/RESULTS.md).
+- [Continuidad y siguiente acción](docs/CONTINUITY.md).
+
+No hay reproducción multimedia ni PIN seguro implementados todavía. Las pruebas físicas de DualSense/Dolphin pertenecen a 0.4 y fueron comunicadas por el usuario; no certifican hardware 0.5.
+
+## Historial de entregas anteriores
+
+El contenido siguiente conserva instrucciones y resultados de versiones previas; para el estado vigente usar los enlaces anteriores.
+
 > Configuración con navegación de mando y menú durante juegos: [estado real, uso y limitaciones](docs/SETTINGS_AND_QUICK_MENU.md).
 
 > CI Linux y Windows verificada con procesos nativos controlados: [resultados y correcciones](docs/CI_AND_RECOVERY_0.4.md). PR #13 sigue en borrador; no se fusionó.

@@ -1,0 +1,245 @@
+Verified run 41263442815 / job 124721207750
+Code commit 571a7b31fbd3d8bc3320c93347ab36812e524649
+Source: https://github.com/pablete260283/Orvex-OS/actions/runs/41263442815
+Excerpt: Python/Qt, JavaScript and Windows 150% scaling (where applicable).
+Ruff check and format passed in both jobs; full logs are available at the source URL.
+
+test_manifest_assets_and_demo_separation (test_artwork.ArtworkTests.test_manifest_assets_and_demo_separation) ... ok
+2026-11-01T02:02:09.1607688Z test_start_route_showcase_independent_of_search_and_safe_profile (test_artwork.ArtworkTests.test_start_route_showcase_independent_of_search_and_safe_profile) ... ok
+2026-11-01T02:02:09.1622421Z test_unapproved_missing_remote_and_escape_rejected (test_artwork.ArtworkTests.test_unapproved_missing_remote_and_escape_rejected) ... ok
+2026-11-01T02:02:09.1642815Z test_corrupt_or_unopenable_database_is_not_replaced (test_audit.MigrationTests.test_corrupt_or_unopenable_database_is_not_replaced) ... ok
+2026-11-01T02:02:09.1858528Z test_future_version_refused_without_writes_or_downgrade (test_audit.MigrationTests.test_future_version_refused_without_writes_or_downgrade) ... ok
+2026-11-01T02:02:09.2394409Z test_invalid_preference_defaults_without_overwriting_value (test_audit.MigrationTests.test_invalid_preference_defaults_without_overwriting_value) ... ok
+2026-11-01T02:02:09.4000076Z test_migration_failure_rolls_back_and_keeps_backup (test_audit.MigrationTests.test_migration_failure_rolls_back_and_keeps_backup) ... ok
+2026-11-01T02:02:09.6186024Z test_migrations_from_legacy_versions_preserve_preferences (test_audit.MigrationTests.test_migrations_from_legacy_versions_preserve_preferences) ... ok
+2026-11-01T02:02:09.6710076Z test_opening_second_connection_does_not_interrupt_live_session (test_audit.MigrationTests.test_opening_second_connection_does_not_interrupt_live_session) ... ok
+2026-11-01T02:02:09.8179814Z test_v3_upgrade_preserves_games_and_requires_argument_confirmation (test_audit.MigrationTests.test_v3_upgrade_preserves_games_and_requires_argument_confirmation) ... ok
+2026-11-01T02:02:09.8319638Z test_bridge_and_all_child_surfaces_filter_before_projection (test_audit.PolicyTests.test_bridge_and_all_child_surfaces_filter_before_projection) ... ok
+2026-11-01T02:02:09.8414964Z test_shared_age_cases (test_audit.PolicyTests.test_shared_age_cases) ... ok
+2026-11-01T02:02:09.9252448Z test_app_name_icon_and_preference_location (test_brand.BrandTests.test_app_name_icon_and_preference_location) ... ok
+2026-11-01T02:02:09.9282677Z test_html_uses_original_svg_and_png (test_brand.BrandTests.test_html_uses_original_svg_and_png) ... ok
+2026-11-01T02:02:09.9338314Z test_svg_resources_are_valid (test_brand.BrandTests.test_svg_resources_are_valid) ... ok
+2026-11-01T02:02:19.7796742Z test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_cinematic.CinematicTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+2026-11-01T02:02:26.8868896Z test_posters_real_library_artwork_approval_and_keyboard (test_cinematic.CinematicTests.test_posters_real_library_artwork_approval_and_keyboard) ... ok
+2026-11-01T02:02:29.2036873Z test_real_ui_import_confirm_launch_and_observed_statistics (test_cinematic.CinematicTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+2026-11-01T02:02:32.9692834Z test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_real_ui.RealUiTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+2026-11-01T02:02:35.2469024Z test_real_ui_import_confirm_launch_and_observed_statistics (test_real_ui.RealUiTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+2026-11-01T02:02:37.0489415Z test_real_process_confirm_and_return_using_router (test_controller.ControllerLaunchTests.test_real_process_confirm_and_return_using_router) ... ok
+2026-11-01T02:02:47.3546949Z test_search_confirm_cancel_return_and_section_scope (test_controller.ControllerUiTests.test_search_confirm_cancel_return_and_section_scope) ... ok
+2026-11-01T02:02:47.3549171Z test_confirm_not_repeated_direction_repeat_and_resume_gate (test_controller.InputTests.test_confirm_not_repeated_direction_repeat_and_resume_gate) ... ok
+2026-11-01T02:02:48.2206041Z test_full_catalog_recent_order_and_persistence (test_controller.InputTests.test_full_catalog_recent_order_and_persistence) ... ok
+2026-11-01T02:02:48.2312715Z test_linux_event_decoder_and_nonblocking_reader (test_controller.InputTests.test_linux_event_decoder_and_nonblocking_reader) ... ok
+2026-11-01T02:02:48.2358081Z test_native_mappings_and_deadzone (test_controller.InputTests.test_native_mappings_and_deadzone) ... ok
+2026-11-01T02:02:48.2360998Z test_reconnect_and_read_failure_require_neutral_before_confirm (test_controller.InputTests.test_reconnect_and_read_failure_require_neutral_before_confirm) ... ok
+2026-11-01T02:02:48.2364536Z test_remote_select_back_and_repeat_suppression (test_controller.InputTests.test_remote_select_back_and_repeat_suppression) ... ok
+2026-11-01T02:02:49.2100178Z test_actual_process_temporary_profile_and_restore (test_controller_manager.ManagerTests.test_actual_process_temporary_profile_and_restore) ... ok
+2026-11-01T02:02:49.8469021Z test_backup_restore_conflict_crash_and_volatile_sdl (test_controller_manager.ManagerTests.test_backup_restore_conflict_crash_and_volatile_sdl) ... ok
+2026-11-01T02:02:50.4754717Z test_crash_recovery_waits_for_running_or_unconfirmed_emulator (test_controller_manager.ManagerTests.test_crash_recovery_waits_for_running_or_unconfirmed_emulator) ... ok
+2026-11-01T02:02:50.9461301Z test_detect_family_does_not_assume_model_guid_is_unique (test_controller_manager.ManagerTests.test_detect_family_does_not_assume_model_guid_is_unique) ... ok
+2026-11-01T02:02:51.4422968Z test_game_version_engine_and_recent_title_preserved_during_scan (test_controller_manager.ManagerTests.test_game_version_engine_and_recent_title_preserved_during_scan) ... ok
+2026-11-01T02:02:52.0337360Z test_hierarchy_players_ambiguity_disconnection_and_restart (test_controller_manager.ManagerTests.test_hierarchy_players_ambiguity_disconnection_and_restart) ... ok
+2026-11-01T02:02:52.8640626Z test_child_profile_cannot_expose_or_modify_personal_controller_profiles (test_controller_manager_ui.ManagerUiTests.test_child_profile_cannot_expose_or_modify_personal_controller_profiles) ... ok
+2026-11-01T02:02:54.3457685Z test_manager_focus_and_capture (test_controller_manager_ui.ManagerUiTests.test_manager_focus_and_capture) ... ok
+2026-11-01T02:02:54.4222305Z test_profile_selection_persistence_and_backups (test_controller_portable.PortableTests.test_profile_selection_persistence_and_backups) ... ok
+2026-11-01T02:02:54.4239857Z test_journal_failure_does_not_leave_launcher_busy (test_controller_portable.RecoveryOwnershipTests.test_journal_failure_does_not_leave_launcher_busy) ... ok
+2026-11-01T02:02:54.5862262Z test_other_launch_and_manual_retry_never_restore_a_running_session (test_controller_portable.RecoveryOwnershipTests.test_other_launch_and_manual_retry_never_restore_a_running_session) ... ok
+2026-11-01T02:02:54.5886751Z test_missing_paths_and_invalid_configuration (test_dolphin.DolphinTests.test_missing_paths_and_invalid_configuration) ... ok
+2026-11-01T02:02:55.0749255Z test_scan_commands_duplicates_and_persistence_without_boot (test_dolphin.DolphinTests.test_scan_commands_duplicates_and_persistence_without_boot) ... ok
+2026-11-01T02:02:55.0753789Z test_application_font_has_spanish_console_text (test_fonts.FontTests.test_application_font_has_spanish_console_text) ... ok
+2026-11-01T02:02:55.2093292Z test_activity_profiles_and_disabled_profile_fail_closed (test_foundation.FoundationTests.test_activity_profiles_and_disabled_profile_fail_closed) ... ok
+2026-11-01T02:02:55.2372467Z test_age_policy_matches_shared_python_javascript_cases (test_foundation.FoundationTests.test_age_policy_matches_shared_python_javascript_cases) ... ok
+2026-11-01T02:02:55.3752779Z test_all_content_kinds_and_episode_parent_persist (test_foundation.FoundationTests.test_all_content_kinds_and_episode_parent_persist) ... ok
+2026-11-01T02:02:55.4270599Z test_cross_legacy_duplicates_are_reported_without_deletion_or_child_leak (test_foundation.FoundationTests.test_cross_legacy_duplicates_are_reported_without_deletion_or_child_leak) ... ok
+2026-11-01T02:02:55.5849690Z test_legacy_projection_reuses_favorites_and_detects_outside_edits (test_foundation.FoundationTests.test_legacy_projection_reuses_favorites_and_detects_outside_edits) ... ok
+2026-11-01T02:02:55.6677141Z test_metadata_failure_is_atomic_and_bad_input_is_conservative (test_foundation.FoundationTests.test_metadata_failure_is_atomic_and_bad_input_is_conservative) ... ok
+2026-11-01T02:02:55.7697044Z test_profile_ids_and_pin_contract_no_false_authentication (test_foundation.FoundationTests.test_profile_ids_and_pin_contract_no_false_authentication) ... ok
+2026-11-01T02:02:55.9576970Z test_proposals_require_approval_and_reject_stale_or_double_approval (test_foundation.FoundationTests.test_proposals_require_approval_and_reject_stale_or_double_approval) ... ok
+2026-11-01T02:02:56.0192687Z test_register_never_executes_and_duplicates_preserve_approved_data (test_foundation.FoundationTests.test_register_never_executes_and_duplicates_preserve_approved_data) ... ok
+2026-11-01T02:02:56.1474095Z test_restricted_parent_hides_episode_art_search_recent_and_favorites (test_foundation.FoundationTests.test_restricted_parent_hides_episode_art_search_recent_and_favorites) ... ok
+2026-11-01T02:02:56.2951346Z test_search_alternate_title_filters_and_profile_favorites (test_foundation.FoundationTests.test_search_alternate_title_filters_and_profile_favorites) ... ok
+2026-11-01T02:02:56.6023997Z test_service_cli_work_without_qt_and_no_external_provider_is_claimed (test_foundation.FoundationTests.test_service_cli_work_without_qt_and_no_external_provider_is_claimed) ... ok
+2026-11-01T02:02:56.6225169Z test_windows_short_alias_and_resolved_path_share_source_identity (test_foundation.FoundationTests.test_windows_short_alias_and_resolved_path_share_source_identity) ... ok
+2026-11-01T02:02:56.6850896Z test_windows_source_identity_and_external_ids (test_foundation.FoundationTests.test_windows_source_identity_and_external_ids) ... ok
+2026-11-01T02:02:58.2778141Z test_confirmed_native_session_has_profile_snapshot_and_survives_restart (test_foundation_integration.FoundationRuntimeTests.test_confirmed_native_session_has_profile_snapshot_and_survives_restart) ... ok
+2026-11-01T02:02:59.4624044Z test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged (test_foundation_integration.FoundationRuntimeTests.test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged) ... ok
+2026-11-01T02:03:00.9259727Z test_gui_entrypoint_isolates_foundation_data_in_explicit_directory (test_foundation_integration.FoundationRuntimeTests.test_gui_entrypoint_isolates_foundation_data_in_explicit_directory) ... ok
+2026-11-01T02:03:01.6066086Z test_new_catalog_entries_do_not_pretend_to_have_a_player_or_game_launcher (test_foundation_integration.FoundationRuntimeTests.test_new_catalog_entries_do_not_pretend_to_have_a_player_or_game_launcher) ... ok
+2026-11-01T02:03:01.8808282Z test_actual_v04_loader_opens_restored_backup_and_refuses_live_v6 (test_foundation_migrations.FoundationMigrationTests.test_actual_v04_loader_opens_restored_backup_and_refuses_live_v6) ... ok
+2026-11-01T02:03:02.0683785Z test_failed_v6_rolls_back_entire_schema_and_keeps_original_backup (test_foundation_migrations.FoundationMigrationTests.test_failed_v6_rolls_back_entire_schema_and_keeps_original_backup) ... ok
+2026-11-01T02:03:02.1343665Z test_incoherent_current_schema_is_refused_without_reset (test_foundation_migrations.FoundationMigrationTests.test_incoherent_current_schema_is_refused_without_reset) ... ok
+2026-11-01T02:03:02.2157222Z test_nested_transactions_snapshot_no_overwrite_and_corruption_rejected (test_foundation_migrations.FoundationMigrationTests.test_nested_transactions_snapshot_no_overwrite_and_corruption_rejected) ... ok
+2026-11-01T02:03:02.4460543Z test_upgrade_preserves_records_and_restore_copy_keeps_v04_schema (test_foundation_migrations.FoundationMigrationTests.test_upgrade_preserves_records_and_restore_copy_keeps_v04_schema) ... ok
+2026-11-01T02:03:02.4666409Z test_child_filter_every_surface (test_library.LibraryTests.test_child_filter_every_surface) ... ok
+2026-11-01T02:03:02.4868271Z test_detail_return_retains_state (test_library.LibraryTests.test_detail_return_retains_state) ... ok
+2026-11-01T02:03:02.5077489Z test_empty_results_and_filtered_favorite_removal (test_library.LibraryTests.test_empty_results_and_filtered_favorite_removal) ... ok
+2026-11-01T02:03:02.5269525Z test_favorites_profile_isolation (test_library.LibraryTests.test_favorites_profile_isolation) ... ok
+2026-11-01T02:03:02.5461471Z test_media_type_and_synopsis (test_library.LibraryTests.test_media_type_and_synopsis) ... ok
+2026-11-01T02:03:02.7470926Z test_migration_and_restart (test_library.LibraryTests.test_migration_and_restart) ... ok
+2026-11-01T02:03:02.7671617Z test_profile_switch_closes_adult_detail_and_search (test_library.LibraryTests.test_profile_switch_closes_adult_detail_and_search) ... ok
+2026-11-01T02:03:02.7870465Z test_search_and_platform_combined (test_library.LibraryTests.test_search_and_platform_combined) ... ok
+2026-11-01T02:03:02.8076634Z test_unknown_age_fails_closed (test_library.LibraryTests.test_unknown_age_fails_closed) ... ok
+2026-11-01T02:03:02.9282388Z test_index_persist_commands_and_duplicate_feedback (test_pcsx2.PCSX2Tests.test_index_persist_commands_and_duplicate_feedback) ... ok
+2026-11-01T02:03:02.9302023Z test_missing_root_and_file (test_pcsx2.PCSX2Tests.test_missing_root_and_file) ... ok
+2026-11-01T02:03:04.5555041Z test_close_failure_and_unexpected_exit_leave_no_stuck_menu (test_quick_menu.QuickMenuTests.test_close_failure_and_unexpected_exit_leave_no_stuck_menu) ... ok
+2026-11-01T02:03:06.2929412Z test_exit_from_controller_settings_closes_modal_and_restores_library (test_quick_menu.QuickMenuTests.test_exit_from_controller_settings_closes_modal_and_restores_library) ... ok
+2026-11-01T02:03:07.6369138Z test_native_window_close_or_explicit_unsupported (test_quick_menu.QuickMenuTests.test_native_window_close_or_explicit_unsupported) ... ok
+2026-11-01T02:03:08.3424536Z test_pause_config_is_read_only_conservative_and_engine_specific (test_quick_menu.QuickMenuTests.test_pause_config_is_read_only_conservative_and_engine_specific) ... ok
+2026-11-01T02:03:10.4549880Z test_popup_resume_controls_confirm_close_and_session_record (test_quick_menu.QuickMenuTests.test_popup_resume_controls_confirm_close_and_session_record) ... ok
+2026-11-01T02:03:11.1638840Z test_reconfiguring_emulator_releases_input_before_inventory_shutdown (test_quick_menu.QuickMenuTests.test_reconfiguring_emulator_releases_input_before_inventory_shutdown) ... ok
+2026-11-01T02:03:11.8147198Z test_sdl_mapped_guide_disconnect_and_fallback_are_single_source (test_quick_menu.QuickMenuTests.test_sdl_mapped_guide_disconnect_and_fallback_are_single_source) ... ok
+2026-11-01T02:03:13.4066019Z test_system_held_gesture_learning_disconnect_and_reserved_bits (test_quick_menu.QuickMenuTests.test_system_held_gesture_learning_disconnect_and_reserved_bits) ... ok
+2026-11-01T02:03:14.2530365Z test_arguments_are_literal_persisted_confirmed_and_states_observable (test_real_launch.RealLaunchTests.test_arguments_are_literal_persisted_confirmed_and_states_observable) ... ok
+2026-11-01T02:03:14.7792419Z test_artwork_preview_confirmation_replacement_and_persistence (test_real_launch.RealLaunchTests.test_artwork_preview_confirmation_replacement_and_persistence) ... ok
+2026-11-01T02:03:15.6256018Z test_cancel_then_changed_binary_requires_new_confirmation (test_real_launch.RealLaunchTests.test_cancel_then_changed_binary_requires_new_confirmation) ... ok
+2026-11-01T02:03:16.1815727Z test_child_demo_separation_and_pending_authorization (test_real_launch.RealLaunchTests.test_child_demo_separation_and_pending_authorization) ... ok
+2026-11-01T02:03:17.3086549Z test_confirm_launch_finish_time_and_repeat (test_real_launch.RealLaunchTests.test_confirm_launch_finish_time_and_repeat) ... ok
+2026-11-01T02:03:18.6730613Z test_failed_start_and_nonzero_exit (test_real_launch.RealLaunchTests.test_failed_start_and_nonzero_exit) ... ok
+2026-11-01T02:03:19.1771107Z test_import_does_not_execute_and_persists (test_real_launch.RealLaunchTests.test_import_does_not_execute_and_persists) ... ok
+2026-11-01T02:03:19.6951972Z test_interrupted_session_recovery_does_not_invent_duration (test_real_launch.RealLaunchTests.test_interrupted_session_recovery_does_not_invent_duration) ... ok
+2026-11-01T02:03:20.1096794Z test_invalid_arguments_rejected_without_import (test_real_launch.RealLaunchTests.test_invalid_arguments_rejected_without_import) ... ok
+2026-11-01T02:03:20.5831562Z test_invalid_paths_duplicate_and_no_shell_import (test_real_launch.RealLaunchTests.test_invalid_paths_duplicate_and_no_shell_import) ... ok
+2026-11-01T02:03:21.3799894Z test_missing_executable_after_import_and_running_busy (test_real_launch.RealLaunchTests.test_missing_executable_after_import_and_running_busy) ... ok
+2026-11-01T02:03:25.1371630Z test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_real_ui.RealUiTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+2026-11-01T02:03:27.4418202Z test_real_ui_import_confirm_launch_and_observed_statistics (test_real_ui.RealUiTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+2026-11-01T02:03:28.8885827Z test_controller_file_browser_and_nested_dialog_return (test_settings_console.SettingsConsoleTests.test_controller_file_browser_and_nested_dialog_return) ... ok
+2026-11-01T02:03:30.4350277Z test_controller_text_keyboard_save_cancel_and_edit_persistence (test_settings_console.SettingsConsoleTests.test_controller_text_keyboard_save_cancel_and_edit_persistence) ... ok
+2026-11-01T02:03:31.8257305Z test_history_choice_can_be_toggled_and_cancelled_with_controller (test_settings_console.SettingsConsoleTests.test_history_choice_can_be_toggled_and_cancelled_with_controller) ... ok
+2026-11-01T02:03:34.6432518Z test_many_long_names_combo_text_selection_and_empty_state (test_settings_console.SettingsConsoleTests.test_many_long_names_combo_text_selection_and_empty_state) ... ok
+2026-11-01T02:03:38.8994972Z test_six_sections_focus_actions_and_saved_preferences (test_settings_console.SettingsConsoleTests.test_six_sections_focus_actions_and_saved_preferences) ... ok
+2026-11-01T02:03:38.9074428Z test_demo_catalog (test_store.StoreTests.test_demo_catalog) ... ok
+2026-11-01T02:03:38.9522619Z test_roundtrip_across_restart (test_store.StoreTests.test_roundtrip_across_restart) ... ok
+2026-11-01T02:03:38.9539478Z test_update_and_safe_parameters (test_store.StoreTests.test_update_and_safe_parameters) ... ok
+2026-11-01T02:03:39.3587380Z test_favorite_keeps_selected_card_on_return (test_ui.UiTests.test_favorite_keeps_selected_card_on_return) ... ok
+2026-11-01T02:03:39.6499441Z test_featured_background_updates_on_focus (test_ui.UiTests.test_featured_background_updates_on_focus) ... ok
+2026-11-01T02:03:39.9003685Z test_filters_still_supported_without_secondary_screen (test_ui.UiTests.test_filters_still_supported_without_secondary_screen) ... ok
+2026-11-01T02:03:40.2726672Z test_keyboard_routes_and_back (test_ui.UiTests.test_keyboard_routes_and_back) ... ok
+2026-11-01T02:03:40.6314420Z test_keyboard_search_open_back_and_state (test_ui.UiTests.test_keyboard_search_open_back_and_state) ... ok
+2026-11-01T02:03:41.1606005Z test_mouse_profile_and_settings (test_ui.UiTests.test_mouse_profile_and_settings) ... ok
+2026-11-01T02:03:41.6110591Z test_mouse_routes_open_favorite_demo_and_back (test_ui.UiTests.test_mouse_routes_open_favorite_demo_and_back) ... ok
+2026-11-01T02:03:46.9687568Z test_render_pages_details_and_child_at_tv_resolutions (test_ui.UiTests.test_render_pages_details_and_child_at_tv_resolutions) ... ok
+2026-11-01T02:03:47.3107005Z test_hide_edit_remove_preserves_files_and_optional_history (test_v03.ManagementTests.test_hide_edit_remove_preserves_files_and_optional_history) ... ok
+2026-11-01T02:03:47.6555119Z test_metadata_requires_explicit_confirmation (test_v03.ManagementTests.test_metadata_requires_explicit_confirmation) ... ok
+2026-11-01T02:03:47.8146561Z test_background_modes_and_persistence (test_visual.VisualTests.test_background_modes_and_persistence) ... ok
+2026-11-01T02:03:47.8278523Z test_child_does_not_inherit_adult_art_or_progress (test_visual.VisualTests.test_child_does_not_inherit_adult_art_or_progress) ... ok
+2026-11-01T02:03:47.8408086Z test_movie_background_and_demo_separation (test_visual.VisualTests.test_movie_background_and_demo_separation) ... ok
+2026-11-01T02:03:47.8544696Z test_recent_games_and_unknown_percentage (test_visual.VisualTests.test_recent_games_and_unknown_percentage) ... ok
+2026-11-01T02:03:47.8545764Z
+2026-11-01T02:03:47.8546275Z ----------------------------------------------------------------------
+2026-11-01T02:03:47.8547556Z Ran 119 tests in 99.140s
+2026-11-01T02:03:47.8547901Z
+2026-11-01T02:03:47.8548045Z OK
+2026-11-01T02:03:47.9937490Z ##[group]Run node --test tests/test_web_model.cjs
+2026-11-01T02:03:47.9937948Z [36;1mnode --test tests/test_web_model.cjs[0m
+2026-11-01T02:03:47.9977195Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-01T02:03:47.9977543Z env:
+2026-11-01T02:03:47.9977726Z   QT_QPA_PLATFORM: offscreen
+2026-11-01T02:03:47.9977969Z   QT_QUICK_BACKEND: software
+2026-11-01T02:03:47.9978182Z   PYTHONPATH: src
+2026-11-01T02:03:47.9978378Z   PYTHONUTF8: 1
+2026-11-01T02:03:47.9978568Z   ORVEX_REQUIRE_NATIVE_FIXTURE: 1
+2026-11-01T02:03:47.9978879Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:47.9979321Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-01T02:03:47.9979805Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:47.9980203Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:47.9980837Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:47.9983150Z   INCLUDE: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um
+2026-11-01T02:03:47.9987144Z   LIB: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\lib\um\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64
+2026-11-01T02:03:47.9989819Z   LIBPATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+2026-11-01T02:03:48.0008016Z   Path: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\;C:\Program Files (x86)\HTML Help Workshop;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\x64\bin;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\;C:\Program Files\PowerShell\7;C:\hostedtoolcache\windows\node\22.23.4\x64;C:\Users\runneradmin\AppData\Roaming\Python\Python312\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\Program Files\MongoDB\Server\7.0\bin;C:\aliyun-cli;C:\vcpkg;C:\Program Files (x86)\NSIS\;C:\tools\zstd;C:\Program Files\Mercurial\;C:\hostedtoolcache\windows\stack\3.11.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.4\bin;C:\Program Files\R\R-4.6.1\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.13\x64\bin;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\hostedtoolcache\windows\Ruby\3.3.13\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64\bin;C:\Program Files\ImageMagick-7.1.2-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\ucrt64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files (x86)\sbt\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\mongosh\;C:\Program Files\LLVM\bin;C:\Program Files (x86)\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg
+2026-11-01T02:03:48.0024255Z ##[endgroup]
+2026-11-01T02:03:48.3851746Z TAP version 13
+2026-11-01T02:03:48.6185776Z # Subtest: search accent/case, platform/type and empty results
+2026-11-01T02:03:48.6194145Z ok 1 - search accent/case, platform/type and empty results
+2026-11-01T02:03:48.6195153Z   ---
+2026-11-01T02:03:48.6195450Z   duration_ms: 175.5552
+2026-11-01T02:03:48.6195769Z   type: 'test'
+2026-11-01T02:03:48.6196052Z   ...
+2026-11-01T02:03:48.6202477Z # Subtest: favorites persist, toggle and remain isolated per profile
+2026-11-01T02:03:48.6205597Z ok 2 - favorites persist, toggle and remain isolated per profile
+2026-11-01T02:03:48.6206881Z   ---
+2026-11-01T02:03:48.6207175Z   duration_ms: 0.7443
+2026-11-01T02:03:48.6208555Z   type: 'test'
+2026-11-01T02:03:48.6208798Z   ...
+2026-11-01T02:03:48.6209849Z # Subtest: detail back preserves library state
+2026-11-01T02:03:48.6214264Z ok 3 - detail back preserves library state
+2026-11-01T02:03:48.6215599Z   ---
+2026-11-01T02:03:48.6215942Z   duration_ms: 1.0685
+2026-11-01T02:03:48.6216258Z   type: 'test'
+2026-11-01T02:03:48.6216562Z   ...
+2026-11-01T02:03:48.6222776Z # Subtest: child closes adult detail; hides searches, filters and recommendations
+2026-11-01T02:03:48.6224805Z ok 4 - child closes adult detail; hides searches, filters and recommendations
+2026-11-01T02:03:48.6225374Z   ---
+2026-11-01T02:03:48.6225656Z   duration_ms: 0.5615
+2026-11-01T02:03:48.6225957Z   type: 'test'
+2026-11-01T02:03:48.6226268Z   ...
+2026-11-01T02:03:48.6228310Z # Subtest: old motion preference and profile survive reload
+2026-11-01T02:03:48.6229943Z ok 5 - old motion preference and profile survive reload
+2026-11-01T02:03:48.6230834Z   ---
+2026-11-01T02:03:48.6231280Z   duration_ms: 0.3931
+2026-11-01T02:03:48.6231625Z   type: 'test'
+2026-11-01T02:03:48.6231916Z   ...
+2026-11-01T02:03:48.6234066Z # Subtest: blocked storage keeps session operational; corrupt input is rejected
+2026-11-01T02:03:48.6236506Z ok 6 - blocked storage keeps session operational; corrupt input is rejected
+2026-11-01T02:03:48.6237465Z   ---
+2026-11-01T02:03:48.6237820Z   duration_ms: 0.4804
+2026-11-01T02:03:48.6238152Z   type: 'test'
+2026-11-01T02:03:48.6238439Z   ...
+2026-11-01T02:03:48.6239181Z # Subtest: recent progress, unknown percent and fixed background persistence
+2026-11-01T02:03:48.6241097Z ok 7 - recent progress, unknown percent and fixed background persistence
+2026-11-01T02:03:48.6241752Z   ---
+2026-11-01T02:03:48.6242859Z   duration_ms: 1.3994
+2026-11-01T02:03:48.6243199Z   type: 'test'
+2026-11-01T02:03:48.6243483Z   ...
+2026-11-01T02:03:48.6254206Z # Subtest: shared age policy cases match Python including integral JSON floats
+2026-11-01T02:03:48.6255320Z ok 8 - shared age policy cases match Python including integral JSON floats
+2026-11-01T02:03:48.6256024Z   ---
+2026-11-01T02:03:48.6256341Z   duration_ms: 0.7706
+2026-11-01T02:03:48.6256712Z   type: 'test'
+2026-11-01T02:03:48.6257038Z   ...
+2026-11-01T02:03:48.6257867Z # Subtest: invalid ages never reach child artwork, filters, detail or recommendations
+2026-11-01T02:03:48.6260460Z ok 9 - invalid ages never reach child artwork, filters, detail or recommendations
+2026-11-01T02:03:48.6261209Z   ---
+2026-11-01T02:03:48.6261534Z   duration_ms: 0.8672
+2026-11-01T02:03:48.6261901Z   type: 'test'
+2026-11-01T02:03:48.6262210Z   ...
+2026-11-01T02:03:48.6355429Z 1..9
+2026-11-01T02:03:48.6355736Z # tests 9
+2026-11-01T02:03:48.6356975Z # suites 0
+2026-11-01T02:03:48.6357666Z # pass 9
+2026-11-01T02:03:48.6358870Z # fail 0
+2026-11-01T02:03:48.6359565Z # cancelled 0
+2026-11-01T02:03:48.6360770Z # skipped 0
+2026-11-01T02:03:48.6361655Z # todo 0
+2026-11-01T02:03:48.6362712Z # duration_ms 305.2599
+2026-11-01T02:03:48.7768010Z ##[group]Run python -m unittest discover -s tests -p test_settings_console.py -v
+2026-11-01T02:03:48.7768668Z [36;1mpython -m unittest discover -s tests -p test_settings_console.py -v[0m
+2026-11-01T02:03:48.7810348Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-01T02:03:48.7810691Z env:
+2026-11-01T02:03:48.7810872Z   QT_QPA_PLATFORM: offscreen
+2026-11-01T02:03:48.7811104Z   QT_QUICK_BACKEND: software
+2026-11-01T02:03:48.7811314Z   PYTHONPATH: src
+2026-11-01T02:03:48.7811498Z   PYTHONUTF8: 1
+2026-11-01T02:03:48.7811685Z   ORVEX_REQUIRE_NATIVE_FIXTURE: 1
+2026-11-01T02:03:48.7812017Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:48.7812483Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-01T02:03:48.7812951Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:48.7813709Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:48.7814461Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-01T02:03:48.7816786Z   INCLUDE: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um
+2026-11-01T02:03:48.7820109Z   LIB: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\lib\um\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64
+2026-11-01T02:03:48.7822800Z   LIBPATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+2026-11-01T02:03:48.7841320Z   Path: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\;C:\Program Files (x86)\HTML Help Workshop;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\x64\bin;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\;C:\Program Files\PowerShell\7;C:\hostedtoolcache\windows\node\22.23.4\x64;C:\Users\runneradmin\AppData\Roaming\Python\Python312\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\Program Files\MongoDB\Server\7.0\bin;C:\aliyun-cli;C:\vcpkg;C:\Program Files (x86)\NSIS\;C:\tools\zstd;C:\Program Files\Mercurial\;C:\hostedtoolcache\windows\stack\3.11.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.4\bin;C:\Program Files\R\R-4.6.1\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.13\x64\bin;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\hostedtoolcache\windows\Ruby\3.3.13\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64\bin;C:\Program Files\ImageMagick-7.1.2-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\ucrt64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files (x86)\sbt\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\mongosh\;C:\Program Files\LLVM\bin;C:\Program Files (x86)\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg
+2026-11-01T02:03:48.7858359Z   QT_SCALE_FACTOR: 1.5
+2026-11-01T02:03:48.7858629Z   ORVEX_CAPTURE_DIR: D:\a\_temp/orvex-captures/scaled-150
+2026-11-01T02:03:48.7858929Z ##[endgroup]
+2026-11-01T02:03:51.1584320Z test_controller_file_browser_and_nested_dialog_return (test_settings_console.SettingsConsoleTests.test_controller_file_browser_and_nested_dialog_return) ... ok
+2026-11-01T02:03:52.7770549Z test_controller_text_keyboard_save_cancel_and_edit_persistence (test_settings_console.SettingsConsoleTests.test_controller_text_keyboard_save_cancel_and_edit_persistence) ... ok
+2026-11-01T02:03:54.1753567Z test_history_choice_can_be_toggled_and_cancelled_with_controller (test_settings_console.SettingsConsoleTests.test_history_choice_can_be_toggled_and_cancelled_with_controller) ... ok
+2026-11-01T02:03:57.4588469Z test_many_long_names_combo_text_selection_and_empty_state (test_settings_console.SettingsConsoleTests.test_many_long_names_combo_text_selection_and_empty_state) ... ok
+2026-11-01T02:04:02.3331606Z test_six_sections_focus_actions_and_saved_preferences (test_settings_console.SettingsConsoleTests.test_six_sections_focus_actions_and_saved_preferences) ... ok
+2026-11-01T02:04:02.3332451Z
+2026-11-01T02:04:02.3332719Z ----------------------------------------------------------------------
+2026-11-01T02:04:02.3333213Z Ran 5 tests in 13.100s
+2026-11-01T02:04:02.3333460Z
+2026-11-01T02:04:02.3333576Z OK
+2026-11-01T02:04:02.4661710Z
