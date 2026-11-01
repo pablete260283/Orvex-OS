@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - feature/orvex-0.4-controller-manager
-      - feature/orvex-0.5-foundation
+  # Foundation runs on its PR only, avoiding push/PR cancellation races for one SHA.
   pull_request:
     branches:
       - main

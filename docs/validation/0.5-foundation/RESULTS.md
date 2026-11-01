@@ -60,3 +60,9 @@ Cero omisiones. Extractos reproducibles en ci-linux.txt y ci-windows.txt; los lo
 Se inspeccionaron localmente capturas Qt del carrusel 1920×1080 y Biblioteca desplegada a 1280×720: identidad/estructura conservadas, texto y selección visibles. No hubo rediseño visual en este sprint. Capturas completas se regeneran fuera del checkout; los runners las adjuntan como artefactos.
 
 Los runs por push cancelados fueron sustituidos por el evento pull_request del mismo SHA mediante concurrency; no son jobs aprobados ni una falla de código. Las advertencias de deprecación de Node de las Actions son externas y no impidieron la validación. Si hay un commit posterior solo documental, este registro identifica explícitamente el SHA del código probado; revisar también los Checks del head actual.
+
+## Activadores de CI de Foundation
+
+El checkpoint documental debc01e6 disparó push y pull_request para el mismo SHA. Run push 41263699106 canceló Linux en checkout, pero su job Windows 124721970179 permaneció in_progress con steps=null; el run PR 41263704444 quedó pending sin jobs. No se considera ejecución exitosa ni fallo de tests: no llegó a ejecutarlos.
+
+Se evita esa duplicación para Foundation: la rama 0.5 utiliza el activador pull_request (base 0.4/main), más workflow_dispatch cuando sea necesario. Se conserva push en la rama 0.4 y sus activadores anteriores. No se altera PR #13 ni su rama. Cada head nuevo conserva su grupo de concurrencia por SHA; comprobar el run del último head. No se contrataron runners ni se ocultaron pruebas.
