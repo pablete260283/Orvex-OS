@@ -1,0 +1,213 @@
+Verified run 41263442815 / job 124721207973
+Code commit 571a7b31fbd3d8bc3320c93347ab36812e524649
+Source: https://github.com/pablete260283/Orvex-OS/actions/runs/41263442815
+Excerpt: Python/Qt, JavaScript and Windows 150% scaling (where applicable).
+Ruff check and format passed in both jobs; full logs are available at the source URL.
+
+test_manifest_assets_and_demo_separation (test_artwork.ArtworkTests.test_manifest_assets_and_demo_separation) ... ok
+2026-11-01T02:02:02.3511371Z test_start_route_showcase_independent_of_search_and_safe_profile (test_artwork.ArtworkTests.test_start_route_showcase_independent_of_search_and_safe_profile) ... QObject::startTimer: Timers can only be used with threads started with QThread
+2026-11-01T02:02:02.3649104Z ok
+2026-11-01T02:02:02.3656086Z test_unapproved_missing_remote_and_escape_rejected (test_artwork.ArtworkTests.test_unapproved_missing_remote_and_escape_rejected) ... ok
+2026-11-01T02:02:02.3665386Z test_corrupt_or_unopenable_database_is_not_replaced (test_audit.MigrationTests.test_corrupt_or_unopenable_database_is_not_replaced) ... ok
+2026-11-01T02:02:02.3698664Z test_future_version_refused_without_writes_or_downgrade (test_audit.MigrationTests.test_future_version_refused_without_writes_or_downgrade) ... ok
+2026-11-01T02:02:02.3744039Z test_invalid_preference_defaults_without_overwriting_value (test_audit.MigrationTests.test_invalid_preference_defaults_without_overwriting_value) ... ok
+2026-11-01T02:02:02.4094386Z test_migration_failure_rolls_back_and_keeps_backup (test_audit.MigrationTests.test_migration_failure_rolls_back_and_keeps_backup) ... ok
+2026-11-01T02:02:02.4338528Z test_migrations_from_legacy_versions_preserve_preferences (test_audit.MigrationTests.test_migrations_from_legacy_versions_preserve_preferences) ... ok
+2026-11-01T02:02:02.4408874Z test_opening_second_connection_does_not_interrupt_live_session (test_audit.MigrationTests.test_opening_second_connection_does_not_interrupt_live_session) ... ok
+2026-11-01T02:02:02.4552337Z test_v3_upgrade_preserves_games_and_requires_argument_confirmation (test_audit.MigrationTests.test_v3_upgrade_preserves_games_and_requires_argument_confirmation) ... ok
+2026-11-01T02:02:02.4740738Z test_bridge_and_all_child_surfaces_filter_before_projection (test_audit.PolicyTests.test_bridge_and_all_child_surfaces_filter_before_projection) ... QObject::startTimer: Timers can only be used with threads started with QThread
+2026-11-01T02:02:02.4751263Z ok
+2026-11-01T02:02:02.4833933Z test_shared_age_cases (test_audit.PolicyTests.test_shared_age_cases) ... ok
+2026-11-01T02:02:02.4883431Z test_app_name_icon_and_preference_location (test_brand.BrandTests.test_app_name_icon_and_preference_location) ... ok
+2026-11-01T02:02:02.4911640Z test_html_uses_original_svg_and_png (test_brand.BrandTests.test_html_uses_original_svg_and_png) ... ok
+2026-11-01T02:02:02.4938871Z test_svg_resources_are_valid (test_brand.BrandTests.test_svg_resources_are_valid) ... ok
+2026-11-01T02:02:05.8520374Z test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_cinematic.CinematicTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+2026-11-01T02:02:10.4639726Z test_posters_real_library_artwork_approval_and_keyboard (test_cinematic.CinematicTests.test_posters_real_library_artwork_approval_and_keyboard) ... ok
+2026-11-01T02:02:11.6105406Z test_real_ui_import_confirm_launch_and_observed_statistics (test_cinematic.CinematicTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+2026-11-01T02:02:14.3994045Z test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_real_ui.RealUiTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+2026-11-01T02:02:15.5469664Z test_real_ui_import_confirm_launch_and_observed_statistics (test_real_ui.RealUiTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+2026-11-01T02:02:16.5663480Z test_real_process_confirm_and_return_using_router (test_controller.ControllerLaunchTests.test_real_process_confirm_and_return_using_router) ... ok
+2026-11-01T02:02:26.3931933Z test_search_confirm_cancel_return_and_section_scope (test_controller.ControllerUiTests.test_search_confirm_cancel_return_and_section_scope) ... ok
+2026-11-01T02:02:26.3936165Z test_confirm_not_repeated_direction_repeat_and_resume_gate (test_controller.InputTests.test_confirm_not_repeated_direction_repeat_and_resume_gate) ... ok
+2026-11-01T02:02:26.7807806Z test_full_catalog_recent_order_and_persistence (test_controller.InputTests.test_full_catalog_recent_order_and_persistence) ... ok
+2026-11-01T02:02:26.7831791Z test_linux_event_decoder_and_nonblocking_reader (test_controller.InputTests.test_linux_event_decoder_and_nonblocking_reader) ... ok
+2026-11-01T02:02:26.7834199Z test_native_mappings_and_deadzone (test_controller.InputTests.test_native_mappings_and_deadzone) ... ok
+2026-11-01T02:02:26.7837168Z test_reconnect_and_read_failure_require_neutral_before_confirm (test_controller.InputTests.test_reconnect_and_read_failure_require_neutral_before_confirm) ... ok
+2026-11-01T02:02:26.7840919Z test_remote_select_back_and_repeat_suppression (test_controller.InputTests.test_remote_select_back_and_repeat_suppression) ... ok
+2026-11-01T02:02:27.1442639Z test_actual_process_temporary_profile_and_restore (test_controller_manager.ManagerTests.test_actual_process_temporary_profile_and_restore) ... ok
+2026-11-01T02:02:27.2075691Z test_backup_restore_conflict_crash_and_volatile_sdl (test_controller_manager.ManagerTests.test_backup_restore_conflict_crash_and_volatile_sdl) ... ok
+2026-11-01T02:02:27.2654768Z test_crash_recovery_waits_for_running_or_unconfirmed_emulator (test_controller_manager.ManagerTests.test_crash_recovery_waits_for_running_or_unconfirmed_emulator) ... ok
+2026-11-01T02:02:27.3156439Z test_detect_family_does_not_assume_model_guid_is_unique (test_controller_manager.ManagerTests.test_detect_family_does_not_assume_model_guid_is_unique) ... ok
+2026-11-01T02:02:27.3680816Z test_game_version_engine_and_recent_title_preserved_during_scan (test_controller_manager.ManagerTests.test_game_version_engine_and_recent_title_preserved_during_scan) ... ok
+2026-11-01T02:02:27.4299828Z test_hierarchy_players_ambiguity_disconnection_and_restart (test_controller_manager.ManagerTests.test_hierarchy_players_ambiguity_disconnection_and_restart) ... ok
+2026-11-01T02:02:27.7272255Z test_child_profile_cannot_expose_or_modify_personal_controller_profiles (test_controller_manager_ui.ManagerUiTests.test_child_profile_cannot_expose_or_modify_personal_controller_profiles) ... ok
+2026-11-01T02:02:28.6386755Z test_manager_focus_and_capture (test_controller_manager_ui.ManagerUiTests.test_manager_focus_and_capture) ... ok
+2026-11-01T02:02:28.6486233Z test_profile_selection_persistence_and_backups (test_controller_portable.PortableTests.test_profile_selection_persistence_and_backups) ... ok
+2026-11-01T02:02:28.6505666Z test_journal_failure_does_not_leave_launcher_busy (test_controller_portable.RecoveryOwnershipTests.test_journal_failure_does_not_leave_launcher_busy) ... ok
+2026-11-01T02:02:28.6652866Z test_other_launch_and_manual_retry_never_restore_a_running_session (test_controller_portable.RecoveryOwnershipTests.test_other_launch_and_manual_retry_never_restore_a_running_session) ... ok
+2026-11-01T02:02:28.6676000Z test_missing_paths_and_invalid_configuration (test_dolphin.DolphinTests.test_missing_paths_and_invalid_configuration) ... ok
+2026-11-01T02:02:28.7202280Z test_scan_commands_duplicates_and_persistence_without_boot (test_dolphin.DolphinTests.test_scan_commands_duplicates_and_persistence_without_boot) ... ok
+2026-11-01T02:02:28.7206233Z test_application_font_has_spanish_console_text (test_fonts.FontTests.test_application_font_has_spanish_console_text) ... ok
+2026-11-01T02:02:28.7296926Z test_activity_profiles_and_disabled_profile_fail_closed (test_foundation.FoundationTests.test_activity_profiles_and_disabled_profile_fail_closed) ... ok
+2026-11-01T02:02:28.7350543Z test_age_policy_matches_shared_python_javascript_cases (test_foundation.FoundationTests.test_age_policy_matches_shared_python_javascript_cases) ... ok
+2026-11-01T02:02:28.7473876Z test_all_content_kinds_and_episode_parent_persist (test_foundation.FoundationTests.test_all_content_kinds_and_episode_parent_persist) ... ok
+2026-11-01T02:02:28.7535462Z test_cross_legacy_duplicates_are_reported_without_deletion_or_child_leak (test_foundation.FoundationTests.test_cross_legacy_duplicates_are_reported_without_deletion_or_child_leak) ... ok
+2026-11-01T02:02:28.7655136Z test_legacy_projection_reuses_favorites_and_detects_outside_edits (test_foundation.FoundationTests.test_legacy_projection_reuses_favorites_and_detects_outside_edits) ... ok
+2026-11-01T02:02:28.7732822Z test_metadata_failure_is_atomic_and_bad_input_is_conservative (test_foundation.FoundationTests.test_metadata_failure_is_atomic_and_bad_input_is_conservative) ... ok
+2026-11-01T02:02:28.7809962Z test_profile_ids_and_pin_contract_no_false_authentication (test_foundation.FoundationTests.test_profile_ids_and_pin_contract_no_false_authentication) ... ok
+2026-11-01T02:02:28.7931180Z test_proposals_require_approval_and_reject_stale_or_double_approval (test_foundation.FoundationTests.test_proposals_require_approval_and_reject_stale_or_double_approval) ... ok
+2026-11-01T02:02:28.7986250Z test_register_never_executes_and_duplicates_preserve_approved_data (test_foundation.FoundationTests.test_register_never_executes_and_duplicates_preserve_approved_data) ... ok
+2026-11-01T02:02:28.8080628Z test_restricted_parent_hides_episode_art_search_recent_and_favorites (test_foundation.FoundationTests.test_restricted_parent_hides_episode_art_search_recent_and_favorites) ... ok
+2026-11-01T02:02:28.8183418Z test_search_alternate_title_filters_and_profile_favorites (test_foundation.FoundationTests.test_search_alternate_title_filters_and_profile_favorites) ... ok
+2026-11-01T02:02:29.0095490Z test_service_cli_work_without_qt_and_no_external_provider_is_claimed (test_foundation.FoundationTests.test_service_cli_work_without_qt_and_no_external_provider_is_claimed) ... ok
+2026-11-01T02:02:29.0198707Z test_windows_short_alias_and_resolved_path_share_source_identity (test_foundation.FoundationTests.test_windows_short_alias_and_resolved_path_share_source_identity) ... ok
+2026-11-01T02:02:29.0260518Z test_windows_source_identity_and_external_ids (test_foundation.FoundationTests.test_windows_source_identity_and_external_ids) ... ok
+2026-11-01T02:02:29.6115396Z test_confirmed_native_session_has_profile_snapshot_and_survives_restart (test_foundation_integration.FoundationRuntimeTests.test_confirmed_native_session_has_profile_snapshot_and_survives_restart) ... ok
+2026-11-01T02:02:29.9770154Z test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged (test_foundation_integration.FoundationRuntimeTests.test_dolphin_pcsx2_indexed_ids_commands_and_pending_confirmation_unchanged) ... ok
+2026-11-01T02:02:30.9356620Z test_gui_entrypoint_isolates_foundation_data_in_explicit_directory (test_foundation_integration.FoundationRuntimeTests.test_gui_entrypoint_isolates_foundation_data_in_explicit_directory) ... ok
+2026-11-01T02:02:31.1396001Z test_new_catalog_entries_do_not_pretend_to_have_a_player_or_game_launcher (test_foundation_integration.FoundationRuntimeTests.test_new_catalog_entries_do_not_pretend_to_have_a_player_or_game_launcher) ... ok
+2026-11-01T02:02:31.1723916Z test_actual_v04_loader_opens_restored_backup_and_refuses_live_v6 (test_foundation_migrations.FoundationMigrationTests.test_actual_v04_loader_opens_restored_backup_and_refuses_live_v6) ... ok
+2026-11-01T02:02:31.1886730Z test_failed_v6_rolls_back_entire_schema_and_keeps_original_backup (test_foundation_migrations.FoundationMigrationTests.test_failed_v6_rolls_back_entire_schema_and_keeps_original_backup) ... ok
+2026-11-01T02:02:31.1954384Z test_incoherent_current_schema_is_refused_without_reset (test_foundation_migrations.FoundationMigrationTests.test_incoherent_current_schema_is_refused_without_reset) ... ok
+2026-11-01T02:02:31.2023250Z test_nested_transactions_snapshot_no_overwrite_and_corruption_rejected (test_foundation_migrations.FoundationMigrationTests.test_nested_transactions_snapshot_no_overwrite_and_corruption_rejected) ... ok
+2026-11-01T02:02:31.2258990Z test_upgrade_preserves_records_and_restore_copy_keeps_v04_schema (test_foundation_migrations.FoundationMigrationTests.test_upgrade_preserves_records_and_restore_copy_keeps_v04_schema) ... ok
+2026-11-01T02:02:31.2471332Z test_child_filter_every_surface (test_library.LibraryTests.test_child_filter_every_surface) ... ok
+2026-11-01T02:02:31.2709868Z test_detail_return_retains_state (test_library.LibraryTests.test_detail_return_retains_state) ... ok
+2026-11-01T02:02:31.2919652Z test_empty_results_and_filtered_favorite_removal (test_library.LibraryTests.test_empty_results_and_filtered_favorite_removal) ... ok
+2026-11-01T02:02:31.3109012Z test_favorites_profile_isolation (test_library.LibraryTests.test_favorites_profile_isolation) ... ok
+2026-11-01T02:02:31.3300869Z test_media_type_and_synopsis (test_library.LibraryTests.test_media_type_and_synopsis) ... ok
+2026-11-01T02:02:31.3925089Z test_migration_and_restart (test_library.LibraryTests.test_migration_and_restart) ... ok
+2026-11-01T02:02:31.4125133Z test_profile_switch_closes_adult_detail_and_search (test_library.LibraryTests.test_profile_switch_closes_adult_detail_and_search) ... ok
+2026-11-01T02:02:31.4315837Z test_search_and_platform_combined (test_library.LibraryTests.test_search_and_platform_combined) ... ok
+2026-11-01T02:02:31.4510667Z test_unknown_age_fails_closed (test_library.LibraryTests.test_unknown_age_fails_closed) ... ok
+2026-11-01T02:02:31.4626573Z test_index_persist_commands_and_duplicate_feedback (test_pcsx2.PCSX2Tests.test_index_persist_commands_and_duplicate_feedback) ... ok
+2026-11-01T02:02:31.4654085Z test_missing_root_and_file (test_pcsx2.PCSX2Tests.test_missing_root_and_file) ... ok
+2026-11-01T02:02:32.0667480Z test_close_failure_and_unexpected_exit_leave_no_stuck_menu (test_quick_menu.QuickMenuTests.test_close_failure_and_unexpected_exit_leave_no_stuck_menu) ... ok
+2026-11-01T02:02:32.7284685Z test_exit_from_controller_settings_closes_modal_and_restores_library (test_quick_menu.QuickMenuTests.test_exit_from_controller_settings_closes_modal_and_restores_library) ... ok
+2026-11-01T02:02:32.9309479Z test_native_window_close_or_explicit_unsupported (test_quick_menu.QuickMenuTests.test_native_window_close_or_explicit_unsupported) ... ok
+2026-11-01T02:02:33.1320070Z test_pause_config_is_read_only_conservative_and_engine_specific (test_quick_menu.QuickMenuTests.test_pause_config_is_read_only_conservative_and_engine_specific) ... ok
+2026-11-01T02:02:34.0253782Z test_popup_resume_controls_confirm_close_and_session_record (test_quick_menu.QuickMenuTests.test_popup_resume_controls_confirm_close_and_session_record) ... ok
+2026-11-01T02:02:34.2375013Z test_reconfiguring_emulator_releases_input_before_inventory_shutdown (test_quick_menu.QuickMenuTests.test_reconfiguring_emulator_releases_input_before_inventory_shutdown) ... ok
+2026-11-01T02:02:34.4403773Z test_sdl_mapped_guide_disconnect_and_fallback_are_single_source (test_quick_menu.QuickMenuTests.test_sdl_mapped_guide_disconnect_and_fallback_are_single_source) ... ok
+2026-11-01T02:02:35.0253137Z test_system_held_gesture_learning_disconnect_and_reserved_bits (test_quick_menu.QuickMenuTests.test_system_held_gesture_learning_disconnect_and_reserved_bits) ... ok
+2026-11-01T02:02:35.3808451Z test_arguments_are_literal_persisted_confirmed_and_states_observable (test_real_launch.RealLaunchTests.test_arguments_are_literal_persisted_confirmed_and_states_observable) ... ok
+2026-11-01T02:02:35.4689661Z test_artwork_preview_confirmation_replacement_and_persistence (test_real_launch.RealLaunchTests.test_artwork_preview_confirmation_replacement_and_persistence) ... ok
+2026-11-01T02:02:35.8206718Z test_cancel_then_changed_binary_requires_new_confirmation (test_real_launch.RealLaunchTests.test_cancel_then_changed_binary_requires_new_confirmation) ... ok
+2026-11-01T02:02:35.8902566Z test_child_demo_separation_and_pending_authorization (test_real_launch.RealLaunchTests.test_child_demo_separation_and_pending_authorization) ... ok
+2026-11-01T02:02:36.5064194Z test_confirm_launch_finish_time_and_repeat (test_real_launch.RealLaunchTests.test_confirm_launch_finish_time_and_repeat) ... ok
+2026-11-01T02:02:36.9083297Z test_failed_start_and_nonzero_exit (test_real_launch.RealLaunchTests.test_failed_start_and_nonzero_exit) ... ok
+2026-11-01T02:02:36.9901116Z test_import_does_not_execute_and_persists (test_real_launch.RealLaunchTests.test_import_does_not_execute_and_persists) ... ok
+2026-11-01T02:02:37.0705073Z test_interrupted_session_recovery_does_not_invent_duration (test_real_launch.RealLaunchTests.test_interrupted_session_recovery_does_not_invent_duration) ... ok
+2026-11-01T02:02:37.1275180Z test_invalid_arguments_rejected_without_import (test_real_launch.RealLaunchTests.test_invalid_arguments_rejected_without_import) ... ok
+2026-11-01T02:02:37.1902835Z test_invalid_paths_duplicate_and_no_shell_import (test_real_launch.RealLaunchTests.test_invalid_paths_duplicate_and_no_shell_import) ... ok
+2026-11-01T02:02:37.5223898Z test_missing_executable_after_import_and_running_busy (test_real_launch.RealLaunchTests.test_missing_executable_after_import_and_running_busy) ... ok
+2026-11-01T02:02:40.3176544Z test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions (test_real_ui.RealUiTests.test_capture_real_empty_import_confirmation_and_session_at_tv_resolutions) ... ok
+2026-11-01T02:02:41.4684149Z test_real_ui_import_confirm_launch_and_observed_statistics (test_real_ui.RealUiTests.test_real_ui_import_confirm_launch_and_observed_statistics) ... ok
+2026-11-01T02:02:42.3345306Z test_controller_file_browser_and_nested_dialog_return (test_settings_console.SettingsConsoleTests.test_controller_file_browser_and_nested_dialog_return) ... ok
+2026-11-01T02:02:43.1360514Z test_controller_text_keyboard_save_cancel_and_edit_persistence (test_settings_console.SettingsConsoleTests.test_controller_text_keyboard_save_cancel_and_edit_persistence) ... ok
+2026-11-01T02:02:43.7974866Z test_history_choice_can_be_toggled_and_cancelled_with_controller (test_settings_console.SettingsConsoleTests.test_history_choice_can_be_toggled_and_cancelled_with_controller) ... ok
+2026-11-01T02:02:45.5102932Z test_many_long_names_combo_text_selection_and_empty_state (test_settings_console.SettingsConsoleTests.test_many_long_names_combo_text_selection_and_empty_state) ... ok
+2026-11-01T02:02:48.7205832Z test_six_sections_focus_actions_and_saved_preferences (test_settings_console.SettingsConsoleTests.test_six_sections_focus_actions_and_saved_preferences) ... ok
+2026-11-01T02:02:48.7233654Z test_demo_catalog (test_store.StoreTests.test_demo_catalog) ... ok
+2026-11-01T02:02:48.7291263Z test_roundtrip_across_restart (test_store.StoreTests.test_roundtrip_across_restart) ... ok
+2026-11-01T02:02:48.7311028Z test_update_and_safe_parameters (test_store.StoreTests.test_update_and_safe_parameters) ... ok
+2026-11-01T02:02:49.0262040Z test_favorite_keeps_selected_card_on_return (test_ui.UiTests.test_favorite_keeps_selected_card_on_return) ... ok
+2026-11-01T02:02:49.2294383Z test_featured_background_updates_on_focus (test_ui.UiTests.test_featured_background_updates_on_focus) ... ok
+2026-11-01T02:02:49.3970237Z test_filters_still_supported_without_secondary_screen (test_ui.UiTests.test_filters_still_supported_without_secondary_screen) ... ok
+2026-11-01T02:02:49.6631611Z test_keyboard_routes_and_back (test_ui.UiTests.test_keyboard_routes_and_back) ... ok
+2026-11-01T02:02:49.8995561Z test_keyboard_search_open_back_and_state (test_ui.UiTests.test_keyboard_search_open_back_and_state) ... ok
+2026-11-01T02:02:50.3255602Z test_mouse_profile_and_settings (test_ui.UiTests.test_mouse_profile_and_settings) ... ok
+2026-11-01T02:02:50.6647346Z test_mouse_routes_open_favorite_demo_and_back (test_ui.UiTests.test_mouse_routes_open_favorite_demo_and_back) ... ok
+2026-11-01T02:02:55.4935258Z test_render_pages_details_and_child_at_tv_resolutions (test_ui.UiTests.test_render_pages_details_and_child_at_tv_resolutions) ... ok
+2026-11-01T02:02:55.5344786Z test_hide_edit_remove_preserves_files_and_optional_history (test_v03.ManagementTests.test_hide_edit_remove_preserves_files_and_optional_history) ... ok
+2026-11-01T02:02:55.5741442Z test_metadata_requires_explicit_confirmation (test_v03.ManagementTests.test_metadata_requires_explicit_confirmation) ... ok
+2026-11-01T02:02:55.6260485Z test_background_modes_and_persistence (test_visual.VisualTests.test_background_modes_and_persistence) ... ok
+2026-11-01T02:02:55.6441974Z test_child_does_not_inherit_adult_art_or_progress (test_visual.VisualTests.test_child_does_not_inherit_adult_art_or_progress) ... ok
+2026-11-01T02:02:55.6608716Z test_movie_background_and_demo_separation (test_visual.VisualTests.test_movie_background_and_demo_separation) ... ok
+2026-11-01T02:02:55.6768809Z test_recent_games_and_unknown_percentage (test_visual.VisualTests.test_recent_games_and_unknown_percentage) ... ok
+2026-11-01T02:02:55.6769578Z
+2026-11-01T02:02:55.6769920Z ----------------------------------------------------------------------
+2026-11-01T02:02:55.6770520Z Ran 119 tests in 53.487s
+2026-11-01T02:02:55.6770756Z
+2026-11-01T02:02:55.6770877Z OK
+2026-11-01T02:02:55.7475216Z ##[group]Run node --test tests/test_web_model.cjs
+2026-11-01T02:02:55.7475764Z [36;1mnode --test tests/test_web_model.cjs[0m
+2026-11-01T02:02:55.7496973Z shell: /usr/bin/bash -e {0}
+2026-11-01T02:02:55.7497269Z env:
+2026-11-01T02:02:55.7497510Z   QT_QPA_PLATFORM: offscreen
+2026-11-01T02:02:55.7498095Z   QT_QUICK_BACKEND: software
+2026-11-01T02:02:55.7498392Z   PYTHONPATH: src
+2026-11-01T02:02:55.7498670Z   PYTHONUTF8: 1
+2026-11-01T02:02:55.7498923Z   ORVEX_REQUIRE_NATIVE_FIXTURE: 1
+2026-11-01T02:02:55.7499322Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-11-01T02:02:55.7499864Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+2026-11-01T02:02:55.7500408Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-11-01T02:02:55.7500886Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-11-01T02:02:55.7501369Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-11-01T02:02:55.7501881Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+2026-11-01T02:02:55.7502327Z ##[endgroup]
+2026-11-01T02:02:55.8556638Z TAP version 13
+2026-11-01T02:02:56.1289281Z # Subtest: search accent/case, platform/type and empty results
+2026-11-01T02:02:56.1294616Z ok 1 - search accent/case, platform/type and empty results
+2026-11-01T02:02:56.1298607Z   ---
+2026-11-01T02:02:56.1299050Z   duration_ms: 229.253904
+2026-11-01T02:02:56.1299606Z   type: 'test'
+2026-11-01T02:02:56.1300016Z   ...
+2026-11-01T02:02:56.1301037Z # Subtest: favorites persist, toggle and remain isolated per profile
+2026-11-01T02:02:56.1303309Z ok 2 - favorites persist, toggle and remain isolated per profile
+2026-11-01T02:02:56.1304121Z   ---
+2026-11-01T02:02:56.1304702Z   duration_ms: 0.654462
+2026-11-01T02:02:56.1305249Z   type: 'test'
+2026-11-01T02:02:56.1305730Z   ...
+2026-11-01T02:02:56.1306463Z # Subtest: detail back preserves library state
+2026-11-01T02:02:56.1318619Z ok 3 - detail back preserves library state
+2026-11-01T02:02:56.1321473Z   ---
+2026-11-01T02:02:56.1321877Z   duration_ms: 0.31593
+2026-11-01T02:02:56.1322303Z   type: 'test'
+2026-11-01T02:02:56.1322674Z   ...
+2026-11-01T02:02:56.1323500Z # Subtest: child closes adult detail; hides searches, filters and recommendations
+2026-11-01T02:02:56.1324746Z ok 4 - child closes adult detail; hides searches, filters and recommendations
+2026-11-01T02:02:56.1325469Z   ---
+2026-11-01T02:02:56.1325851Z   duration_ms: 0.468735
+2026-11-01T02:02:56.1326268Z   type: 'test'
+2026-11-01T02:02:56.1326625Z   ...
+2026-11-01T02:02:56.1327260Z # Subtest: old motion preference and profile survive reload
+2026-11-01T02:02:56.1328656Z ok 5 - old motion preference and profile survive reload
+2026-11-01T02:02:56.1329293Z   ---
+2026-11-01T02:02:56.1329681Z   duration_ms: 0.339885
+2026-11-01T02:02:56.1330115Z   type: 'test'
+2026-11-01T02:02:56.1330474Z   ...
+2026-11-01T02:02:56.1331299Z # Subtest: blocked storage keeps session operational; corrupt input is rejected
+2026-11-01T02:02:56.1332566Z ok 6 - blocked storage keeps session operational; corrupt input is rejected
+2026-11-01T02:02:56.1333346Z   ---
+2026-11-01T02:02:56.1333731Z   duration_ms: 0.414494
+2026-11-01T02:02:56.1334181Z   type: 'test'
+2026-11-01T02:02:56.1334560Z   ...
+2026-11-01T02:02:56.1338980Z # Subtest: recent progress, unknown percent and fixed background persistence
+2026-11-01T02:02:56.1353185Z ok 7 - recent progress, unknown percent and fixed background persistence
+2026-11-01T02:02:56.1354456Z   ---
+2026-11-01T02:02:56.1354830Z   duration_ms: 1.022699
+2026-11-01T02:02:56.1355264Z   type: 'test'
+2026-11-01T02:02:56.1355626Z   ...
+2026-11-01T02:02:56.1356429Z # Subtest: shared age policy cases match Python including integral JSON floats
+2026-11-01T02:02:56.1357866Z ok 8 - shared age policy cases match Python including integral JSON floats
+2026-11-01T02:02:56.1358625Z   ---
+2026-11-01T02:02:56.1359004Z   duration_ms: 0.471169
+2026-11-01T02:02:56.1359418Z   type: 'test'
+2026-11-01T02:02:56.1359739Z   ...
+2026-11-01T02:02:56.1360701Z # Subtest: invalid ages never reach child artwork, filters, detail or recommendations
+2026-11-01T02:02:56.1361420Z ok 9 - invalid ages never reach child artwork, filters, detail or recommendations
+2026-11-01T02:02:56.1361845Z   ---
+2026-11-01T02:02:56.1362042Z   duration_ms: 0.64779
+2026-11-01T02:02:56.1362416Z   type: 'test'
+2026-11-01T02:02:56.1362743Z   ...
+2026-11-01T02:02:56.1436886Z 1..9
+2026-11-01T02:02:56.1437288Z # tests 9
+2026-11-01T02:02:56.1437921Z # suites 0
+2026-11-01T02:02:56.1439157Z # pass 9
+2026-11-01T02:02:56.1439716Z # fail 0
+2026-11-01T02:02:56.1440213Z # cancelled 0
+2026-11-01T02:02:56.1440798Z # skipped 0
+2026-11-01T02:02:56.1441234Z # todo 0
+2026-11-01T02:02:56.1441819Z # duration_ms 320.711604
+2026-11-01T02:02:56.1559217Z

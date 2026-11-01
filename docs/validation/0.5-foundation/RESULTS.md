@@ -10,7 +10,7 @@ Código basado en `0f6c76112884723e42bb893179fb6bdcf5f06b1c`. Entorno local Linu
 | Ruff 0.11.13 | check OK, format --check OK (39 archivos incluidos por adopción gradual). |
 | Diff | git diff --check OK. |
 | Actions en el commit base | Run 40817976423 SUCCESS; evidencia histórica, no sustituye CI del código 0.5. |
-| Actions 0.5 | Consultar Checks del PR nuevo y sus logs. El resultado remoto se registrará tras ejecutar Linux/Windows; no se presume aprobado por configurar YAML. |
+| Actions 0.5, código 571a7b3 | **Linux y Windows SUCCESS**, run 41263442815: 119 Python/Qt + 9 JS por sistema; 5 pruebas adicionales Windows al 150 %. |
 
 ## Cobertura nueva (23 pruebas, además de las 96 previas)
 
@@ -44,3 +44,19 @@ La evidencia comunicada por el usuario para 0.4 (Windows/DualSense/Dolphin/Mario
 Commit inicial `e44e373fc032cccb9b0511c2b366f6c9a30a2209`, run [41263162074](https://github.com/pablete260283/Orvex-OS/actions/runs/41263162074): Linux SUCCESS (118 Python/Qt y 9 JS); Windows detectó tres aserciones en una prueba de deduplicación de ROMs (118 ejecutadas). No se omitió ni debilitó la prueba. Fallo preservado en windows-initial-failure.txt.
 
 La normalización solo léxica no equiparaba un alias Windows 8.3 y la ruta expandida que ya guardan los escáneres. Se añade resolución nativa de ruta antes de comparar; el resto de plataformas mantiene interpretación léxica de rutas Windows para pruebas portables. La regresión específica reproduce el fallo antes de corregirlo (alias-regression-before.txt) y pasa después. 23 pruebas Foundation focalizadas OK, incluyendo integración Qt/proceso nativo y migraciones (alias-fix-focused.txt). La suite pasa a 119 totales. Consultar el nuevo head/Checks para resultado completo Linux/Windows; el run fallido no se presenta como aprobado.
+
+## CI verificada después de la corrección
+
+Código `571a7b31fbd3d8bc3320c93347ab36812e524649`, [run 41263442815](https://github.com/pablete260283/Orvex-OS/actions/runs/41263442815), conclusión SUCCESS comprobada después de finalizar ambos jobs:
+
+| Runner real | Resultado de logs |
+| --- | --- |
+| Ubuntu 24.04 / Python 3.11 | 119 Python/Qt OK en 53,487 s; 9 JS OK; Ruff check/format OK. |
+| Windows 2022 / Python 3.12 / MSVC | 119 Python/Qt OK en 99,140 s; 9 JS OK; Ruff check/format OK. |
+| Windows al 150 % | 5 pruebas adicionales de Configuración OK en 13,100 s. |
+
+Cero omisiones. Extractos reproducibles en ci-linux.txt y ci-windows.txt; los logs completos y capturas Qt están en los artefactos del run. Las pruebas de mando son simuladas; la fixture nativa sí ejecuta un proceso real propio en cada sistema. No se ha probado emulación ni hardware físico 0.5.
+
+Se inspeccionaron localmente capturas Qt del carrusel 1920×1080 y Biblioteca desplegada a 1280×720: identidad/estructura conservadas, texto y selección visibles. No hubo rediseño visual en este sprint. Capturas completas se regeneran fuera del checkout; los runners las adjuntan como artefactos.
+
+Los runs por push cancelados fueron sustituidos por el evento pull_request del mismo SHA mediante concurrency; no son jobs aprobados ni una falla de código. Las advertencias de deprecación de Node de las Actions son externas y no impidieron la validación. Si hay un commit posterior solo documental, este registro identifica explícitamente el SHA del código probado; revisar también los Checks del head actual.
