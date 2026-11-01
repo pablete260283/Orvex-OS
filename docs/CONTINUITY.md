@@ -1,3 +1,17 @@
+# Continuidad vigente · ORVEX 0.5 Foundation
+
+Rama `feature/orvex-0.5-foundation` creada exactamente desde `0f6c76112884723e42bb893179fb6bdcf5f06b1c`. PR #13 y main deben permanecer intactos. El commit de implementación se identifica por `feat: establish ORVEX 0.5 offline catalog and profile foundation`; el SHA definitivo se consulta en el PR nuevo para evitar autorreferencias imposibles. Si hay un checkpoint documental posterior, su padre identifica el código validado.
+
+Implementado: catálogo offline de cinco tipos, proyección de juegos existentes sin copiarlos, perfiles persistentes/favoritos/actividad aislados, propuestas con aprobación y conflicto, migración 6/backup/restore-copy, gateway al launcher actual y sesiones con perfil de inicio. Entrada GUI `--data-dir` para pruebas aisladas. No se han editado configuraciones externas ni bibliotecas reales.
+
+Pruebas y comandos: [validation/0.5-foundation/RESULTS.md](validation/0.5-foundation/RESULTS.md). Detalles de arquitectura/pendientes en [ORVEX_0.5_FOUNDATION.md](ORVEX_0.5_FOUNDATION.md); recuperación y compatibilidad en [ORVEX_0.5_MIGRATION.md](ORVEX_0.5_MIGRATION.md). Una base 6 no se abre directamente con 0.4: recuperar una copia del respaldo previo, conservando la base actualizada.
+
+Validación física comunicada por Pablo para 0.4: Windows, DualSense, navegación/configuración, Dolphin con Mario Kart Wii, PS/HOME, pausa/reanudación, cierre/retorno y sesiones persistentes. Es evidencia manual del usuario, no una prueba nueva de 0.5 ni certificación de pausa universal. Conservar el Joy-Con funcional; sin su configuración no inventar mapeos.
+
+Siguiente tarea prioritaria: incorporar catálogo unificado a la interfaz mediante el servicio existente y autenticación adulta real antes de nueva administración protegida. No rehacer launchers. Comprobar el SHA y Checks del PR 0.5 antes de retomar; revisar cambios remotos antes de publicar. Los contratos multimedia/proveedor/PIN no significan reproductores/búsquedas/autenticación terminados. Un importador histórico puede introducir una colisión con una referencia nueva; `find_duplicates` la informa sin borrar, pendiente reconciliación explícita.
+
+## Registro histórico (no describe por sí solo el estado vigente)
+
 # Continuidad · ORVEX 0.3
 
 Rama feature/orvex-0.3, basada en 9a0d7cc del PR #4. Estado y límites vigentes: ORVEX_0.3.md. El último commit de esta rama en GitHub es el checkpoint verificable. No fusionar main.

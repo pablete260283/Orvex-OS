@@ -3,8 +3,10 @@
 import json
 import sqlite3
 from pathlib import Path
+from contextlib import contextmanager
+from .migration_v6 import STATEMENTS as FOUNDATION_MIGRATION
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 
 
 class StoreOpenError(RuntimeError):
@@ -12,6 +14,7 @@ class StoreOpenError(RuntimeError):
 
 
 MIGRATIONS = {
+    6: FOUNDATION_MIGRATION,
     5: [
         "ALTER TABLE real_games ADD COLUMN hidden INTEGER NOT NULL DEFAULT 0",
         "ALTER TABLE real_games ADD COLUMN metadata TEXT NOT NULL DEFAULT '{}'",
@@ -43,6 +46,7 @@ class Store:
         self.warnings = []
         try:
             self.db = sqlite3.connect(path)
+            self.db.execute("PRAGMA foreign_keys=ON")
             version = self.db.execute("PRAGMA user_version").fetchone()[0]
             if version > SCHEMA_VERSION:
                 raise StoreOpenError(
@@ -93,6 +97,59 @@ class Store:
                     "exit_code",
                 },
             }
+            required.update(
+                {
+                    "profiles": {"id", "kind", "name", "max_age", "enabled", "created_at"},
+                    "content_items": {
+                        "id",
+                        "kind",
+                        "title",
+                        "alternate_title",
+                        "format",
+                        "source_type",
+                        "source_ref",
+                        "source_key",
+                        "metadata",
+                        "cover",
+                        "backdrop",
+                        "age",
+                        "import_state",
+                        "hidden",
+                        "parent_id",
+                        "created_at",
+                        "revision",
+                    },
+                    "game_catalog_details": {
+                        "game_id",
+                        "alternate_title",
+                        "age",
+                        "import_state",
+                        "revision",
+                    },
+                    "content_activity": {
+                        "id",
+                        "profile_id",
+                        "content_id",
+                        "event",
+                        "occurred_at",
+                        "duration_ms",
+                        "evidence",
+                    },
+                    "metadata_proposals": {
+                        "id",
+                        "content_id",
+                        "changes",
+                        "source",
+                        "expected_fingerprint",
+                        "state",
+                        "created_at",
+                        "decided_at",
+                        "decided_by",
+                    },
+                }
+            )
+            required["real_games"].update({"metadata", "hidden"})
+            required["play_sessions"].add("profile_id")
             for table, columns in required.items():
                 actual = {row[1] for row in self.db.execute(f"PRAGMA table_info({table})")}
                 if not columns <= actual:
@@ -107,6 +164,65 @@ class Store:
                 self.db.rollback()
                 self.db.close()
             raise StoreOpenError(f"No se pudo abrir la biblioteca: {error}") from error
+
+    @contextmanager
+    def transaction(self):
+        """Nested units of work never commit a caller's pending transaction."""
+        import uuid
+
+        nested = self.db.in_transaction
+        name = "orvex_" + uuid.uuid4().hex
+        self.db.execute("SAVEPOINT " + name if nested else "BEGIN IMMEDIATE")
+        try:
+            yield self.db
+            if nested:
+                self.db.execute("RELEASE SAVEPOINT " + name)
+            else:
+                self.db.commit()
+        except BaseException:
+            if nested:
+                self.db.execute("ROLLBACK TO SAVEPOINT " + name)
+                self.db.execute("RELEASE SAVEPOINT " + name)
+            else:
+                self.db.rollback()
+            raise
+
+    def backup_to(self, destination):
+        """Consistent snapshot into a NEW file; never replace an existing backup."""
+        if self.db.in_transaction:
+            raise StoreOpenError("Finaliza la transacción antes de crear una copia.")
+        return self._copy_database(self.db, destination)
+
+    @staticmethod
+    def _copy_database(source, destination):
+        import os
+
+        target = Path(destination)
+        descriptor = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        os.close(descriptor)
+        try:
+            snapshot = sqlite3.connect(target)
+            try:
+                source.backup(snapshot)
+                if snapshot.execute("PRAGMA quick_check").fetchone()[0] != "ok":
+                    raise StoreOpenError("La copia no supera la comprobación SQLite.")
+            finally:
+                snapshot.close()
+            return target
+        except BaseException:
+            target.unlink(missing_ok=True)
+            raise
+
+    @classmethod
+    def restore_copy(cls, backup, destination):
+        """Recovery is explicit and targets a new path; schema version is retained."""
+        source = sqlite3.connect(Path(backup).resolve(strict=True).as_uri() + "?mode=ro", uri=True)
+        try:
+            if source.execute("PRAGMA quick_check").fetchone()[0] != "ok":
+                raise StoreOpenError("Copia dañada; no se restauró.")
+            return cls._copy_database(source, destination)
+        finally:
+            source.close()
 
     def recover_sessions(self):
         # Only call after acquiring the application's single-instance lock.

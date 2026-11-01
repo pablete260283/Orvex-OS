@@ -1,7 +1,7 @@
 """Deterministic demo-catalog queries, independent of Qt and hardware adapters."""
 
 import unicodedata
-import math
+from .age_policy import valid_age
 from .store import catalog
 
 PROFILES = ("adult", "child")
@@ -24,13 +24,7 @@ class LibraryService:
         if profile == "adult":
             return True
         age = entry.get("age")
-        return (
-            isinstance(age, (int, float))
-            and not isinstance(age, bool)
-            and 0 <= age <= 7
-            and math.isfinite(age)
-            and age == int(age)
-        )
+        return valid_age(age, 7)
 
     def visible(self, profile, kind=None):
         return [

@@ -1,3 +1,11 @@
+# Arquitectura vigente · 0.5 Foundation
+
+Ver [capas, propiedad de datos y contratos](ORVEX_0.5_FOUNDATION.md) y [esquema 6 / recuperación](ORVEX_0.5_MIGRATION.md). Foundation es independiente de Qt; el puente usa el GameLauncher existente y no reemplaza Dolphin/PCSX2. Nuevos contenidos se almacenan por separado; los juegos reales se proyectan desde real_games. Favoritos e historial nuevos se filtran por perfil desde servicios.
+
+## Arquitectura histórica (entregas previas)
+
+Los números de esquema y adaptadores pendientes de las notas siguientes corresponden a su versión original.
+
 # Arquitectura ORVEX OS 0.2
 
 Se mantiene Qt 6/QML, PySide6 6.8.3 y SQLite. No se añaden dependencias de producción. El kit ORVEX provisional permanece intacto.

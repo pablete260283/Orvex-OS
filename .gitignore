@@ -236,3 +236,9 @@ artifacts/
 test-results/
 playwright-report/
 *.sqlite3.pre-v*.bak
+
+# Isolated Foundation review data and SQLite sidecars
+foundation-sandbox/
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm

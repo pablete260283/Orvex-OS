@@ -8,7 +8,7 @@ Window {
     id: window
     width: 1440; height: 810; minimumWidth: 960; minimumHeight: 540; visible: true
     flags: Qt.Window | (gameMenu && gameMenu.state==="controls" ? Qt.WindowStaysOnTopHint : 0)
-    title: "ORVEX OS 0.4 · Biblioteca local"; color: "#0b1320"
+    title: "ORVEX OS "+backend.applicationVersion+" · Biblioteca local"; color: "#0b1320"
     onActiveChanged: if(active && !backend.launchBusy)backend.refresh()
     onClosing: function(close) { if(backend.launchBusy){close.accepted=false;backend.explainClose()} }
     property bool wasGameRunning: false
@@ -85,7 +85,7 @@ Window {
             Text { x: 92; y: 145; width: 1736; text: backend.launchState==="Error"?"No se pudo completar la operación. Consulta Configuración → Sistema.":""; color: "#a8f3de"; font.pixelSize: 18; elide: Text.ElideRight }
             SettingsPage { onBackRequested:{if(window.gameMenu.state==="controls")window.gameMenu.back();else window.navigate(1)} onImportRequested: localDialogs.openImport(); onArtworkRequested: function(gameId,role){localDialogs.selectArtwork(gameId,role)} id: settings; objectName:"settingsPage"; x: 92; y: 180; width: 1736; height: 825; visible: backend.page===3; backend: shellBackend }
             Text { x: 94; y: 1042; text: "Navegar · Confirmar: abrir · Volver: regresar"; color: "#7891a5"; font.pixelSize: 17 }
-            Text { x: 1120; y: 1042; text: "0.4 · Biblioteca local · Perfiles sin PIN"; color: "#a8f3de"; font.pixelSize: 17 }
+            Text { x: 1120; y: 1042; text: backend.applicationVersion+" · Biblioteca local · Perfiles sin PIN"; color: "#a8f3de"; font.pixelSize: 17 }
         }
         TextEntryOverlay {id:textEditor}
         FileBrowser {id:fileBrowser;backend:shellBackend}

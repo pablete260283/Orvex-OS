@@ -1,3 +1,11 @@
+# Roadmap vigente · 0.5
+
+Sprint 1 Foundation implementa el catálogo de cinco tipos, migración aditiva 6, políticas por perfil, propuestas revisables y contratos de integración sin reemplazar la consola 0.4. Estado verificable: [Foundation](ORVEX_0.5_FOUNDATION.md).
+
+Siguiente: conectar catálogo unificado a la GUI; PIN adulto real y protección de secretos; reproductor local; proveedor de metadatos autorizado con aprobación. No prometer pausa universal, mapeos físicos nuevos ni reproducción que todavía no existe.
+
+## Roadmap histórico
+
 # Roadmap después de 0.2
 
 1. Revisar el PR y la vista interactiva 0.2; probar Windows/TV y registrar defectos de foco, fuentes o DPI.

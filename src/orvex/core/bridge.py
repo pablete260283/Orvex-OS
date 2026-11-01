@@ -33,6 +33,9 @@ class Bridge(QObject):
         self.pcsx2=PCSX2Adapter(store)
         self.installed=InstalledLibrary(store)
         self.launcher=GameLauncher(self.installed,self)
+        from ..foundation.services import FoundationServices
+        self.foundation=FoundationServices(store,self.launcher)
+        self.launcher.profile_provider=lambda:self.foundation.profiles.get(self._profile).id
         from ..runtime.quick_menu import QuickMenu
         self.quick_menu=QuickMenu(self.launcher,store,parent=self)
         self.shortcut_capture=False
@@ -79,6 +82,10 @@ class Bridge(QObject):
                 if len(entries)>=1000:break
             return dict(directory=str(folder),parent=str(folder.parent) if folder.parent!=folder else "computer",items=entries,error="Se muestran hasta 1000 elementos; usa Ruta para ir directamente." if len(entries)==1000 else "")
         except (OSError,ValueError) as e:return dict(directory=value,parent="computer",items=[],error="No se pudo abrir la carpeta: "+str(e))
+    @Property(str,constant=True)
+    def applicationVersion(self):
+        from .. import __version__
+        return __version__
     @Property(QObject,constant=True)
     def inGameMenu(self):return self.quick_menu
     @Property(str,notify=operationChanged)
@@ -216,7 +223,9 @@ class Bridge(QObject):
     @Slot(str)
     def requestLaunch(self,item_id):
         if self._profile!="adult" or self.librarySource!="real":return
-        self._message="";self.launcher.request(item_id)
+        self._message=""
+        try:self.foundation.games.request(item_id,self._profile)
+        except (LookupError,PermissionError,ValueError,sqlite3.Error) as e:self._message=str(e);self.operationChanged.emit()
     @Slot()
     def confirmLaunch(self):
         if self._profile=="adult" and self.librarySource=="real":self.launcher.confirm()
@@ -323,9 +332,9 @@ class Bridge(QObject):
     @Property(str,notify=operationChanged)
     def diagnosticReport(self):
         import json
-        if self._profile!="adult":return json.dumps(dict(version="0.4",message="Diagnóstico disponible en el perfil Adulto."),ensure_ascii=False)
+        if self._profile!="adult":return json.dumps(dict(version=self.applicationVersion,message="Diagnóstico disponible en el perfil Adulto."),ensure_ascii=False)
         rows=self.store.db.execute("SELECT started_at,ended_at,duration_ms,status,exit_code FROM play_sessions ORDER BY id DESC LIMIT 100").fetchall()
-        return json.dumps(dict(version="0.4",quick_menu=dict(state=self.quick_menu.state,message=self.quick_menu.message),controller=self.controllers.notice,input_error=self.controller_input_error,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
+        return json.dumps(dict(version=self.applicationVersion,quick_menu=dict(state=self.quick_menu.state,message=self.quick_menu.message),controller=self.controllers.notice,input_error=self.controller_input_error,recovery=self.controllers.recovery,sessions=[dict(zip(['inicio','fin','duracion_ms','estado','codigo'],row)) for row in rows]),ensure_ascii=False,indent=2)
     def real_games(self):return self.installed.games(self._profile)
     def lookup(self,item_id):
         if item_id.startswith("local-"):return next((e for e in self.real_games() if e["id"]==item_id),{})

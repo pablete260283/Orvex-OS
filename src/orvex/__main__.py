@@ -1,4 +1,5 @@
 import sys
+import argparse
 from pathlib import Path
 from PySide6.QtCore import QStandardPaths, QUrl, QLockFile
 from PySide6.QtGui import QGuiApplication, QIcon
@@ -26,9 +27,16 @@ def configure_application(app):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="ORVEX OS · Biblioteca local")
+    parser.add_argument(
+        "--data-dir", help="Carpeta de datos aislada (por ejemplo, para probar Foundation)"
+    )
+    options, qt_arguments = parser.parse_known_args()
     QQuickStyle.setStyle("Basic")
-    app = QGuiApplication(sys.argv)
+    app = QGuiApplication([sys.argv[0], *qt_arguments])
     path = configure_application(app)
+    if options.data_dir:
+        path = Path(options.data_dir).expanduser().resolve()
 
     def storage_failure(error):
         engine = QQmlApplicationEngine()
